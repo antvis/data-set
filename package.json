@@ -57,6 +57,7 @@
     "silent": false
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "lodash": "^4.17.4",
+    "wolfy87-eventemitter": "^5.1.0"
   }
 }

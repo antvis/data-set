@@ -6,7 +6,7 @@ const babel = require('rollup-plugin-babel');
 module.exports = {
   entry: 'index.js',
   dest: 'build/data-set.js',
-  moduleName: 'dataSet',
+  moduleName: 'DataSet',
   format: 'umd',
   plugins: [
     resolve(),
