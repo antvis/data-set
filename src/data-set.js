@@ -10,8 +10,9 @@ class DataSet extends EventEmitter {
     const me = this;
     assign(me, {
       DataSet,
-      views: {},
-      states: {}
+      isDataSet: true,
+      states: {},
+      views: {}
     });
   }
 
@@ -30,22 +31,6 @@ class DataSet extends EventEmitter {
     this.views[name] = view;
   }
 
-  registerConnector(name, connector) {
-    DataSet.connectors[name] = connector;
-  }
-
-  getConnector(name) {
-    return DataSet.connectors[name];
-  }
-
-  registerTransform(name, Transform) {
-    DataSet.Transforms[name] = Transform;
-  }
-
-  getTransform(name) {
-    return DataSet.Transforms[name];
-  }
-
   setState(name, value) {
     const me = this;
     me.states[name] = value;
@@ -58,7 +43,23 @@ assign(DataSet, {
   Connector,
   Transform,
   connectors: {},
-  Transforms: {}
+  Transforms: {},
+
+  registerConnector(name, connector) {
+    DataSet.connectors[name] = connector;
+  },
+
+  getConnector(name) {
+    return DataSet.connectors[name];
+  },
+
+  registerTransform(name, Transform) {
+    DataSet.Transforms[name] = Transform;
+  },
+
+  getTransform(name) {
+    return DataSet.Transforms[name];
+  }
 });
 
 export default DataSet;

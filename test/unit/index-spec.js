@@ -2,7 +2,7 @@ const expect = require('chai').expect;
 const isRenderer = require('is-electron-renderer');
 const DataSet = require('../../build/data-set');
 
-describe('sample', () => {
+describe('index', () => {
   it('DataSet', () => {
     expect('DataSet').to.be.a('string');
     expect(DataSet).to.be.a('function');

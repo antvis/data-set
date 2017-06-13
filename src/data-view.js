@@ -10,16 +10,16 @@ class DataView extends EventEmitter {
     const me = this;
     assign(me, {
       dataSet,
+      isDataView: true,
+      origin: [],
       rows: [],
-      transforms: [],
-      origin: []
+      columns: [],
+      transforms: []
     });
   }
 
   getConnector(type) {
-    const me = this;
-    const DataSet = me.dataSet.DataSet;
-    return DataSet.getConnector(type);
+    return this.dataSet.DataSet.getConnector(type);
   }
 
   source(source, options) {
