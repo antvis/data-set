@@ -1,10 +1,10 @@
-import DataSet from '../data-set';
-import Connector from './base';
-import {
+const DataSet = require('../data-set');
+const Connector = require('./base');
+const {
   dsvFormat,
   csvParse,
   tsvParse
-} from 'd3-dsv';
+} = require('d3-dsv');
 
 DataSet.registerConnector('dsv', new Connector({
   parse(str, options = {}) {

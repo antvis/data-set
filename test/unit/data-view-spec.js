@@ -1,4 +1,4 @@
-const DataView = require('../../build/data-set').DataView;
+const DataView = require('../../src/data-view');
 const expect = require('chai').expect;
 
 describe('DataView', () => {

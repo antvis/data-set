@@ -1,4 +1,4 @@
-const DataSet = require('../../build/data-set');
+const DataSet = require('../../src/data-set');
 const expect = require('chai').expect;
 
 describe('DataSet', () => {

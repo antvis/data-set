@@ -1,4 +1,4 @@
-const DataSet = require('../../../build/data-set');
+const DataSet = require('../../../index');
 const expect = require('chai').expect;
 const isRenderer = require('is-electron-renderer');
 const {
@@ -23,6 +23,23 @@ describe('connector: dsv', () => {
   const csvConnector = DataSet.getConnector('csv');
   const tsvConnector = DataSet.getConnector('tsv');
 
+  const data = [
+    {
+      Hello: '42',
+      World: '"fish"'
+    }
+  ];
+  const data2 = [
+    {
+      Hello: '42',
+      World: '"fish"'
+    },
+    {
+      Hello: 'foo',
+      World: 'bar'
+    }
+  ];
+
   it('api', () => {
     expect(dsvConnector.parse).to.be.a('function');
     expect(csvConnector.parse).to.be.a('function');
@@ -35,62 +52,29 @@ describe('connector: dsv', () => {
       delimiter: '|'
     });
     expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      }
-    ]);
+    expect(rows).to.deep.equal(data);
   });
 
   it('csv', () => {
     const csv = readFileSync('./test/fixtures/sample.csv');
     const rows = csvConnector.parse(csv);
     expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      }
-    ]);
+    expect(rows).to.deep.equal(data);
     const csv2 = readFileSync('./test/fixtures/sample2.csv');
     const rows2 = csvConnector.parse(csv2);
     expect(rows2).to.be.an('array');
-    expect(rows2).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      },
-      {
-        Hello: 'foo',
-        World: 'bar'
-      }
-    ]);
+    expect(rows2).to.deep.equal(data2);
   });
 
   it('tsv', () => {
     const csv = readFileSync('./test/fixtures/sample.tsv');
     const rows = tsvConnector.parse(csv);
     expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      }
-    ]);
+    expect(rows).to.deep.equal(data);
     const tsv2 = readFileSync('./test/fixtures/sample2.tsv');
     const rows2 = tsvConnector.parse(tsv2);
     expect(rows2).to.be.an('array');
-    expect(rows2).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      },
-      {
-        Hello: 'foo',
-        World: 'bar'
-      }
-    ]);
+    expect(rows2).to.deep.equal(data2);
   });
 
   const DataView = DataSet.DataView;
@@ -101,11 +85,6 @@ describe('connector: dsv', () => {
     dataView.source(csv, {
       type: 'csv'
     });
-    expect(dataView.origin).to.deep.equal([
-      {
-        Hello: '42',
-        World: '"fish"'
-      }
-    ]);
+    expect(dataView.origin).to.deep.equal(data);
   });
 });
