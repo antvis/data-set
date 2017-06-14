@@ -13,23 +13,32 @@ class DataView extends EventEmitter {
       isDataView: true,
       origin: [],
       rows: [],
-      columns: [],
       transforms: []
     });
+  }
+
+  getColumns() {
   }
 
   getConnector(type) {
     return this.dataSet.DataSet.getConnector(type);
   }
 
-  source(source, options) {
+  source(source, options = {}) {
     const me = this;
     if (source instanceof DataView) {
       me.origin = source;
     } else {
-      me.origin = me.getConnector(options.type).parse(source);
+      me.origin = me.getConnector(options.type).parse(source, options);
     }
     return me;
+  }
+
+  transform(options = {}) {
+    const me = this;
+    const transform = me.getTransform(options.type);
+    me.transforms.push(transform);
+    transform.callback(me, options);
   }
 
   addRow(row) {

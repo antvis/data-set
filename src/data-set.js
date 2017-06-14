@@ -43,24 +43,23 @@ assign(DataSet, {
   Connector,
   Transform,
   connectors: {},
-  Transforms: {},
+  transforms: {},
 
   registerConnector(name, connector) {
     DataSet.connectors[name] = connector;
   },
 
   getConnector(name) {
-    return DataSet.connectors[name];
+    return DataSet.connectors[name] || new Connector();
   },
 
-  registerTransform(name, Transform) {
-    DataSet.Transforms[name] = Transform;
+  registerTransform(name, transform) {
+    DataSet.transforms[name] = transform;
   },
 
   getTransform(name) {
-    return DataSet.Transforms[name];
+    return DataSet.transforms[name] || new Transform();
   }
 });
-
 
 module.exports = DataSet;
