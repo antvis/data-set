@@ -27,6 +27,7 @@
     "eslint-config-egg": "^4.2.0",
     "is-electron-renderer": "^2.0.1",
     "istanbul": "^0.4.5",
+    "jquery": "^3.2.1",
     "pre-commit": "^1.2.2",
     "rollup": "^0.42.0",
     "rollup-plugin-babel": "^2.7.1",
@@ -57,6 +58,8 @@
     "silent": false
   },
   "dependencies": {
-    "lodash": "^4.17.4"
+    "d3-dsv": "^1.0.5",
+    "lodash": "^4.17.4",
+    "wolfy87-eventemitter": "^5.1.0"
   }
 }
