@@ -1,8 +1,8 @@
-import assign from 'lodash/assign';
-import isMatch from 'lodash/isMatch';
-import filter from 'lodash/filter';
-import find from 'lodash/find';
-import EventEmitter from 'wolfy87-eventemitter';
+const assign = require('lodash/assign');
+const isMatch = require('lodash/isMatch');
+const filter = require('lodash/filter');
+const find = require('lodash/find');
+const EventEmitter = require('wolfy87-eventemitter');
 
 class DataView extends EventEmitter {
   constructor(dataSet) {
@@ -56,4 +56,4 @@ class DataView extends EventEmitter {
   }
 }
 
-export default DataView;
+module.exports = DataView;

@@ -1,4 +1,4 @@
-import assign from 'lodash/assign';
+const assign = require('lodash/assign');
 
 class Connector {
   constructor(options) {
@@ -10,4 +10,4 @@ class Connector {
   }
 }
 
-export default Connector;
+module.exports = Connector;

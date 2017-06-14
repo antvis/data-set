@@ -1,6 +1,6 @@
 const expect = require('chai').expect;
 const isRenderer = require('is-electron-renderer');
-const DataSet = require('../../build/data-set');
+const DataSet = require('../../index');
 
 describe('index', () => {
   it('DataSet', () => {

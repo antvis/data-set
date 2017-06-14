@@ -1,8 +1,8 @@
-import assign from 'lodash/assign';
-import EventEmitter from 'wolfy87-eventemitter';
-import Connector from './connector/base';
-import Transform from './transform/base';
-import DataView from './data-view';
+const assign = require('lodash/assign');
+const EventEmitter = require('wolfy87-eventemitter');
+const Connector = require('./connector/base');
+const Transform = require('./transform/base');
+const DataView = require('./data-view');
 
 class DataSet extends EventEmitter {
   constructor() {
@@ -62,4 +62,5 @@ assign(DataSet, {
   }
 });
 
-export default DataSet;
+
+module.exports = DataSet;
