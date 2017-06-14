@@ -28,8 +28,12 @@ function test() {
   shelljs.exec('$(npm bin)/electron-mocha --opts ./test/support/mocha.opts --renderer --recursive ./test/unit');
 }
 
-function report() {
-  shelljs.exec('$(npm bin)/istanbul --root ./test/coverage text');
+function generateReport() {
+  shelljs.exec('$(npm bin)/istanbul report --root ./test/coverage');
+}
+
+function viewReport() {
+  shelljs.exec('$(npm bin)/electron ./test/support/coverage-viewer.js');
 }
 
 function main() {
@@ -37,15 +41,17 @@ function main() {
   try {
     instrument();
     test();
-    report();
+    generateReport();
   } catch (e) {
     console.error(e);
   }
   cleanup();
+  viewReport();
 }
 
 main();
 /*
+  ## the origin idea comes from:
   npm run coverage:
     "pre-coverage": "rm -rf test/coverage && mkdir test/coverage",
     "instrument": "mv build _build && istanbul instrument --output ./build ./_build",
