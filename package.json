@@ -2,7 +2,7 @@
   "name": "@antv/data-set",
   "version": "0.0.1",
   "description": "data set with state management",
-  "main": "src/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "git@gitlab.alibaba-inc.com:datavis/data-set.git"
