@@ -13,6 +13,6 @@ module.exports = {
     commonjs(),
     babel({
       exclude: 'node_modules/**' // only transpile our source code
-    }),
+    })
   ]
 };

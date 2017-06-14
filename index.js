@@ -1,3 +1,3 @@
 require('./src/connector/dsv');
 
-module.exports = require('./src/data-set')
+module.exports = require('./src/data-set');
