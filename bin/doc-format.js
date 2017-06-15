@@ -13,27 +13,30 @@ commander.version(pkg.version);
 
 commander.command('csv2json <filename>')
   .description('convert csv file to json')
-  .option('-o, --output <output>', 'output file')
-  .action((filename, options) => {
+  .action(filename => {
     const content = fs.readFileSync(resolve(filename), 'utf8');
     const converted = JSON.stringify(d3Dsv.csvParse(content), null, 2);
-    if (options.output) {
-      fs.writeFileSync(resolve(options.output), converted);
-    } else {
-      console.log(converted);
-    }
+    process.stdout.write(converted);
   });
 
 commander.command('tsv2json <filename>')
   .description('convert tsv file to json')
-  .option('-o, --output <output>', 'output file')
-  .action((filename, options) => {
+  .action(filename => {
     const content = fs.readFileSync(resolve(filename), 'utf8');
     const converted = JSON.stringify(d3Dsv.tsvParse(content), null, 2);
-    if (options.output) {
-      fs.writeFileSync(resolve(options.output), converted);
+    process.stdout.write(converted);
+  });
+
+commander.command('compress-json <file>')
+  .description('convert tsv file to json')
+  .option('--override', 'override the origin file')
+  .action((filename, options) => {
+    const content = fs.readFileSync(resolve(filename), 'utf8');
+    const converted = JSON.stringify(JSON.parse(content));
+    if (options.override) {
+      fs.writeFileSync(resolve(filename), converted, 'utf8');
     } else {
-      console.log(converted);
+      process.stdout.write(converted);
     }
   });
 
