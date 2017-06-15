@@ -39,6 +39,7 @@ class DataSet extends EventEmitter {
 }
 
 assign(DataSet, {
+  DataSet,
   DataView,
   Connector,
   Transform,

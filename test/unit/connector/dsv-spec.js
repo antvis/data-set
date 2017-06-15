@@ -1,5 +1,9 @@
 const expect = require('chai').expect;
-const DataSet = require('../../../index');
+const {
+  DataSet,
+  DataView,
+  getConnector
+} = require('../../../index');
 const {
   readFileSync
 } = require('../../support/util');
@@ -15,50 +19,18 @@ const source = {
   tsv2: readFileSync('./test/fixtures/sample2.tsv')
 };
 
-describe('connector: dsv', () => {
-  const dsvConnector = DataSet.getConnector('dsv');
-  const csvConnector = DataSet.getConnector('csv');
-  const tsvConnector = DataSet.getConnector('tsv');
-  it('api', () => {
-    expect(dsvConnector.parse).to.be.a('function');
-    expect(csvConnector.parse).to.be.a('function');
-    expect(tsvConnector.parse).to.be.a('function');
-  });
-
-  it('dsv', () => {
-    const rows = dsvConnector.parse(source.psv, {
-      delimiter: '|'
-    });
-    expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal(data);
-  });
-
-  it('csv', () => {
-    const rows = csvConnector.parse(source.csv);
-    expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal(data);
-    const rows2 = csvConnector.parse(source.csv2);
-    expect(rows2).to.be.an('array');
-    expect(rows2).to.deep.equal(data2);
-  });
-
-  it('tsv', () => {
-    const rows = tsvConnector.parse(source.tsv);
-    expect(rows).to.be.an('array');
-    expect(rows).to.deep.equal(data);
-    const rows2 = tsvConnector.parse(source.tsv2);
-    expect(rows2).to.be.an('array');
-    expect(rows2).to.deep.equal(data2);
-  });
-});
-
 describe('DataView.source(): dsv', () => {
   const dataSet = new DataSet();
-  const DataView = DataSet.DataView;
   let dataView;
 
   beforeEach(() => {
     dataView = new DataView(dataSet);
+  });
+
+  it('api', () => {
+    expect(getConnector('dsv').parse).to.be.a('function');
+    expect(getConnector('csv').parse).to.be.a('function');
+    expect(getConnector('tsv').parse).to.be.a('function');
   });
 
   it('dsv', () => {
@@ -74,6 +46,10 @@ describe('DataView.source(): dsv', () => {
       type: 'csv'
     });
     expect(dataView.origin).to.deep.equal(data);
+    dataView.source(source.csv2, {
+      type: 'csv'
+    });
+    expect(dataView.origin).to.deep.equal(data2);
   });
 
   it('tsv', () => {
@@ -81,5 +57,9 @@ describe('DataView.source(): dsv', () => {
       type: 'tsv'
     });
     expect(dataView.origin).to.deep.equal(data);
+    dataView.source(source.tsv2, {
+      type: 'tsv'
+    });
+    expect(dataView.origin).to.deep.equal(data2);
   });
 });

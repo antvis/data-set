@@ -6,7 +6,7 @@ function defaultCallback(row) {
   return !!row;
 }
 
-DataSet.registerConnector(
+DataSet.registerTransform(
   'filter',
   new Transform({
     execute(dataView, options = {}) {

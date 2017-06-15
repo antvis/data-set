@@ -1,8 +1,11 @@
+const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
-const isMatch = require('lodash/isMatch');
+const cloneDeep = require('lodash/cloneDeep');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
-const EventEmitter = require('wolfy87-eventemitter');
+const isArray = require('lodash/isArray');
+const isMatch = require('lodash/isMatch');
+// const Transfrom = require('./transform/base');
 
 class DataView extends EventEmitter {
   constructor(dataSet) {
@@ -24,25 +27,29 @@ class DataView extends EventEmitter {
   getColumns() {
   }
 
-  getConnector(type) {
-    return this.DataSet.getConnector(type);
-  }
-
-  source(source, options = {}) {
+  source(source, options) {
     const me = this;
-    if (source instanceof DataView) {
-      me.origin = source;
+    if (!options) {
+      if (source instanceof DataView) {
+        me.origin = cloneDeep(source.rows);
+      } else if (isArray(source)) {
+        me.origin = cloneDeep(source);
+      } else {
+        throw new TypeError('Invalid source');
+      }
     } else {
-      me.origin = me.getConnector(options.type).parse(source, options);
+      me.origin = me.DataSet.getConnector(options.type).parse(source, options);
     }
+    me.rows = cloneDeep(me.origin);
     return me;
   }
 
   transform(options = {}) {
     const me = this;
-    const transform = me.getTransform(options.type);
-    me.transforms.push(transform);
+    const transform = me.DataSet.getTransform(options.type);
+    me.transforms.push(options);
     transform.execute(me, options);
+    return me;
   }
 
   addRow(row) {
