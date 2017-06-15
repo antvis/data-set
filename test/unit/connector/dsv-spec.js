@@ -2,10 +2,10 @@ const expect = require('chai').expect;
 const DataSet = require('../../../index');
 const {
   readFileSync
-} = require('../../support/util')
+} = require('../../support/util');
 
-const data = require('../../fixtures/sample.json')
-const data2 = require('../../fixtures/sample2.json')
+const data = require('../../fixtures/sample.json');
+const data2 = require('../../fixtures/sample2.json');
 
 const source = {
   psv: readFileSync('./test/fixtures/sample.psv'),

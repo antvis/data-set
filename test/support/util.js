@@ -16,4 +16,4 @@ module.exports = {
   readFileSync(pathname) {
     return fs.readFileSync(path.resolve(process.cwd(), pathname), 'utf8');
   }
-}
+};

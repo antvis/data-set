@@ -10,7 +10,7 @@ DataSet.registerConnector(
   'filter',
   new Transform({
     execute(dataView, options = {}) {
-      dataView.rows = filter(dataView.rows, options.callback || defaultCallback)
+      dataView.rows = filter(dataView.rows, options.callback || defaultCallback);
     }
   })
 );
