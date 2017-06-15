@@ -4,7 +4,7 @@ class Transform {
   constructor(options) {
     assign(this, options);
   }
-  callback(view) {
+  execute(view/*, options*/) {
     return view;
   }
 }

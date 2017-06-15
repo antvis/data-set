@@ -8,7 +8,11 @@ class DataView extends EventEmitter {
   constructor(dataSet) {
     super();
     const me = this;
+    if (!dataSet || !dataSet.isDataSet) {
+      throw new TypeError('Not a valid DataSet instance');
+    }
     assign(me, {
+      DataSet: dataSet.DataSet,
       dataSet,
       isDataView: true,
       origin: [],
@@ -21,7 +25,7 @@ class DataView extends EventEmitter {
   }
 
   getConnector(type) {
-    return this.dataSet.DataSet.getConnector(type);
+    return this.DataSet.getConnector(type);
   }
 
   source(source, options = {}) {
@@ -38,7 +42,7 @@ class DataView extends EventEmitter {
     const me = this;
     const transform = me.getTransform(options.type);
     me.transforms.push(transform);
-    transform.callback(me, options);
+    transform.execute(me, options);
   }
 
   addRow(row) {

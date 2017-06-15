@@ -1,22 +1,11 @@
-const DataSet = require('../../../index');
 const expect = require('chai').expect;
-const isRenderer = require('is-electron-renderer');
+const DataSet = require('../../../index');
 const {
-  remote
-} = require('electron');
-let fs;
-let path;
-if (isRenderer) {
-  fs = remote.require('fs');
-  path = remote.require('path');
-} else {
-  fs = require('fs');
-  path = require('path');
-}
+  readFileSync
+} = require('../../support/util')
 
-function readFileSync(pathname) {
-  return fs.readFileSync(path.resolve(process.cwd(), pathname), 'utf8');
-}
+const data = require('../../fixtures/sample.json')
+const data2 = require('../../fixtures/sample2.json')
 
 const source = {
   psv: readFileSync('./test/fixtures/sample.psv'),
@@ -25,22 +14,6 @@ const source = {
   tsv: readFileSync('./test/fixtures/sample.tsv'),
   tsv2: readFileSync('./test/fixtures/sample2.tsv')
 };
-const data = [
-  {
-    Hello: '42',
-    World: '"fish"'
-  }
-];
-const data2 = [
-  {
-    Hello: '42',
-    World: '"fish"'
-  },
-  {
-    Hello: 'foo',
-    World: 'bar'
-  }
-];
 
 describe('connector: dsv', () => {
   const dsvConnector = DataSet.getConnector('dsv');
@@ -93,7 +66,6 @@ describe('DataView.source(): dsv', () => {
       type: 'dsv',
       delimiter: '|'
     });
-    console.log(dataView.origin);
     expect(dataView.origin).to.deep.equal(data);
   });
 

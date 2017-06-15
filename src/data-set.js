@@ -18,7 +18,7 @@ class DataSet extends EventEmitter {
 
   createView(name) {
     const me = this;
-    const view = new DataView();
+    const view = new DataView(me);
     me.views[name] = view;
     return view;
   }
