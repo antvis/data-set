@@ -3,9 +3,13 @@ const assign = require('lodash/assign');
 const cloneDeep = require('lodash/cloneDeep');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
+const indexOf = require('lodash/indexOf');
 const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
 const isString = require('lodash/isString');
+const keys = require('lodash/keys');
+const map = require('lodash/map');
+const pick = require('lodash/pick');
 
 class DataView extends EventEmitter {
   constructor(dataSet) {
@@ -24,9 +28,7 @@ class DataView extends EventEmitter {
     });
   }
 
-  getColumns() {
-  }
-
+  // connectors
   source(source, options) {
     const me = this;
     if (!options) {
@@ -49,6 +51,7 @@ class DataView extends EventEmitter {
     return me;
   }
 
+  // transforms
   transform(options = {}) {
     const me = this;
     const transform = me.DataSet.getTransform(options.type);
@@ -57,27 +60,62 @@ class DataView extends EventEmitter {
     return me;
   }
 
+  // rows
   addRow(row) {
     this.rows.push(row);
   }
-
   removeRow(index) {
     this.rows.splice(index, 1);
   }
-
   updateRow(index, newRow) {
-    this.rows[index] = newRow;
+    assign(this.rows[index], newRow);
   }
-
   findRows(query) {
     return filter(this.rows, row => isMatch(row, query));
   }
-
   findRow(query) {
     return find(this.rows, query);
   }
 
+  // columns
+  getColumnNames() {
+    const firstRow = this.rows[0];
+    if (firstRow) {
+      return keys(firstRow);
+    }
+    return [];
+  }
+  getColumnName(index) {
+    return this.getColumnNames()[index];
+  }
+  getColumnIndex(columnName) {
+    const columnNames = this.getColumnNames();
+    return indexOf(columnNames, columnName);
+  }
+  getColumn(columnName) {
+    return map(this.rows, row => row[columnName]);
+  }
+  getColumnData(columnName) {
+    return this.getColumn(columnName);
+  }
+
+  // data process
+  getSubset(startRowIndex, endRowIndex, columnNames) {
+    const subset = [];
+    for (let i = startRowIndex; i < endRowIndex; i++) {
+      subset.push(pick(this.rows[i], columnNames));
+    }
+    return subset;
+  }
+  toString(prettyPrint) {
+    const me = this;
+    if (prettyPrint) {
+      return JSON.stringify(me.rows, null, 2);
+    }
+    return JSON.stringify(me.rows);
+  }
   execute() {
+    // TODO
   }
 }
 
