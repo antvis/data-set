@@ -5,7 +5,7 @@ const filter = require('lodash/filter');
 const find = require('lodash/find');
 const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
-// const Transfrom = require('./transform/base');
+const isString = require('lodash/isString');
 
 class DataView extends EventEmitter {
   constructor(dataSet) {
@@ -30,16 +30,21 @@ class DataView extends EventEmitter {
   source(source, options) {
     const me = this;
     if (!options) {
-      if (source instanceof DataView) {
-        me.origin = cloneDeep(source.rows);
+      if (source instanceof DataView || isString(source)) {
+        me.origin = me.DataSet.getConnector('default')(source, me.dataSet);
       } else if (isArray(source)) {
+        // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = cloneDeep(source);
       } else {
         throw new TypeError('Invalid source');
       }
     } else {
-      me.origin = me.DataSet.getConnector(options.type).parse(source, options);
+      me.origin = me.DataSet.getConnector(options.type)(source, options);
     }
+    me._source = {
+      source,
+      options
+    };
     me.rows = cloneDeep(me.origin);
     return me;
   }
@@ -48,7 +53,7 @@ class DataView extends EventEmitter {
     const me = this;
     const transform = me.DataSet.getTransform(options.type);
     me.transforms.push(options);
-    transform.execute(me, options);
+    transform(me, options);
     return me;
   }
 

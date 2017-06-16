@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
 const EventEmitter = require('wolfy87-eventemitter');
-const Connector = require('./connector/base');
-const Transform = require('./transform/base');
 const DataView = require('./data-view');
 
 class DataSet extends EventEmitter {
@@ -41,8 +39,6 @@ class DataSet extends EventEmitter {
 assign(DataSet, {
   DataSet,
   DataView,
-  Connector,
-  Transform,
   connectors: {},
   transforms: {},
 
@@ -51,7 +47,7 @@ assign(DataSet, {
   },
 
   getConnector(name) {
-    return DataSet.connectors[name] || new Connector();
+    return DataSet.connectors[name] || DataSet.connectors.default;
   },
 
   registerTransform(name, transform) {
@@ -59,7 +55,7 @@ assign(DataSet, {
   },
 
   getTransform(name) {
-    return DataSet.transforms[name] || new Transform();
+    return DataSet.transforms[name] || DataSet.transforms.default;
   }
 });
 

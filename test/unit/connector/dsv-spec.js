@@ -28,9 +28,9 @@ describe('DataView.source(): dsv', () => {
   });
 
   it('api', () => {
-    expect(getConnector('dsv').parse).to.be.a('function');
-    expect(getConnector('csv').parse).to.be.a('function');
-    expect(getConnector('tsv').parse).to.be.a('function');
+    expect(getConnector('dsv')).to.be.a('function');
+    expect(getConnector('csv')).to.be.a('function');
+    expect(getConnector('tsv')).to.be.a('function');
   });
 
   it('dsv', () => {

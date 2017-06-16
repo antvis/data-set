@@ -16,7 +16,7 @@ describe('DataView.transform(): filter', () => {
   });
 
   it('api', () => {
-    expect(getTransform('filter').execute).to.be.a('function');
+    expect(getTransform('filter')).to.be.a('function');
   });
 
   it('default filter', () => {
