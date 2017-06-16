@@ -1,4 +1,6 @@
-const expect = require('chai').expect;
+const {
+  expect
+} = require('chai');
 const isRenderer = require('is-electron-renderer');
 const DataSet = require('../../index');
 

@@ -1,5 +1,7 @@
+const {
+  expect
+} = require('chai');
 const DataSet = require('../../src/data-set');
-const expect = require('chai').expect;
 
 describe('DataSet', () => {
   it('Constructor', () => {

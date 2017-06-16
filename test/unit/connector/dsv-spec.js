@@ -1,4 +1,6 @@
-const expect = require('chai').expect;
+const {
+  expect
+} = require('chai');
 const {
   DataSet,
   DataView,
