@@ -87,7 +87,7 @@ describe('DataView', () => {
   it('getSubset(startRowIndex, endRowIndex, columnNames)', () => {
     dataView.addRow(mockRow);
     const len = dataView.rows.length;
-    expect(dataView.getSubset(len - 1, len, columnNames)).to.be.deep.equal([ mockRow ]);
+    expect(dataView.getSubset(len - 1, len - 1, columnNames)).to.be.deep.equal([ mockRow ]);
   });
   it('toString()', () => {
     expect(dataView.toString()).to.be.equal(JSON.stringify(populationChina));

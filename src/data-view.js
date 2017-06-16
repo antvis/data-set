@@ -102,7 +102,7 @@ class DataView extends EventEmitter {
   // data process
   getSubset(startRowIndex, endRowIndex, columnNames) {
     const subset = [];
-    for (let i = startRowIndex; i < endRowIndex; i++) {
+    for (let i = startRowIndex; i <= endRowIndex; i++) {
       subset.push(pick(this.rows[i], columnNames));
     }
     return subset;
