@@ -1,0 +1,10 @@
+[
+  {
+    "Hello": "42",
+    "World": "\"fish\""
+  },
+  {
+    "Hello": "foo",
+    "World": "bar"
+  }
+]

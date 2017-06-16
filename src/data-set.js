@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
 const EventEmitter = require('wolfy87-eventemitter');
-const Connector = require('./connector/base');
-const Transform = require('./transform/base');
 const DataView = require('./data-view');
 
 class DataSet extends EventEmitter {
@@ -18,7 +16,7 @@ class DataSet extends EventEmitter {
 
   createView(name) {
     const me = this;
-    const view = new DataView();
+    const view = new DataView(me);
     me.views[name] = view;
     return view;
   }
@@ -39,28 +37,26 @@ class DataSet extends EventEmitter {
 }
 
 assign(DataSet, {
+  DataSet,
   DataView,
-  Connector,
-  Transform,
   connectors: {},
-  Transforms: {},
+  transforms: {},
 
   registerConnector(name, connector) {
     DataSet.connectors[name] = connector;
   },
 
   getConnector(name) {
-    return DataSet.connectors[name];
+    return DataSet.connectors[name] || DataSet.connectors.default;
   },
 
-  registerTransform(name, Transform) {
-    DataSet.Transforms[name] = Transform;
+  registerTransform(name, transform) {
+    DataSet.transforms[name] = transform;
   },
 
   getTransform(name) {
-    return DataSet.Transforms[name];
+    return DataSet.transforms[name] || DataSet.transforms.default;
   }
 });
-
 
 module.exports = DataSet;
