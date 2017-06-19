@@ -1,4 +1,8 @@
 const {
+  map,
+  pick
+} = require('lodash');
+const {
   expect
 } = require('chai');
 const {
@@ -8,7 +12,7 @@ const {
 } = require('../../../index');
 const populationChina = require('../../fixtures/population-china.json');
 
-describe('DataView.transform(): default', () => {
+describe('DataView.transform(): pick', () => {
   const dataSet = new DataSet();
   let dataView;
 
@@ -18,14 +22,21 @@ describe('DataView.transform(): default', () => {
   });
 
   it('api', () => {
-    expect(getTransform()).to.be.a('function');
-    expect(getTransform('default')).to.be.a('function');
-    expect(getTransform('this-transform-is-not-exists-xxx')).to.be.a('function');
+    expect(getTransform('pick')).to.be.a('function');
   });
 
   it('default', () => {
-    dataView.transform();
+    dataView.transform({
+      type: 'pick'
+    });
     expect(dataView.rows).to.be.deep.equal(populationChina);
   });
-});
 
+  it('pick', () => {
+    dataView.transform({
+      type: 'pick',
+      columns: [ 'year' ]
+    });
+    expect(dataView.rows).to.be.deep.equal(map(populationChina, row => pick(row, [ 'year' ])));
+  });
+});
