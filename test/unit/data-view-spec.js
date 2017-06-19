@@ -73,7 +73,7 @@ describe('DataView', () => {
   it('getColumnName(index)', () => {
     expect(dataView.getColumnName(0)).to.be.equal(columnNames[0]);
   });
-  it('getColumnIndex(columnName', () => {
+  it('getColumnIndex(columnName)', () => {
     expect(dataView.getColumnIndex('year')).to.be.equal(indexOf(columnNames, 'year'));
   });
   it('getColumn(columnName)', () => {
@@ -89,7 +89,7 @@ describe('DataView', () => {
     const len = dataView.rows.length;
     expect(dataView.getSubset(len - 1, len - 1, columnNames)).to.be.deep.equal([ mockRow ]);
   });
-  it('toString()', () => {
+  it('toString(prettyPrint)', () => {
     expect(dataView.toString()).to.be.equal(JSON.stringify(populationChina));
     expect(dataView.toString(true)).to.be.equal(JSON.stringify(populationChina, null, 2));
   });

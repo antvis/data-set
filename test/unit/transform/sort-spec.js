@@ -36,7 +36,7 @@ describe('DataView.transform(): sort', () => {
     expect(dataView.rows).to.be.deep.equal(populationChina.sort((a, b) => a.year - b.year));
   });
 
-  it('sort-by', () => {
+  it('sort', () => {
     dataView.transform({
       type: 'sort',
       callback(a, b) {
