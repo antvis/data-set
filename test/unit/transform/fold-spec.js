@@ -1,8 +1,8 @@
 const {
   assign,
   difference,
-  pick,
-  keys
+  keys,
+  pick
 } = require('lodash');
 const {
   expect
@@ -14,7 +14,7 @@ const {
 } = require('../../../index');
 
 describe('DataView.transform(): fold', () => {
-  const data = [
+  const data = [ // token from vega-dataFlow
     { a: '!', b: 5, c: 7, d: '|' },
     { a: '?', b: 2, c: 4, d: '/' }
   ];
