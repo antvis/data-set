@@ -7,8 +7,8 @@ const DataSet = require('../data-set');
 
 const DEFAULT_OPTIONS = {
   fields: [],
-  retains: [],
   key: 'key',
+  retains: [],
   value: 'value'
 };
 
