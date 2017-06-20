@@ -37,8 +37,8 @@ describe('DataView.transform(): fold', () => {
     dataView.transform({
       type: 'fold'
     });
-    expect(dataView.rows.length).to.be.equal(8);
-    expect(keys(dataView.rows[0])).to.be.deep.equal([
+    expect(dataView.rows.length).to.equal(8);
+    expect(keys(dataView.rows[0])).to.eql([
       'key',
       'value'
     ]);
@@ -50,8 +50,8 @@ describe('DataView.transform(): fold', () => {
       key: 'type',
       value: 'typeValue'
     });
-    expect(dataView.rows.length).to.be.equal(8);
-    expect(keys(dataView.rows[0])).to.be.deep.equal([
+    expect(dataView.rows.length).to.equal(8);
+    expect(keys(dataView.rows[0])).to.eql([
       'type',
       'typeValue'
     ]);
@@ -62,7 +62,7 @@ describe('DataView.transform(): fold', () => {
       type: 'fold',
       fields: []
     });
-    expect(dataView.rows.length).to.be.equal(8);
+    expect(dataView.rows.length).to.equal(8);
   });
 
   it('fold: specify one field', () => {
@@ -71,12 +71,12 @@ describe('DataView.transform(): fold', () => {
       type: 'fold',
       fields
     });
-    expect(dataView.rows.length).to.be.equal(2);
-    expect(dataView.rows[0]).to.be.deep.equal(assign({
+    expect(dataView.rows.length).to.equal(2);
+    expect(dataView.rows[0]).to.eql(assign({
       key: 'a',
       value: row0.a
     }, pick(row0, difference(dataKeys, fields))));
-    expect(dataView.rows[1]).to.be.deep.equal(assign({
+    expect(dataView.rows[1]).to.eql(assign({
       key: 'a',
       value: row1.a
     }, pick(row1, difference(dataKeys, fields))));
@@ -88,20 +88,20 @@ describe('DataView.transform(): fold', () => {
       type: 'fold',
       fields
     });
-    expect(dataView.rows.length).to.be.equal(4);
-    expect(dataView.rows[0]).to.be.deep.equal(assign({
+    expect(dataView.rows.length).to.equal(4);
+    expect(dataView.rows[0]).to.eql(assign({
       key: 'b',
       value: row0.b
     }, pick(row0, difference(dataKeys, fields))));
-    expect(dataView.rows[1]).to.be.deep.equal(assign({
+    expect(dataView.rows[1]).to.eql(assign({
       key: 'c',
       value: row0.c
     }, pick(row0, difference(dataKeys, fields))));
-    expect(dataView.rows[2]).to.be.deep.equal(assign({
+    expect(dataView.rows[2]).to.eql(assign({
       key: 'b',
       value: row1.b
     }, pick(row1, difference(dataKeys, fields))));
-    expect(dataView.rows[3]).to.be.deep.equal(assign({
+    expect(dataView.rows[3]).to.eql(assign({
       key: 'c',
       value: row1.c
     }, pick(row1, difference(dataKeys, fields))));
@@ -115,12 +115,12 @@ describe('DataView.transform(): fold', () => {
       fields,
       retains
     });
-    expect(dataView.rows.length).to.be.equal(2);
-    expect(dataView.rows[0]).to.be.deep.equal(assign({
+    expect(dataView.rows.length).to.equal(2);
+    expect(dataView.rows[0]).to.eql(assign({
       key: 'a',
       value: row0.a
     }, pick(row0, retains)));
-    expect(dataView.rows[1]).to.be.deep.equal(assign({
+    expect(dataView.rows[1]).to.eql(assign({
       key: 'a',
       value: row1.a
     }, pick(row1, retains)));

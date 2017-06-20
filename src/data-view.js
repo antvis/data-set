@@ -1,7 +1,6 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
 const cloneDeep = require('lodash/cloneDeep');
-// const each = require('lodash/each');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
 const indexOf = require('lodash/indexOf');
