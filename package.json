@@ -58,6 +58,7 @@
   "dependencies": {
     "d3-dsv": "^1.0.5",
     "lodash": "^4.17.4",
+    "simple-statistics": "^4.1.0",
     "wolfy87-eventemitter": "^5.1.0"
   }
 }

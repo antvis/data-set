@@ -1,6 +1,7 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
 const cloneDeep = require('lodash/cloneDeep');
+// const each = require('lodash/each');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
 const indexOf = require('lodash/indexOf');
@@ -10,8 +11,19 @@ const isString = require('lodash/isString');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
+const {
+  max,
+  mean,
+  median,
+  min,
+  mode,
+  standardDeviation,
+  sum,
+  variance
+} = require('simple-statistics');
 
 class DataView extends EventEmitter {
+  // constructor
   constructor(dataSet) {
     super();
     const me = this;
@@ -116,6 +128,39 @@ class DataView extends EventEmitter {
   }
   execute() {
     // TODO
+  }
+
+  // statistics
+  max(column) {
+    return max(this.getColumn(column));
+  }
+  mean(column) {
+    return mean(this.getColumn(column));
+  }
+  average(column) {
+    return this.mean(column);
+  }
+  median(column) {
+    return median(this.getColumn(column));
+  }
+  min(column) {
+    return min(this.getColumn(column));
+  }
+  mode(column) {
+    return mode(this.getColumn(column));
+  }
+  standardDeviation(column) {
+    return standardDeviation(this.getColumn(column));
+  }
+  sum(column) {
+    return sum(this.getColumn(column));
+  }
+  variance(column) {
+    return variance(this.getColumn(column));
+  }
+  range(column) {
+    const me = this;
+    return [ me.min(column), me.max(column) ];
   }
 }
 
