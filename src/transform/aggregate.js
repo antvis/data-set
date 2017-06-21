@@ -30,8 +30,10 @@ const STATISTICS_METHODS = [
   'median',
   'min',
   'mode',
+  'product',
   'standardDeviation',
   'sum',
+  'sumSimple',
   'variance'
 ];
 each(STATISTICS_METHODS, method => {
