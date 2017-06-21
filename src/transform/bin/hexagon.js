@@ -10,8 +10,8 @@ const DataSet = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ]
-  // fields: '', // required
-  // radius: 10,
+  // fields: ['field0', 'field1'], // required
+  // radius: radius,
   // extent: [[minX, maxX], [minY, maxY]],
 };
 
@@ -19,6 +19,14 @@ const thirdPi = Math.PI / 3;
 const angles = [ 0, thirdPi, 2 * thirdPi, 3 * thirdPi, 4 * thirdPi, 5 * thirdPi ];
 
 function getHexagonPoints(radius) {
+  /*
+   * points:
+   *        3
+   *   4          2
+   *
+   *   5          1
+   *        0
+   */
   return angles.map(angle => {
     const x = Math.sin(angle) * radius;
     const y = -Math.cos(angle) * radius;
