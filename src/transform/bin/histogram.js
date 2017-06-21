@@ -8,8 +8,9 @@ const DataSet = require('../../data-set');
 const DEFAULT_OPTIONS = {
   as: [ 'x0', 'x1' ]
   // field: '', // required
-  // domain: [],
-  // thresholds: [],
+  // domain: [/* min, max */],
+  // thresholds: [/* min, max */],
+  // TODO step?
 };
 
 function transform(dataView, options) {
