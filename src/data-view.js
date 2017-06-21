@@ -136,7 +136,7 @@ class DataView extends EventEmitter {
   mean(column) {
     return mean(this.getColumn(column));
   }
-  average(column) {
+  average(column) { // alias
     return this.mean(column);
   }
   median(column) {
@@ -160,6 +160,9 @@ class DataView extends EventEmitter {
   range(column) {
     const me = this;
     return [ me.min(column), me.max(column) ];
+  }
+  extent(column) { // alias
+    return this.range(column);
   }
 }
 

@@ -27,6 +27,7 @@ describe('DataView.transform(): sort-by', () => {
 
   it('api', () => {
     expect(getTransform('sort-by')).to.be.a('function');
+    expect(getTransform('sortBy')).to.be.a('function');
   });
 
   it('default', () => {
