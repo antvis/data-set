@@ -42,7 +42,7 @@ each(STATISTICS_METHODS, method => {
 });
 aggregates.average = aggregates.mean;
 
-DataSet.registerTransform('aggregate', (dataView, options) => {
+function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const rows = dataView.rows;
   const dims = options.groupBy;
@@ -64,4 +64,8 @@ DataSet.registerTransform('aggregate', (dataView, options) => {
     });
   });
   dataView.rows = results;
-});
+}
+
+DataSet.registerTransform('aggregate', transform);
+// alias
+DataSet.registerTransform('summary', transform);

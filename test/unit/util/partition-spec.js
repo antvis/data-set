@@ -15,7 +15,8 @@ describe('partition', () => {
   });
 
   it('groupBy', () => {
-    const rows = partition(data, [ 'c' ], [ 'x' ]);
-    console.log(rows);
+    const groups = partition(data, [ 'c' ], [ 'x' ]);
+    expect(groups[0].length).to.equal(2);
+    expect(groups[1].length).to.equal(1);
   });
 });
