@@ -7,19 +7,19 @@ const {
   getTransform
 } = require('../../../../index');
 
+const data = [];
+for (let i = 0; i < 100; i++) {
+  data.push({
+    x: i,
+    y: i
+  });
+}
+
 describe('DataView.transform(): bin.hexagon', () => {
   const dataSet = new DataSet();
   let dataView;
-  let data;
 
   beforeEach(() => {
-    data = [];
-    for (let i = 0; i < 100; i++) {
-      data.push({
-        x: i,
-        y: i
-      });
-    }
     dataView = new DataView(dataSet);
     dataView.source(data);
   });

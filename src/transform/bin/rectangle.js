@@ -1,6 +1,6 @@
 const assign = require('lodash/assign');
-const isArray = require('lodash/isArray');
 const each = require('lodash/each');
+const isArray = require('lodash/isArray');
 const {
   histogram
 } = require('d3-array');

@@ -9,7 +9,7 @@ const data = [
   { x: 1, y: 43, c: 0 }
 ];
 
-describe('partition', () => {
+describe('partition(rows, groupBy, orderBy)', () => {
   it('api', () => {
     expect(partition).to.be.a('function');
   });

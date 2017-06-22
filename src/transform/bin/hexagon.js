@@ -1,8 +1,8 @@
 const assign = require('lodash/assign');
-const isArray = require('lodash/isArray');
-const map = require('lodash/map');
 const each = require('lodash/each');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
+const map = require('lodash/map');
 const {
   hexbin
 } = require('d3-hexbin');
