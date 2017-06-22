@@ -9,8 +9,6 @@ const DataSet = require('../../data-set');
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ]
   // fields: ['field0', 'field1'], // required
-  // domainX: [minX, maxX],
-  // domainY: [minY, maxY],
   // thresholdsX: [],
   // thresholdsY: [],
   // TODO step?
@@ -19,14 +17,14 @@ const DEFAULT_OPTIONS = {
 function processField(dataView, options, isX) {
   const histogramGenerator = histogram();
   const field = options.field;
-  const domain = options.domain;
-  const thresholds = options.thresholds;
   const as = options.as;
   const rows = dataView.rows;
   const column = dataView.getColumn(field);
-  if (domain) {
-    histogramGenerator.domain(domain);
-  }
+  // const domain = options.domain;
+  // if (domain) {
+  //   histogramGenerator.domain(domain);
+  // }
+  const thresholds = options.thresholds;
   if (thresholds) {
     histogramGenerator.thresholds(thresholds);
   }
@@ -61,13 +59,13 @@ function transform(dataView, options) {
   }
   processField(dataView, {
     field: fields[0],
-    domain: options.domainX,
+    // domain: options.domainX,
     thresholds: options.thresholdsX,
     as: options.as[0]
   }, true);
   processField(dataView, {
     field: fields[1],
-    domain: options.domainY,
+    // domain: options.domainY,
     thresholds: options.thresholdsY,
     as: options.as[1]
   });
