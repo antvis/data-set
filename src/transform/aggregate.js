@@ -1,5 +1,7 @@
 const assign = require('lodash/assign');
 const each = require('lodash/each');
+const forIn = require('lodash/forIn');
+const keys = require('lodash/keys');
 const isArray = require('lodash/isArray');
 const map = require('lodash/map');
 const uniq = require('lodash/uniq');
@@ -57,13 +59,14 @@ function transform(dataView, options) {
   }
   const groups = partition(rows, dims);
   const results = [];
-  each(groups, group => {
+  forIn(groups, group => {
     const result = {};
     each(operations, (operation, i) => {
       const outputName = outputNames[i];
       const field = fields[i];
       result[outputName] = aggregates[operation](group, field);
     });
+    results.push(result);
   });
   dataView.rows = results;
 }
@@ -71,3 +74,5 @@ function transform(dataView, options) {
 DataSet.registerTransform('aggregate', transform);
 // alias
 DataSet.registerTransform('summary', transform);
+
+DataSet.VALID_AGGREGATES = keys(aggregates);
