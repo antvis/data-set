@@ -71,8 +71,8 @@ function transform(dataView, options) {
   dataView.rows = results;
 }
 
+DataSet.VALID_AGGREGATES = keys(aggregates);
+
 DataSet.registerTransform('aggregate', transform);
 // alias
 DataSet.registerTransform('summary', transform);
-
-DataSet.VALID_AGGREGATES = keys(aggregates);

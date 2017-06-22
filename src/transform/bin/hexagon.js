@@ -12,12 +12,10 @@ const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ]
   // fields: ['field0', 'field1'], // required
   // radius: radius,
-  // extent: [[minX, maxX], [minY, maxY]],
 };
 
 const thirdPi = Math.PI / 3;
 const angles = [ 0, thirdPi, 2 * thirdPi, 3 * thirdPi, 4 * thirdPi, 5 * thirdPi ];
-
 function getHexagonPoints(radius) {
   /*
    * points:
@@ -44,8 +42,8 @@ function getHexagonPointsXY(points, center, as) {
   result[xKey] = [];
   result[yKey] = [];
   each(points, point => {
-    result[xKey].push(point.x - center.x);
-    result[yKey].push(point.y - center.y);
+    result[xKey].push(point.x + center.x);
+    result[yKey].push(point.y + center.y);
   });
   return result;
 }
@@ -54,20 +52,21 @@ function transform(dataView, options) {
   const hexbinGenerator = hexbin();
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = options.fields;
-  const radius = options.radius;
-  const extent = options.extent;
   if (!isArray(fields) || fields.length !== 2) {
     throw new TypeError('Invalid option: fields');
   }
   const field0 = fields[0];
   const field1 = fields[1];
   const points = map(dataView.rows, row => [ row[field0], row[field1] ]);
+  const radius = options.radius;
   if (radius) {
     hexbinGenerator.radius(radius);
   }
-  if (extent) {
-    hexbinGenerator.extent(extent);
-  }
+  // const extent = options.extent;
+  // if (extent) {
+  //   console.log(extent)
+  //   hexbinGenerator.extent(extent);
+  // }
   const centerByPoint = {};
   each(hexbinGenerator(points), bin => {
     each(bin, point => {
@@ -95,4 +94,5 @@ function transform(dataView, options) {
 }
 
 DataSet.registerTransform('bin.hexagon', transform);
+// alias
 DataSet.registerTransform('bin.hex', transform);

@@ -74,4 +74,5 @@ function transform(dataView, options) {
 }
 
 DataSet.registerTransform('bin.rectangle', transform);
+// alias
 DataSet.registerTransform('bin.rect', transform);
