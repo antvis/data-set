@@ -1,6 +1,7 @@
 // connectors
 require('./src/connector/default');
 require('./src/connector/dsv');
+require('./src/connector/geo');
 
 // transforms
 require('./src/transform/default');
