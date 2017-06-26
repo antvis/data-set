@@ -6,7 +6,7 @@ const {
 const DataSet = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
-  as: [ 'x0', 'x1' ]
+  as: 'x'
   // field: '', // required
   // domain: [/* min, max */],
   // thresholds: [/* min, max */],
@@ -34,8 +34,7 @@ function transform(dataView, options) {
   each(histogramGenerator(column), bin => {
     each(bin, value => {
       const currentBin = binByValue[value] = {};
-      currentBin[options.as[0]] = bin.x0;
-      currentBin[options.as[1]] = bin.x1;
+      currentBin[options.as] = [ bin.x0, bin.x1 ];
     });
   });
   each(rows, row => {

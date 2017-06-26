@@ -36,8 +36,8 @@ describe('DataView.transform(): bin.histogram', () => {
       type: 'bin.histogram',
       field: 'a'
     });
-    expect(dataView.rows[0]).to.eql({ a: 0, x0: 0, x1: 10 });
-    expect(dataView.rows[99]).to.eql({ a: 99, x0: 90, x1: 100 });
+    expect(dataView.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
+    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
   });
 
   it('domain', () => {
@@ -47,7 +47,7 @@ describe('DataView.transform(): bin.histogram', () => {
       domain: [ 10, 100 ]
     });
     expect(dataView.rows[0]).to.eql({ a: 0 });
-    expect(dataView.rows[99]).to.eql({ a: 99, x0: 90, x1: 100 });
+    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
   });
 
   it('thresholds', () => {
@@ -56,8 +56,7 @@ describe('DataView.transform(): bin.histogram', () => {
       field: 'a',
       thresholds: [ 0, 10, 100 ]
     });
-    expect(dataView.rows[0]).to.eql({ a: 0, x0: 0, x1: 10 });
-    expect(dataView.rows[99]).to.eql({ a: 99, x0: 10, x1: 100 });
+    expect(dataView.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
+    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 10, 100 ] });
   });
-
 });
