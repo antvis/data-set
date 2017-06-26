@@ -49,7 +49,7 @@ describe('DataView.transform(): subset', () => {
   it('subset: only specify columns', () => {
     dataView.transform({
       type: 'subset',
-      columns: [ 'year' ]
+      fields: [ 'year' ]
     });
     expect(dataView.rows.length).to.equal(populationChina.length);
     expect(dataView.getColumnNames().length).to.equal(1);
@@ -60,7 +60,7 @@ describe('DataView.transform(): subset', () => {
       type: 'subset',
       startRowIndex: 1,
       endRowIndex: 2,
-      columns: [ 'year' ]
+      fields: [ 'year' ]
     });
     expect(dataView.rows.length).to.equal(2);
     expect(dataView.getColumnNames().length).to.equal(1);
