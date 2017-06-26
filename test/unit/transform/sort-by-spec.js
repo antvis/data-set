@@ -1,4 +1,5 @@
 const {
+  reverse,
   sortBy
 } = require('lodash');
 const {
@@ -37,11 +38,20 @@ describe('DataView.transform(): sort-by', () => {
     expect(dataView.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
   });
 
-  it('sort-by', () => {
+  it('sort-by: specify columns', () => {
     dataView.transform({
       type: 'sort-by',
       columns: [ 'year' ]
     });
     expect(dataView.rows).to.eql(sortBy(populationChina, [ 'year' ]));
+  });
+
+  it('sort-by: specify order', () => {
+    dataView.transform({
+      type: 'sort-by',
+      columns: [ 'year' ],
+      order: 'DESC'
+    });
+    expect(dataView.rows).to.eql(reverse(sortBy(populationChina, [ 'year' ])));
   });
 });
