@@ -55,13 +55,11 @@ function transform(dataView, options = {}) {
         orderByKeys.push(map(orderBy, col => row[col]).join('-'));
       });
       const missingOrderByKeys = arrayDifference(referenceOrderByKeys, orderByKeys);
-
       some(missingOrderByKeys, (key, i) => {
         if (i >= (maxLength - group.length)) { // group length overflow
           return true;
         }
         const referenceRow = referenceRowByOrderByKey[key];
-        // create one row
         const row = {};
         each(groupBy, col => {
           row[col] = first[col];
