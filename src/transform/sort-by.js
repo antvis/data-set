@@ -1,7 +1,9 @@
 const indexOf = require('lodash/indexOf');
 const reverse = require('lodash/reverse');
 const sortBy = require('lodash/sortBy');
-const DataSet = require('../data-set');
+const {
+  registerTransform
+} = require('../data-set');
 
 /*
  * options: {
@@ -22,5 +24,5 @@ function transform(dataView, options = {}) {
     dataView.rows = reverse(dataView.rows);
   }
 }
-DataSet.registerTransform('sort-by', transform);
-DataSet.registerTransform('sortBy', transform);
+registerTransform('sort-by', transform);
+registerTransform('sortBy', transform);

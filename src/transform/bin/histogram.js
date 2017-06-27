@@ -3,7 +3,9 @@ const each = require('lodash/each');
 const {
   histogram
 } = require('d3-array');
-const DataSet = require('../../data-set');
+const {
+  registerTransform
+} = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
   as: 'x'
@@ -43,5 +45,5 @@ function transform(dataView, options) {
   });
 }
 
-DataSet.registerTransform('bin.histogram', transform);
-DataSet.registerTransform('bin.dot', transform);
+registerTransform('bin.histogram', transform);
+registerTransform('bin.dot', transform);

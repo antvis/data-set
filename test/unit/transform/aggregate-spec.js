@@ -10,11 +10,13 @@ const {
   expect
 } = require('chai');
 const {
-  VALID_AGGREGATES,
   DataSet,
   DataView,
   getTransform
 } = require('../../../index');
+const {
+  VALID_AGGREGATES
+} = require('../../../src/transform/aggregate');
 
 const data = [];
 for (let i = 1; i <= 10; i++) {

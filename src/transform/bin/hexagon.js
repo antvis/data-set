@@ -6,7 +6,9 @@ const map = require('lodash/map');
 const {
   hexbin
 } = require('d3-hexbin');
-const DataSet = require('../../data-set');
+const {
+  registerTransform
+} = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ]
@@ -93,6 +95,5 @@ function transform(dataView, options) {
   });
 }
 
-DataSet.registerTransform('bin.hexagon', transform);
-// alias
-DataSet.registerTransform('bin.hex', transform);
+registerTransform('bin.hexagon', transform);
+registerTransform('bin.hex', transform);

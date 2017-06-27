@@ -6,8 +6,10 @@ const keys = require('lodash/keys');
 const map = require('lodash/map');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
-const DataSet = require('../data-set');
 const partition = require('../util/partition');
+const {
+  registerTransform
+} = require('../data-set');
 
 const DEFAULT_OPTIONS = {
   as: [],
@@ -71,8 +73,9 @@ function transform(dataView, options) {
   dataView.rows = results;
 }
 
-DataSet.VALID_AGGREGATES = keys(aggregates);
+registerTransform('aggregate', transform);
+registerTransform('summary', transform);
 
-DataSet.registerTransform('aggregate', transform);
-// alias
-DataSet.registerTransform('summary', transform);
+module.exports = {
+  VALID_AGGREGATES: keys(aggregates)
+};

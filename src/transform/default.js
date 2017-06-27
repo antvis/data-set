@@ -1,6 +1,8 @@
-const DataSet = require('../data-set');
+const {
+  registerTransform
+} = require('../data-set');
 
-DataSet.registerTransform('default', dataView => {
+registerTransform('default', dataView => {
   return dataView;
 });
 
