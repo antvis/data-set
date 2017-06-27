@@ -13,6 +13,9 @@ require('./src/transform/reverse');
 require('./src/transform/sort');
 require('./src/transform/sort-by');
 require('./src/transform/subset');
+// imputation
+require('./src/transform/fill-rows');
+require('./src/transform/impute');
 // statistics
 require('./src/transform/aggregate');
 // binning
