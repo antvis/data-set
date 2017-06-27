@@ -1,4 +1,5 @@
 const {
+  reverse,
   sortBy
 } = require('lodash');
 const {
@@ -27,20 +28,30 @@ describe('DataView.transform(): sort-by', () => {
 
   it('api', () => {
     expect(getTransform('sort-by')).to.be.a('function');
+    expect(getTransform('sortBy')).to.be.a('function');
   });
 
   it('default', () => {
     dataView.transform({
       type: 'sort-by'
     });
-    expect(dataView.rows).to.be.deep.equal(populationChina.sort((a, b) => a.year - b.year));
+    expect(dataView.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
   });
 
-  it('sort-by', () => {
+  it('sort-by: specify columns', () => {
     dataView.transform({
       type: 'sort-by',
       columns: [ 'year' ]
     });
-    expect(dataView.rows).to.be.deep.equal(sortBy(populationChina, [ 'year' ]));
+    expect(dataView.rows).to.eql(sortBy(populationChina, [ 'year' ]));
+  });
+
+  it('sort-by: specify order', () => {
+    dataView.transform({
+      type: 'sort-by',
+      columns: [ 'year' ],
+      order: 'DESC'
+    });
+    expect(dataView.rows).to.eql(reverse(sortBy(populationChina, [ 'year' ])));
   });
 });

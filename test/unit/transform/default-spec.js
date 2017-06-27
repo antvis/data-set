@@ -25,7 +25,7 @@ describe('DataView.transform(): default', () => {
 
   it('default', () => {
     dataView.transform();
-    expect(dataView.rows).to.be.deep.equal(populationChina);
+    expect(dataView.rows).to.eql(populationChina);
   });
 });
 

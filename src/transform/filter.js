@@ -1,6 +1,13 @@
 const filter = require('lodash/filter');
 const DataSet = require('../data-set');
 
+/*
+ * options: {
+ *   type: 'filter',
+ *   callback,
+ * }
+ */
+
 function defaultCallback(row) {
   return !!row;
 }

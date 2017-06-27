@@ -56,8 +56,11 @@
     "silent": false
   },
   "dependencies": {
+    "d3-array": "^1.2.0",
     "d3-dsv": "^1.0.5",
+    "d3-hexbin": "^0.2.2",
     "lodash": "^4.17.4",
+    "simple-statistics": "^4.1.0",
     "wolfy87-eventemitter": "^5.1.0"
   }
 }

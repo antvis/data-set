@@ -29,14 +29,14 @@ describe('DataView.transform(): pick', () => {
     dataView.transform({
       type: 'pick'
     });
-    expect(dataView.rows).to.be.deep.equal(populationChina);
+    expect(dataView.rows).to.eql(populationChina);
   });
 
   it('pick', () => {
     dataView.transform({
       type: 'pick',
-      columns: [ 'year' ]
+      fields: [ 'year' ]
     });
-    expect(dataView.rows).to.be.deep.equal(map(populationChina, row => pick(row, [ 'year' ])));
+    expect(dataView.rows).to.eql(map(populationChina, row => pick(row, [ 'year' ])));
   });
 });

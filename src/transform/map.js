@@ -1,6 +1,13 @@
 const DataSet = require('../data-set');
 const map = require('lodash/map');
 
+/*
+ * options: {
+ *   type: 'map',
+ *   callback,
+ * }
+ */
+
 function defaultCallback(row) {
   return row;
 }

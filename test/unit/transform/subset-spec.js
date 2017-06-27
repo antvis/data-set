@@ -25,7 +25,7 @@ describe('DataView.transform(): subset', () => {
     dataView.transform({
       type: 'subset'
     });
-    expect(dataView.rows).to.be.deep.equal(populationChina);
+    expect(dataView.rows).to.eql(populationChina);
   });
 
   it('subset: only specify endRowIndex', () => {
@@ -33,8 +33,8 @@ describe('DataView.transform(): subset', () => {
       type: 'subset',
       endRowIndex: 2
     });
-    expect(dataView.rows.length).to.be.equal(3);
-    expect(dataView.getColumnNames().length).to.be.equal(2);
+    expect(dataView.rows.length).to.equal(3);
+    expect(dataView.getColumnNames().length).to.equal(2);
   });
 
   it('subset: only specify startRowIndex', () => {
@@ -42,17 +42,17 @@ describe('DataView.transform(): subset', () => {
       type: 'subset',
       startRowIndex: 1
     });
-    expect(dataView.rows.length).to.be.equal(populationChina.length - 1);
-    expect(dataView.getColumnNames().length).to.be.equal(2);
+    expect(dataView.rows.length).to.equal(populationChina.length - 1);
+    expect(dataView.getColumnNames().length).to.equal(2);
   });
 
   it('subset: only specify columns', () => {
     dataView.transform({
       type: 'subset',
-      columns: [ 'year' ]
+      fields: [ 'year' ]
     });
-    expect(dataView.rows.length).to.be.equal(populationChina.length);
-    expect(dataView.getColumnNames().length).to.be.equal(1);
+    expect(dataView.rows.length).to.equal(populationChina.length);
+    expect(dataView.getColumnNames().length).to.equal(1);
   });
 
   it('subset: specify all options', () => {
@@ -60,9 +60,9 @@ describe('DataView.transform(): subset', () => {
       type: 'subset',
       startRowIndex: 1,
       endRowIndex: 2,
-      columns: [ 'year' ]
+      fields: [ 'year' ]
     });
-    expect(dataView.rows.length).to.be.equal(2);
-    expect(dataView.getColumnNames().length).to.be.equal(1);
+    expect(dataView.rows.length).to.equal(2);
+    expect(dataView.getColumnNames().length).to.equal(1);
   });
 });
