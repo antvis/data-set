@@ -16,6 +16,7 @@ const {
   median,
   min,
   mode,
+  quantile,
   standardDeviation,
   sum,
   variance
@@ -147,6 +148,21 @@ class DataView extends EventEmitter {
   }
   mode(column) {
     return mode(this.getColumn(column));
+  }
+  quantile(column, p) {
+    return quantile(this.getColumn(column), p);
+  }
+  quantiles(column, pArr) {
+    const columnArr = this.getColumn(column);
+    return map(pArr, p => quantile(columnArr, p));
+  }
+  quantilesByFraction(column, fraction) {
+    const step = 1 / fraction;
+    const pArr = [];
+    for (let i = 0; i <= 1; i = i + step) {
+      pArr.push(i);
+    }
+    return this.quantiles(column, pArr);
   }
   standardDeviation(column) {
     return standardDeviation(this.getColumn(column));
