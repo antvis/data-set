@@ -23,6 +23,7 @@ require('./src/transform/aggregate');
 // binning
 require('./src/transform/bin/hexagon');
 require('./src/transform/bin/histogram');
+require('./src/transform/bin/quantile');
 require('./src/transform/bin/rectangle');
 
 module.exports = require('./src/data-set');
