@@ -24,7 +24,7 @@ describe('DataView.transform(): reverse', () => {
     expect(getTransform('reverse')).to.be.a('function');
   });
 
-  it('reverse', () => {
+  it('default', () => {
     dataView.transform({
       type: 'reverse'
     });

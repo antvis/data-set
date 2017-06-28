@@ -37,7 +37,7 @@ describe('DataView.transform(): proportion', () => {
     }).to.throw();
   });
 
-  it('proportion: default', () => {
+  it('default', () => {
     dataView.transform({
       type: 'proportion',
       field: 'x'
@@ -49,7 +49,7 @@ describe('DataView.transform(): proportion', () => {
     });
   });
 
-  it('proportion: as', () => {
+  it('as', () => {
     dataView.transform({
       type: 'proportion',
       field: 'x',

@@ -31,7 +31,7 @@ describe('DataView.transform(): percent', () => {
     }).to.throw();
   });
 
-  it('percent: default', () => {
+  it('default', () => {
     dataView.transform({
       type: 'percent',
       field: 'x'
@@ -43,7 +43,7 @@ describe('DataView.transform(): percent', () => {
     });
   });
 
-  it('proportion: as', () => {
+  it('as', () => {
     dataView.transform({
       type: 'percent',
       field: 'x',

@@ -44,7 +44,7 @@ describe('DataView.transform(): fold', () => {
     ]);
   });
 
-  it('fold: specify key and value', () => {
+  it('key and value', () => {
     dataView.transform({
       type: 'fold',
       key: 'type',
@@ -57,7 +57,7 @@ describe('DataView.transform(): fold', () => {
     ]);
   });
 
-  it('fold: specify empty fields', () => {
+  it('empty fields', () => {
     dataView.transform({
       type: 'fold',
       fields: []
@@ -65,7 +65,7 @@ describe('DataView.transform(): fold', () => {
     expect(dataView.rows.length).to.equal(8);
   });
 
-  it('fold: specify one field', () => {
+  it('one field', () => {
     const fields = [ 'a' ];
     dataView.transform({
       type: 'fold',
@@ -82,7 +82,7 @@ describe('DataView.transform(): fold', () => {
     }, pick(row1, difference(dataKeys, fields))));
   });
 
-  it('fold: specify multiple fields', () => {
+  it('multiple fields', () => {
     const fields = [ 'b', 'c' ];
     dataView.transform({
       type: 'fold',
@@ -107,7 +107,7 @@ describe('DataView.transform(): fold', () => {
     }, pick(row1, difference(dataKeys, fields))));
   });
 
-  it('fold: specify retains', () => {
+  it('retains', () => {
     const fields = [ 'a' ];
     const retains = [ 'b', 'c' ];
     dataView.transform({

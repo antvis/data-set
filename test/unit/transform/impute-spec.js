@@ -41,7 +41,7 @@ describe('DataView.transform(): impute', () => {
     }).to.throw();
   });
 
-  it('impute: value', () => {
+  it('value', () => {
     dataView.transform({
       field: 'y',
       groupBy: [ 'x' ],
@@ -55,7 +55,7 @@ describe('DataView.transform(): impute', () => {
     expect(rows[9].y).to.equal(10);
   });
 
-  it('impute: max', () => {
+  it('max', () => {
     dataView.transform({
       field: 'y',
       groupBy: [ 'x' ],
@@ -68,7 +68,7 @@ describe('DataView.transform(): impute', () => {
     expect(rows[9].y).to.equal(9);
   });
 
-  it('impute: not grouping', () => {
+  it('not grouping', () => {
     dataView.transform({
       field: 'y',
       method: 'max',
