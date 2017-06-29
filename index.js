@@ -1,7 +1,12 @@
+// extra APIs
+require('./src/api/geo.js');
+require('./src/api/statistics.js');
+
 // connectors
 require('./src/connector/default');
 require('./src/connector/dsv');
-require('./src/connector/geo');
+require('./src/connector/geojson');
+require('./src/connector/topojson');
 
 // transforms
 // static
@@ -23,5 +28,7 @@ require('./src/transform/aggregate');
 require('./src/transform/bin/hexagon');
 require('./src/transform/bin/histogram');
 require('./src/transform/bin/rectangle');
+// geo
+require('./src/transform/geo/projection');
 
 module.exports = require('./src/data-set');

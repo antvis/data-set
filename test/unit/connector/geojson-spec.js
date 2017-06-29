@@ -6,9 +6,9 @@ const {
   DataView,
   getConnector
 } = require('../../../index');
-const geoChina = require('../../fixtures/geo-china.json');
+const geoWorld = require('../../fixtures/countries-geo.json');
 
-describe('DataView.source(): geo', () => {
+describe('DataView.source(): geojson', () => {
   const dataSet = new DataSet();
   let dataView;
 
@@ -23,7 +23,7 @@ describe('DataView.source(): geo', () => {
   });
 
   it('geo', () => {
-    dataView.source(geoChina, {
+    dataView.source(geoWorld, {
       type: 'geo'
     });
   });

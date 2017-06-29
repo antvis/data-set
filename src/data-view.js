@@ -10,16 +10,6 @@ const isString = require('lodash/isString');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
-const {
-  max,
-  mean,
-  median,
-  min,
-  mode,
-  standardDeviation,
-  sum,
-  variance
-} = require('simple-statistics');
 
 class DataView extends EventEmitter {
   // constructor
@@ -32,6 +22,7 @@ class DataView extends EventEmitter {
     assign(me, {
       DataSet: dataSet.DataSet,
       dataSet,
+      dataType: 'table',
       isDataView: true,
       origin: [],
       rows: [],
@@ -52,7 +43,7 @@ class DataView extends EventEmitter {
         throw new TypeError('Invalid source');
       }
     } else {
-      me.origin = me.DataSet.getConnector(options.type)(source, options);
+      me.origin = me.DataSet.getConnector(options.type)(source, options, me);
     }
     me._source = {
       source,
@@ -127,42 +118,6 @@ class DataView extends EventEmitter {
   }
   execute() {
     // TODO
-  }
-
-  // statistics
-  max(column) {
-    return max(this.getColumn(column));
-  }
-  mean(column) {
-    return mean(this.getColumn(column));
-  }
-  average(column) { // alias
-    return this.mean(column);
-  }
-  median(column) {
-    return median(this.getColumn(column));
-  }
-  min(column) {
-    return min(this.getColumn(column));
-  }
-  mode(column) {
-    return mode(this.getColumn(column));
-  }
-  standardDeviation(column) {
-    return standardDeviation(this.getColumn(column));
-  }
-  sum(column) {
-    return sum(this.getColumn(column));
-  }
-  variance(column) {
-    return variance(this.getColumn(column));
-  }
-  range(column) {
-    const me = this;
-    return [ me.min(column), me.max(column) ];
-  }
-  extent(column) { // alias
-    return this.range(column);
   }
 }
 
