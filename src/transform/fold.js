@@ -1,18 +1,20 @@
-const isArray = require('lodash/isArray');
-const difference = require('lodash/difference');
 const assign = require('lodash/assign');
+const difference = require('lodash/difference');
 const each = require('lodash/each');
+const isArray = require('lodash/isArray');
 const pick = require('lodash/pick');
-const DataSet = require('../data-set');
+const {
+  registerTransform
+} = require('../data-set');
 
 const DEFAULT_OPTIONS = {
-  fields: [], // required
+  fields: [],
   key: 'key',
-  value: 'value',
-  retains: [] // optional
+  retains: [],
+  value: 'value'
 };
 
-DataSet.registerTransform('fold', (dataView, options) => {
+registerTransform('fold', (dataView, options) => {
   const columns = dataView.getColumnNames();
   options = assign({}, DEFAULT_OPTIONS, options);
   let fields = options.fields;

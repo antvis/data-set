@@ -28,6 +28,6 @@ describe('DataView.transform(): reverse', () => {
     dataView.transform({
       type: 'reverse'
     });
-    expect(dataView.rows).to.be.deep.equal(reverse(populationChina));
+    expect(dataView.rows).to.eql(reverse(populationChina));
   });
 });

@@ -1,7 +1,15 @@
 const reverse = require('lodash/reverse');
-const DataSet = require('../data-set');
+const {
+  registerTransform
+} = require('../data-set');
 
-DataSet.registerTransform('reverse', dataView => {
+/*
+ * options: {
+ *   type: 'reverse',
+ * }
+ */
+
+registerTransform('reverse', dataView => {
   dataView.rows = reverse(dataView.rows);
 });
 

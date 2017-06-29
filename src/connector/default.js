@@ -1,8 +1,10 @@
-const DataSet = require('../data-set');
 const cloneDeep = require('lodash/cloneDeep');
 const isString = require('lodash/isString');
+const {
+  registerConnector
+} = require('../data-set');
 
-DataSet.registerConnector('default', (dataView, dataSet) => {
+registerConnector('default', (dataView, dataSet) => {
   if (isString(dataView)) {
     dataView = dataSet.getView(dataView);
   }

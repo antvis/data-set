@@ -1,11 +1,11 @@
 const {
-  registerConnector
-} = require('../data-set');
-const {
   dsvFormat,
   csvParse,
   tsvParse
 } = require('d3-dsv');
+const {
+  registerConnector
+} = require('../data-set');
 
 registerConnector('dsv', (str, options = {}) => {
   const delimiter = options.delimiter || ',';

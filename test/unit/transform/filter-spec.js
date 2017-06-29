@@ -25,7 +25,7 @@ describe('DataView.transform(): filter', () => {
     dataView.transform({
       type: 'filter'
     });
-    expect(dataView.rows.length).to.be.equal(dataView.origin.length);
+    expect(dataView.rows.length).to.equal(dataView.origin.length);
   });
 
   it('filter with condition', () => {
@@ -35,7 +35,7 @@ describe('DataView.transform(): filter', () => {
         return row.year > '2002'; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows.length).to.be.equal(dataView.origin.length - 1);
+    expect(dataView.rows.length).to.equal(dataView.origin.length - 1);
   });
 
   it('filter with condition: empty', () => {
@@ -45,6 +45,6 @@ describe('DataView.transform(): filter', () => {
         return row.year > '2100'; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows.length).to.be.equal(0);
+    expect(dataView.rows.length).to.equal(0);
   });
 });

@@ -21,13 +21,13 @@ describe('DataView.source(): default', () => {
 
   it('DataView instance', () => {
     const testView2 = dataSet.createView('test2').source(testView);
-    expect(testView2.origin).to.deep.equal(testView.rows);
-    expect(testView2.origin === testView.rows).to.be.equal(false);
+    expect(testView2.origin).to.eql(testView.rows);
+    expect(testView2.origin === testView.rows).to.equal(false);
   });
 
   it('string', () => {
     const testView3 = dataSet.createView('test3').source('test');
-    expect(testView3.origin).to.deep.equal(testView.rows);
-    expect(testView3.origin === testView.rows).to.be.equal(false);
+    expect(testView3.origin).to.eql(testView.rows);
+    expect(testView3.origin === testView.rows).to.equal(false);
   });
 });

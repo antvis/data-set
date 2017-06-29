@@ -40,28 +40,28 @@ describe('DataView.source(): dsv', () => {
       type: 'dsv',
       delimiter: '|'
     });
-    expect(dataView.origin).to.deep.equal(data);
+    expect(dataView.origin).to.eql(data);
   });
 
   it('csv', () => {
     dataView.source(source.csv, {
       type: 'csv'
     });
-    expect(dataView.origin).to.deep.equal(data);
+    expect(dataView.origin).to.eql(data);
     dataView.source(source.csv2, {
       type: 'csv'
     });
-    expect(dataView.origin).to.deep.equal(data2);
+    expect(dataView.origin).to.eql(data2);
   });
 
   it('tsv', () => {
     dataView.source(source.tsv, {
       type: 'tsv'
     });
-    expect(dataView.origin).to.deep.equal(data);
+    expect(dataView.origin).to.eql(data);
     dataView.source(source.tsv2, {
       type: 'tsv'
     });
-    expect(dataView.origin).to.deep.equal(data2);
+    expect(dataView.origin).to.eql(data2);
   });
 });

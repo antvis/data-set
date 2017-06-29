@@ -28,7 +28,7 @@ describe('DataView.transform(): map', () => {
     dataView.transform({
       type: 'map'
     });
-    expect(dataView.rows.length).to.be.equal(populationChina.length);
+    expect(dataView.rows.length).to.equal(populationChina.length);
   });
 
   it('map', () => {
@@ -38,6 +38,6 @@ describe('DataView.transform(): map', () => {
         return row.year; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows).to.be.deep.equal(map(populationChina, row => row.year));
+    expect(dataView.rows).to.eql(map(populationChina, row => row.year));
   });
 });
