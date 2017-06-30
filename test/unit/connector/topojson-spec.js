@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getConnector
 } = require('../../../index');
 const topoUS = require('../../fixtures/us-topo.json');
@@ -13,7 +12,7 @@ describe('DataView.source(): topojson', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
+    dataView = dataSet.createView('test');
   });
 
   it('api', () => {
@@ -21,11 +20,18 @@ describe('DataView.source(): topojson', () => {
     expect(getConnector('TopoJSON')).to.be.a('function');
   });
 
-  it('topojson', () => {
-    dataView.source(topoUS, {
-      type: 'topojson',
-      object: 'states'
-    });
-    // console.log(dataView.rows)
+  it('default', () => {
+    expect(() => {
+      dataView.source(topoUS, {
+        type: 'topojson'
+      });
+    }).to.throw();
+
+    expect(() => {
+      dataView.source(topoUS, {
+        type: 'topojson',
+        object: 'states'
+      });
+    }).to.not.throw();
   });
 });

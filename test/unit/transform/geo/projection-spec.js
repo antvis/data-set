@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../../index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
@@ -13,10 +12,7 @@ describe('DataView.transform(): geo.projection', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(geoWorld, {
-      type: 'geo'
-    });
+    dataView = dataSet.createView('test');
   });
 
   it('api', () => {
@@ -24,10 +20,36 @@ describe('DataView.transform(): geo.projection', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    expect(() => {
+      dataView.transform({
+        type: 'geo.projection',
+        projection: 'geoAiry',
+        as: [ 'x', 'y', 'centroid' ]
+      });
+    }).to.throw();
+    expect(() => {
+      dataView.source(geoWorld, {
+        type: 'geo'
+      }).transform({
+        type: 'geo.projection',
+        as: [ 'x', 'y', 'centroid' ]
+      });
+    }).to.throw();
+  });
+
+  it('geo', () => {
+    dataView.source(geoWorld, {
+      type: 'geo'
+    }).transform({
       type: 'geo.projection',
-      projection: 'geoAzimuthalEqualArea',
-      as: [ '_x', '_y', 'centroid' ]
+      projection: 'geoAiry',
+      as: [ 'x', 'y', 'centroid' ]
     });
+    const features = dataView.rows;
+    const feature = features[0];
+    expect(feature.x).to.exist;
+    expect(feature.y).to.exist;
+    expect(feature.centroid).to.exist;
+    // console.log(feature)
   });
 });

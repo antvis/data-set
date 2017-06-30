@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../index');
 const populationChina = require('../../fixtures/population-china.json');
@@ -13,8 +12,7 @@ describe('DataView.transform(): default', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(populationChina);
+    dataView = dataSet.createView('test').source(populationChina);
   });
 
   it('api', () => {

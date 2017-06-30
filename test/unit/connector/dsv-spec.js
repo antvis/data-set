@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getConnector
 } = require('../../../index');
 const {
@@ -26,7 +25,7 @@ describe('DataView.source(): dsv', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
+    dataView = dataSet.createView('test');
   });
 
   it('api', () => {

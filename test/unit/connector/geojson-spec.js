@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getConnector
 } = require('../../../index');
 const geoWorld = require('../../fixtures/countries-geo.json');
@@ -13,7 +12,7 @@ describe('DataView.source(): geojson', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
+    dataView = dataSet.createView('test');
   });
 
   it('api', () => {
@@ -22,9 +21,11 @@ describe('DataView.source(): geojson', () => {
     expect(getConnector('GeoJSON')).to.be.a('function');
   });
 
-  it('geo', () => {
-    dataView.source(geoWorld, {
-      type: 'geo'
-    });
+  it('default', () => {
+    expect(() => {
+      dataView.source(geoWorld, {
+        type: 'geo'
+      });
+    }).to.not.throw();
   });
 });

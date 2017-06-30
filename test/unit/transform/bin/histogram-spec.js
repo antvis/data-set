@@ -1,12 +1,8 @@
 const {
-  clone
-} = require('lodash');
-const {
   expect
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../../index');
 
@@ -22,8 +18,7 @@ describe('DataView.transform(): bin.histogram', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(clone(data));
+    dataView = dataSet.createView('test').source(data);
   });
 
   it('api', () => {

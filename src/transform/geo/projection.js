@@ -37,13 +37,17 @@ function transform(dataView, options) {
   each(dataView.rows, row => {
     row[lonField] = [];
     row[latField] = [];
-    const pathData = row.pathData = geoPathGenerator(row);
-    const points = getPointAtLength(pathData);
-    each(points._path, point => {
-      row[lonField].push(point[1]);
-      row[latField].push(point[2]);
-    });
-    row[centroid] = geoPathGenerator.centroid(row);
+    row[centroid] = [];
+    const pathData = geoPathGenerator(row);
+    if (pathData) {
+      // TODO projection returns null
+      const points = getPointAtLength(pathData);
+      each(points._path, point => {
+        row[lonField].push(point[1]);
+        row[latField].push(point[2]);
+      });
+      row[centroid] = geoPathGenerator.centroid(row);
+    }
   });
 }
 

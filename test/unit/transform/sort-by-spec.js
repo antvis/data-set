@@ -7,7 +7,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../index');
 
@@ -22,8 +21,7 @@ describe('DataView.transform(): sort-by', () => {
       year: '2001',
       population: '1274530000'
     });
-    dataView = new DataView(dataSet);
-    dataView.source(populationChina);
+    dataView = dataSet.createView('test').source(populationChina);
   });
 
   it('api', () => {
