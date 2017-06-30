@@ -7,10 +7,14 @@ const {
   geoDistance,
   geoLength
 } = require('d3-geo');
+const {
+  geoProject
+} = require('d3-geo-projection');
 const DataView = require('../data-view');
+const getGeoProjection = require('../util/get-geo-projection');
 
 assign(DataView.prototype, {
-  // geo
+  // geo maintain
   geoArea(feature) {
     return geoArea(feature);
   },
@@ -21,7 +25,7 @@ assign(DataView.prototype, {
     const rows = this.rows;
     let centroid;
     some(rows, feature => {
-      if (feature.properties.name === name) {
+      if (feature.name === name) {
         centroid = geoCentroid(feature);
         return true;
       }
@@ -34,24 +38,37 @@ assign(DataView.prototype, {
   geoLength(feature) {
     return geoLength(feature);
   },
-  geoContains(feature, point) {
-    return geoContains(feature, point);
+  geoContains(feature, position/* [longitude, latitude] */) {
+    return geoContains(feature, position);
   },
-  geoFeatureByPoint(point) {
+  geoFeatureByPoint(position) {
     const rows = this.rows;
     let result;
     some(rows, feature => {
-      if (geoContains(feature, point)) {
+      if (geoContains(feature, position)) {
         result = feature;
         return true;
       }
     });
     return result;
   },
-  geoNameByPoint(point) {
-    const feature = this.geoFeatureByPoint(point);
+  geoNameByPoint(position) {
+    const feature = this.geoFeatureByPoint(position);
     if (feature) {
-      return feature.properties.name;
+      return feature.name;
     }
+  },
+  // projection
+  geoProject(feature, projection) {
+    projection = getGeoProjection(projection);
+    return geoProject(feature, projection);
+  },
+  geoProjectPoint(position, projection) {
+    projection = getGeoProjection(projection);
+    return projection(position);
+  },
+  geoProjectInvert(point, projection) {
+    projection = getGeoProjection(projection);
+    return projection.invert(point);
   }
 });

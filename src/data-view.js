@@ -33,12 +33,13 @@ class DataView extends EventEmitter {
   // connectors
   source(source, options) {
     const me = this;
+    // warning me.origin is protected
     if (!options) {
       if (source instanceof DataView || isString(source)) {
         me.origin = me.DataSet.getConnector('default')(source, me.dataSet);
       } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
-        me.origin = cloneDeep(source);
+        me.origin = source;
       } else {
         throw new TypeError('Invalid source');
       }
@@ -49,7 +50,9 @@ class DataView extends EventEmitter {
       source,
       options
     };
-    me.rows = cloneDeep(me.origin);
+    if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
+      me.rows = cloneDeep(me.origin);
+    }
     return me;
   }
 

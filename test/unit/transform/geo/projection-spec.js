@@ -26,9 +26,8 @@ describe('DataView.transform(): geo.projection', () => {
   it('default', () => {
     dataView.transform({
       type: 'geo.projection',
-      // projection: 'geoAzimuthalEqualArea',
-      as: [ 'name', 'latitude', 'longitude', 'centroid' ]
+      projection: 'geoAzimuthalEqualArea',
+      as: [ '_x', '_y', 'centroid' ]
     });
-    console.log(dataView);
   });
 });

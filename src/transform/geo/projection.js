@@ -1,56 +1,40 @@
 const assign = require('lodash/assign');
 const d3Geo = require('d3-geo');
-const d3GeoProjection = require('d3-geo-projection');
 const each = require('lodash/each');
 const isArray = require('lodash/isArray');
-const isFunction = require('lodash/isFunction');
-const isString = require('lodash/isString');
 const getPointAtLength = require('point-at-length');
 const {
   registerTransform
 } = require('../../data-set');
+const getGeoProjection = require('../../util/get-geo-projection');
 
 const {
   geoPath
 } = d3Geo;
-
 const DEFAULT_OPTIONS = {
   // projection: '', // default to null
-  as: [ 'name', 'latitude', 'longitude', 'centroid' ]
+  as: [ '_x', '_y', '_centroid' ]
 };
-
-function getProjection(projection) {
-  if (isFunction(projection)) {
-    return projection();
-  }
-  if (isString(projection)) {
-    if (d3Geo[projection]) {
-      return d3Geo[projection]();
-    }
-    if (d3GeoProjection[projection]) {
-      return d3GeoProjection[projection]();
-    }
-  }
-  return null;
-}
 
 function transform(dataView, options) {
   if (dataView.dataType !== 'geo') {
     throw new TypeError('This transform is for Geo data only');
   }
   options = assign({}, DEFAULT_OPTIONS, options);
-  const projection = getProjection(options.projection);
+  let projection = options.projection;
+  if (!projection) {
+    throw new TypeError('Invalid projection');
+  }
+  projection = getGeoProjection(projection);
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
-  if (!isArray(as) || as.length !== 4) {
+  if (!isArray(as) || as.length !== 3) {
     throw new TypeError('Invalid option: as');
   }
-  const nameField = as[0];
-  const lonField = as[1];
-  const latField = as[2];
-  const centroid = as[3];
+  const lonField = as[0];
+  const latField = as[1];
+  const centroid = as[2];
   each(dataView.rows, row => {
-    row[nameField] = row.properties.name;
     row[lonField] = [];
     row[latField] = [];
     const pathData = row.pathData = geoPathGenerator(row);

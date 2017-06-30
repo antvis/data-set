@@ -12,7 +12,7 @@ function TopoJSONConnector(data, options, dataView) {
     throw new TypeError('Invalid options');
   }
   const geoData = feature(data, data.objects[object]);
-  GeoJSONConnector(geoData, options, dataView);
+  return GeoJSONConnector(geoData, options, dataView);
 }
 
 registerConnector('topojson', TopoJSONConnector);
