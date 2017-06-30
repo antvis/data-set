@@ -18,19 +18,14 @@ assign(DataView.prototype, {
   geoArea(feature) {
     return geoArea(feature);
   },
+  geoAreaByName(name) {
+    return geoArea(this.geoFeatureByName(name));
+  },
   geoCentroid(feature) {
     return geoCentroid(feature);
   },
   geoCentroidByName(name) {
-    const rows = this.rows;
-    let centroid;
-    some(rows, feature => {
-      if (feature.name === name) {
-        centroid = geoCentroid(feature);
-        return true;
-      }
-    });
-    return centroid;
+    return geoCentroid(this.geoFeatureByName(name));
   },
   geoDistance(p1, p2) {
     return geoDistance(p1, p2);
@@ -38,10 +33,24 @@ assign(DataView.prototype, {
   geoLength(feature) {
     return geoLength(feature);
   },
+  geoLengthByName(name) {
+    return geoLength(this.geoFeatureByName(name));
+  },
   geoContains(feature, position/* [longitude, latitude] */) {
     return geoContains(feature, position);
   },
-  geoFeatureByPoint(position) {
+  geoFeatureByName(name) {
+    const rows = this.rows;
+    let result;
+    some(rows, feature => {
+      if (feature.name === name) {
+        result = feature;
+        return true;
+      }
+    });
+    return result;
+  },
+  geoFeatureByPosition(position) {
     const rows = this.rows;
     let result;
     some(rows, feature => {
@@ -52,8 +61,8 @@ assign(DataView.prototype, {
     });
     return result;
   },
-  geoNameByPoint(position) {
-    const feature = this.geoFeatureByPoint(position);
+  geoNameByPosition(position) {
+    const feature = this.geoFeatureByPosition(position);
     if (feature) {
       return feature.name;
     }
@@ -63,11 +72,15 @@ assign(DataView.prototype, {
     projection = getGeoProjection(projection);
     return geoProject(feature, projection);
   },
-  geoProjectPoint(position, projection) {
+  geoProjectByName(name, projection) {
+    projection = getGeoProjection(projection);
+    return geoProject(this.geoFeatureByName(name), projection);
+  },
+  geoProjectPosition(position, projection) {
     projection = getGeoProjection(projection);
     return projection(position);
   },
-  geoProjectInvert(point, projection) {
+  geoProjectInvert(point/* [x, y] */, projection) {
     projection = getGeoProjection(projection);
     return projection.invert(point);
   }
