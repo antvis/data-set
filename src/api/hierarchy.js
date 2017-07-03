@@ -4,25 +4,6 @@ const each = require('lodash/each');
 const DataView = require('../data-view');
 
 assign(DataView.prototype, {
-  ancestors(node) {
-    node = node || this.root;
-    return node.ancestors();
-  },
-  descendants(node) {
-    node = node || this.root;
-    return node.descendants();
-  },
-  leaves(node) {
-    node = node || this.root;
-    return node.leaves();
-  },
-  links(node) {
-    node = node || this.root;
-    return node.links();
-  },
-  eachNode(callback) {
-    this.root.each(callback);
-  },
   getAllNodes() {
     const nodes = [];
     this.root.each(node => {
