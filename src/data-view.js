@@ -29,7 +29,7 @@ class DataView extends EventEmitter {
       rows: [],
       transforms: []
     });
-    dataSet.on('change', () => {
+    dataSet.on('state-change', () => {
       me._reExecute();
     });
   }
