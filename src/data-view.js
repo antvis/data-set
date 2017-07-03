@@ -1,6 +1,7 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
 const cloneDeep = require('lodash/cloneDeep');
+const each = require('lodash/each');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
 const indexOf = require('lodash/indexOf');
@@ -27,6 +28,9 @@ class DataView extends EventEmitter {
       origin: [],
       rows: [],
       transforms: []
+    });
+    dataSet.on('change', () => {
+      me._reExecute();
     });
   }
 
@@ -59,10 +63,20 @@ class DataView extends EventEmitter {
   // transforms
   transform(options = {}) {
     const me = this;
-    const transform = me.DataSet.getTransform(options.type);
+    me._executeTransform(options);
     me.transforms.push(options);
-    transform(me, options);
     return me;
+  }
+  _executeTransform(options) {
+    const me = this;
+    const transform = me.DataSet.getTransform(options.type);
+    transform(me, options);
+  }
+  _reExecuteTransforms() {
+    const me = this;
+    each(me.transforms, options => {
+      me._executeTransform(options);
+    });
   }
 
   // rows
@@ -119,8 +133,11 @@ class DataView extends EventEmitter {
     }
     return JSON.stringify(me.rows);
   }
-  execute() {
-    // TODO
+  _reExecute() {
+    const me = this;
+    const { source, options } = me._source;
+    me.source(source, options);
+    me._reExecuteTransforms();
   }
 }
 
