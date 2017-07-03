@@ -17,7 +17,8 @@ function connector(data, options, dataView) {
   dataView.dataType = 'hierarchy';
   const children = options && options.children ? options.children : null;
 
-  dataView.root = hierarchy(data, children);
+  dataView.rows = dataView.root = hierarchy(data, children);
+  return data;
 }
 
 registerConnector('hierarchy', connector);

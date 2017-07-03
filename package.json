@@ -61,6 +61,7 @@
     "d3-geo": "^1.6.4",
     "d3-geo-projection": "^2.1.2",
     "d3-hexbin": "^0.2.2",
+    "d3-hierarchy": "^1.1.5",
     "lodash": "^4.17.4",
     "point-at-length": "^1.0.2",
     "simple-statistics": "^4.1.0",

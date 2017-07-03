@@ -71,4 +71,5 @@ function transform(dataView, options) {
   });
 }
 
-registerTransform('geo.projection', transform);
+registerTransform('hierarchy.treemap', transform);
+registerTransform('treemap', transform);
