@@ -10,6 +10,7 @@ const {
   median,
   min,
   mode,
+  quantile,
   standardDeviation,
   sum,
   variance
@@ -122,6 +123,9 @@ describe('DataView', () => {
     expect(dataView.average('year')).to.equal(mean(years));
     expect(dataView.median('year')).to.equal(median(years));
     expect(dataView.mode('year')).to.equal(mode(years));
+    expect(dataView.quantile('year', 0.5)).to.equal(quantile(years, 0.5));
+    expect(dataView.quantiles('year', [ 0, 0.1, 0.5 ])).to.eql(map([ 0, 0.1, 0.5 ], p => quantile(years, p)));
+    expect(dataView.quantilesByFraction('year', 4)).to.eql(map([ 0, 0.25, 0.5, 0.75, 1 ], p => quantile(years, p)));
     expect(dataView.standardDeviation('year')).to.equal(standardDeviation(years));
     expect(dataView.sum('year')).to.equal(sum(years));
     expect(dataView.variance('year')).to.equal(variance(years));

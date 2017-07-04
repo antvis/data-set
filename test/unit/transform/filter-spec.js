@@ -21,14 +21,14 @@ describe('DataView.transform(): filter', () => {
     expect(getTransform('filter')).to.be.a('function');
   });
 
-  it('default filter', () => {
+  it('default', () => {
     dataView.transform({
       type: 'filter'
     });
     expect(dataView.rows.length).to.equal(dataView.origin.length);
   });
 
-  it('filter with condition', () => {
+  it('callback', () => {
     dataView.transform({
       type: 'filter',
       callback(row) {
@@ -38,7 +38,7 @@ describe('DataView.transform(): filter', () => {
     expect(dataView.rows.length).to.equal(dataView.origin.length - 1);
   });
 
-  it('filter with condition: empty', () => {
+  it('empty condiction', () => {
     dataView.transform({
       type: 'filter',
       callback(row) {

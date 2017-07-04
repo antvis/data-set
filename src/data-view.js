@@ -16,10 +16,12 @@ const {
   median,
   min,
   mode,
+  quantile,
   standardDeviation,
   sum,
   variance
 } = require('simple-statistics');
+const pByFraction = require('./util/p-by-fraction');
 
 class DataView extends EventEmitter {
   // constructor
@@ -147,6 +149,16 @@ class DataView extends EventEmitter {
   }
   mode(column) {
     return mode(this.getColumn(column));
+  }
+  quantile(column, p) {
+    return quantile(this.getColumn(column), p);
+  }
+  quantiles(column, pArr) {
+    const columnArr = this.getColumn(column);
+    return map(pArr, p => quantile(columnArr, p));
+  }
+  quantilesByFraction(column, fraction) {
+    return this.quantiles(column, pByFraction(fraction));
   }
   standardDeviation(column) {
     return standardDeviation(this.getColumn(column));

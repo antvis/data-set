@@ -31,7 +31,7 @@ describe('DataView.transform(): map', () => {
     expect(dataView.rows.length).to.equal(populationChina.length);
   });
 
-  it('map', () => {
+  it('callback', () => {
     dataView.transform({
       type: 'map',
       callback(row) {

@@ -78,5 +78,6 @@ describe('DataView.transform(): aggregate', () => {
       return result;
     });
     expect(dataView.rows).to.eql(results);
+    // console.log(dataView.rows)
   });
 });
