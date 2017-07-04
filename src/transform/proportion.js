@@ -1,31 +1,42 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
+const forIn = require('lodash/forIn');
+const pick = require('lodash/pick');
+const union = require('lodash/union');
 const {
   registerTransform
 } = require('../data-set');
 const partition = require('../util/partition');
 
 const DEFAULT_OPTIONS = {
-  // field: '', // required
-  as: '..proportion'
+  // field: 'y', // required
+  // dimension: 'x', // required
+  groupBy: [], // optional
+  as: '_proportion'
 };
 
-registerTransform('proportion', (dataView, options = {}) => {
+function transform(dataView, options = {}) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = options.field;
+  const dimension = options.dimension;
+  const groupBy = options.groupBy;
   const as = options.as;
-  if (!field) {
+  if (!field || !dimension) {
     throw new TypeError('Invalid options');
   }
   const rows = dataView.rows;
-  const groups = partition(rows, [ field ]);
   const result = [];
-  each(groups, group => {
-    const first = group[0];
-    const row = {};
-    row[field] = first[field];
-    row[as] = group.length / rows.length;
-    result.push(row);
+  const groups = partition(rows, groupBy);
+  forIn(groups, group => {
+    const totalCount = group.length;
+    const innerGroups = partition(group, [ dimension ]);
+    forIn(innerGroups, innerGroup => {
+      const innerCount = innerGroup.length;
+      const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
+      resultRow[as] = innerCount / totalCount;
+      result.push(resultRow);
+    });
   });
   dataView.rows = result;
-});
+}
+
+registerTransform('proportion', transform);

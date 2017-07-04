@@ -10,10 +10,14 @@ const {
 describe('DataView.transform(): percent', () => {
   const dataSet = new DataSet();
   const data = [
-    { x: 1 },
-    { x: 2 },
-    { x: 3 },
-    { x: 4 }
+    { x: 1, y: 1, z: 1 },
+    { x: 2, y: 1, z: 2 },
+    { x: 3, y: 1, z: 3 },
+    { x: 4, y: 1, z: 4 },
+    { x: 1, y: 2, z: 5 },
+    { x: 2, y: 2, z: 6 },
+    { x: 3, y: 2, z: 7 },
+    { x: 4, y: 2, z: 8 }
   ];
   let dataView;
 
@@ -34,25 +38,43 @@ describe('DataView.transform(): percent', () => {
   it('default', () => {
     dataView.transform({
       type: 'percent',
-      field: 'x'
+      field: 'z',
+      dimension: 'y'
     });
-    expect(dataView.rows.length).to.equal(4);
+    expect(dataView.rows.length).to.equal(2);
     expect(dataView.rows[0]).to.eql({
-      x: 1,
-      '..percent': 0.1
+      y: 1,
+      _percent: 10 / 36
     });
   });
 
   it('as', () => {
     dataView.transform({
       type: 'percent',
-      field: 'x',
-      as: 'z'
+      field: 'z',
+      dimension: 'y',
+      as: '_z'
     });
-    expect(dataView.rows.length).to.equal(4);
+    expect(dataView.rows.length).to.equal(2);
+    expect(dataView.rows[0]).to.eql({
+      y: 1,
+      _z: 10 / 36
+    });
+  });
+
+  it('groupBy', () => {
+    dataView.transform({
+      type: 'percent',
+      field: 'z',
+      dimension: 'y',
+      groupBy: [ 'x' ],
+      as: '_z'
+    });
+    expect(dataView.rows.length).to.equal(8);
     expect(dataView.rows[0]).to.eql({
       x: 1,
-      z: 0.1
+      y: 1,
+      _z: 1 / 6
     });
   });
 });
