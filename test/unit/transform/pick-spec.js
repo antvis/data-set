@@ -30,7 +30,7 @@ describe('DataView.transform(): pick', () => {
     expect(dataView.rows).to.eql(populationChina);
   });
 
-  it('pick', () => {
+  it('fields', () => {
     dataView.transform({
       type: 'pick',
       fields: [ 'year' ]
