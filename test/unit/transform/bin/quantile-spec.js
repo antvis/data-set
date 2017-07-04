@@ -1,7 +1,5 @@
 const {
-  clone,
-  groupBy,
-  keys
+  clone
 } = require('lodash');
 const {
   expect
@@ -12,13 +10,16 @@ const {
   getTransform
 } = require('../../../../index');
 
-const data = [];
-for (let i = 0; i <= 100; i++) {
-  data.push({
-    x: i,
-    y: i * 10
-  });
-}
+const data = [
+  { x: 1, y: 1, z: 1 },
+  { x: 2, y: 1, z: 2 },
+  { x: 3, y: 1, z: 3 },
+  { x: 4, y: 1, z: 4 },
+  { x: 1, y: 2, z: 5 },
+  { x: 2, y: 2, z: 6 },
+  { x: 3, y: 2, z: 7 },
+  { x: 4, y: 2, z: 8 }
+];
 
 describe('DataView.transform(): bin.quantile', () => {
   const dataSet = new DataSet();
@@ -41,24 +42,31 @@ describe('DataView.transform(): bin.quantile', () => {
   it('fields', () => {
     dataView.transform({
       type: 'bin.quantile',
-      fields: [ 'x', 'y' ]
+      field: 'z'
     });
     const rows = dataView.rows;
-    expect(rows[0]._x).to.equal(5);
-    expect(rows[0]._y.length).to.equal(5);
+    expect(rows[0]._bin.length).to.equal(5);
   });
 
   it('as', () => {
     dataView.transform({
       type: 'bin.quantile',
-      fields: [ 'x', 'y' ],
-      as: [ 'a', 'b' ]
+      field: 'z',
+      as: '_z'
     });
     const rows = dataView.rows;
-    expect(rows[0].a).to.equal(5);
-    expect(rows[0].b.length).to.equal(5);
-    expect(keys(groupBy(rows, row => {
-      return row.a;
-    })).length).to.equal(10);
+    expect(rows[0]._z.length).to.equal(5);
+  });
+
+  it('grouBy', () => {
+    dataView.transform({
+      type: 'bin.quantile',
+      field: 'z',
+      groupBy: [ 'x' ],
+      as: '_z'
+    });
+    const rows = dataView.rows;
+    expect(rows.length).to.equal(4);
+    expect(rows[0]._z.length).to.equal(5);
   });
 });
