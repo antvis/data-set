@@ -1,15 +1,18 @@
 const assign = require('lodash/assign');
+const map = require('lodash/map');
 const {
   max,
   mean,
   median,
   min,
   mode,
+  quantile,
   standardDeviation,
   sum,
   variance
 } = require('simple-statistics');
 const DataView = require('../data-view');
+const pByFraction = require('../util/p-by-fraction');
 
 assign(DataView.prototype, {
   // statistics
@@ -30,6 +33,16 @@ assign(DataView.prototype, {
   },
   mode(column) {
     return mode(this.getColumn(column));
+  },
+  quantile(column, p) {
+    return quantile(this.getColumn(column), p);
+  },
+  quantiles(column, pArr) {
+    const columnArr = this.getColumn(column);
+    return map(pArr, p => quantile(columnArr, p));
+  },
+  quantilesByFraction(column, fraction) {
+    return this.quantiles(column, pByFraction(fraction));
   },
   standardDeviation(column) {
     return standardDeviation(this.getColumn(column));

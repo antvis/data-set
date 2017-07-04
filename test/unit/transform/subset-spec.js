@@ -26,7 +26,7 @@ describe('DataView.transform(): subset', () => {
     expect(dataView.rows).to.eql(populationChina);
   });
 
-  it('subset: only specify endRowIndex', () => {
+  it('only specify endRowIndex', () => {
     dataView.transform({
       type: 'subset',
       endRowIndex: 2
@@ -35,7 +35,7 @@ describe('DataView.transform(): subset', () => {
     expect(dataView.getColumnNames().length).to.equal(2);
   });
 
-  it('subset: only specify startRowIndex', () => {
+  it('only specify startRowIndex', () => {
     dataView.transform({
       type: 'subset',
       startRowIndex: 1
@@ -44,7 +44,7 @@ describe('DataView.transform(): subset', () => {
     expect(dataView.getColumnNames().length).to.equal(2);
   });
 
-  it('subset: only specify columns', () => {
+  it('only specify columns', () => {
     dataView.transform({
       type: 'subset',
       fields: [ 'year' ]
@@ -53,7 +53,7 @@ describe('DataView.transform(): subset', () => {
     expect(dataView.getColumnNames().length).to.equal(1);
   });
 
-  it('subset: specify all options', () => {
+  it('specify all options', () => {
     dataView.transform({
       type: 'subset',
       startRowIndex: 1,
