@@ -1,9 +1,11 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
+const clone = require('lodash/clone');
 const cloneDeep = require('lodash/cloneDeep');
 const each = require('lodash/each');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
+const forIn = require('lodash/forIn');
 const indexOf = require('lodash/indexOf');
 const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
@@ -34,10 +36,34 @@ class DataView extends EventEmitter {
     });
   }
 
+  _parseStateExpression(expr) {
+    const dataSet = this.dataSet;
+    const matched = /^\$state\.(\w+)/.exec(expr);
+    if (matched) {
+      return dataSet.state[matched[1]];
+    }
+    return expr;
+  }
+
+  _preparseOptions(options) {
+    const me = this;
+    const optionsCloned = clone(options);
+    forIn(optionsCloned, (value, key) => {
+      if (isString(value) && /^\$state\./.test(value)) {
+        optionsCloned[key] = me._parseStateExpression(value);
+      }
+    });
+    return optionsCloned;
+  }
+
   // connectors
   source(source, options) {
     const me = this;
     // warning me.origin is protected
+    me._source = {
+      source,
+      options
+    };
     if (!options) {
       if (source instanceof DataView || isString(source)) {
         me.origin = me.DataSet.getConnector('default')(source, me.dataSet);
@@ -48,12 +74,9 @@ class DataView extends EventEmitter {
         throw new TypeError('Invalid source');
       }
     } else {
+      options = me._preparseOptions(options);
       me.origin = me.DataSet.getConnector(options.type)(source, options, me);
     }
-    me._source = {
-      source,
-      options
-    };
     if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
       me.rows = cloneDeep(me.origin);
     }
@@ -63,12 +86,13 @@ class DataView extends EventEmitter {
   // transforms
   transform(options = {}) {
     const me = this;
-    me._executeTransform(options);
     me.transforms.push(options);
+    me._executeTransform(options);
     return me;
   }
   _executeTransform(options) {
     const me = this;
+    options = me._preparseOptions(options);
     const transform = me.DataSet.getTransform(options.type);
     transform(me, options);
   }
@@ -135,7 +159,10 @@ class DataView extends EventEmitter {
   }
   _reExecute() {
     const me = this;
-    const { source, options } = me._source;
+    const {
+      source,
+      options
+    } = me._source;
     me.source(source, options);
     me._reExecuteTransforms();
   }
