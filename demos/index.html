@@ -9,7 +9,6 @@
   <style>
     #graph {
       width: 100%;
-      height: 400px;
     }
   </style>
 </head>
@@ -29,6 +28,7 @@
       'treemapSquarify',
       'treemapResquarify'
     ]
+    const height = window.innerHeight - 20
 
     const dataSet = new DataSet()
     dataSet.state.treemapTile = tiles[0]
@@ -44,7 +44,7 @@
     const chart = new G2.Chart({
       id: 'graph',
       forceFit: true,
-      height: 400,
+      height,
       plotCfg: {
         margin: 0
       }
