@@ -32,6 +32,8 @@ require('./src/transform/bin/histogram');
 require('./src/transform/bin/quantile');
 require('./src/transform/bin/rectangle');
 // geo
+require('./src/transform/geo/centroid');
 require('./src/transform/geo/projection');
+require('./src/transform/geo/region');
 
 module.exports = require('./src/data-set');
