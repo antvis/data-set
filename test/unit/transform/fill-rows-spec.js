@@ -3,7 +3,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../index');
 
@@ -22,8 +21,7 @@ describe('DataView.transform(): fill-rows', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(data);
+    dataView = dataSet.createView('test').source(data);
   });
 
   it('api', () => {

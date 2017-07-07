@@ -8,12 +8,11 @@ const {
 
 describe('DataView.source(): default', () => {
   const dataSet = new DataSet();
-  const testView = dataSet.createView('test')
-    .source([
-      {
-        foo: 'bar'
-      }
-    ]);
+  const testView = dataSet.createView('test').source([
+    {
+      foo: 'bar'
+    }
+  ]);
 
   it('api', () => {
     expect(getConnector('default')).to.be.a('function');

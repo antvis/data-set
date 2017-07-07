@@ -10,18 +10,6 @@ const isString = require('lodash/isString');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
-const {
-  max,
-  mean,
-  median,
-  min,
-  mode,
-  quantile,
-  standardDeviation,
-  sum,
-  variance
-} = require('simple-statistics');
-const pByFraction = require('./util/p-by-fraction');
 
 class DataView extends EventEmitter {
   // constructor
@@ -34,6 +22,7 @@ class DataView extends EventEmitter {
     assign(me, {
       DataSet: dataSet.DataSet,
       dataSet,
+      dataType: 'table',
       isDataView: true,
       origin: [],
       rows: [],
@@ -44,23 +33,26 @@ class DataView extends EventEmitter {
   // connectors
   source(source, options) {
     const me = this;
+    // warning me.origin is protected
     if (!options) {
       if (source instanceof DataView || isString(source)) {
         me.origin = me.DataSet.getConnector('default')(source, me.dataSet);
       } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
-        me.origin = cloneDeep(source);
+        me.origin = source;
       } else {
         throw new TypeError('Invalid source');
       }
     } else {
-      me.origin = me.DataSet.getConnector(options.type)(source, options);
+      me.origin = me.DataSet.getConnector(options.type)(source, options, me);
     }
     me._source = {
       source,
       options
     };
-    me.rows = cloneDeep(me.origin);
+    if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
+      me.rows = cloneDeep(me.origin);
+    }
     return me;
   }
 
@@ -129,52 +121,6 @@ class DataView extends EventEmitter {
   }
   execute() {
     // TODO
-  }
-
-  // statistics
-  max(column) {
-    return max(this.getColumn(column));
-  }
-  mean(column) {
-    return mean(this.getColumn(column));
-  }
-  average(column) { // alias
-    return this.mean(column);
-  }
-  median(column) {
-    return median(this.getColumn(column));
-  }
-  min(column) {
-    return min(this.getColumn(column));
-  }
-  mode(column) {
-    return mode(this.getColumn(column));
-  }
-  quantile(column, p) {
-    return quantile(this.getColumn(column), p);
-  }
-  quantiles(column, pArr) {
-    const columnArr = this.getColumn(column);
-    return map(pArr, p => quantile(columnArr, p));
-  }
-  quantilesByFraction(column, fraction) {
-    return this.quantiles(column, pByFraction(fraction));
-  }
-  standardDeviation(column) {
-    return standardDeviation(this.getColumn(column));
-  }
-  sum(column) {
-    return sum(this.getColumn(column));
-  }
-  variance(column) {
-    return variance(this.getColumn(column));
-  }
-  range(column) {
-    const me = this;
-    return [ me.min(column), me.max(column) ];
-  }
-  extent(column) { // alias
-    return this.range(column);
   }
 }
 

@@ -11,7 +11,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../index');
 const {
@@ -33,8 +32,7 @@ describe('DataView.transform(): aggregate', () => {
   let dataView;
 
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(data);
+    dataView = dataSet.createView('test').source(data);
   });
 
   it('api', () => {
