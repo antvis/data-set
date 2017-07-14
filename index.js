@@ -37,6 +37,8 @@ require('./src/transform/bin/rectangle');
 require('./src/transform/geo/centroid');
 require('./src/transform/geo/projection');
 require('./src/transform/geo/region');
+// diagram
+require('./src/transform/diagram/voronoi');
 
 // hierarchy
 require('./src/transform/hierarchy/treemap');
