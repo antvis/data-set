@@ -7,9 +7,10 @@ class DataSet extends EventEmitter {
     super();
     const me = this;
     assign(me, {
+      _onChangeTimer: null,
       DataSet,
       isDataSet: true,
-      states: {},
+      state: {},
       views: {}
     });
   }
@@ -31,8 +32,14 @@ class DataSet extends EventEmitter {
 
   setState(name, value) {
     const me = this;
-    me.states[name] = value;
-    me.trigger('change');
+    me.state[name] = value;
+    if (me._onChangeTimer) {
+      clearTimeout(me._onChangeTimer);
+      me._onChangeTimer = null;
+    }
+    me._onChangeTimer = setTimeout(() => {
+      me.trigger('statechange');
+    }, 16); // execute after one frame
   }
 }
 

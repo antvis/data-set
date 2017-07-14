@@ -1,11 +1,13 @@
 // extra APIs
 require('./src/api/geo.js');
+require('./src/api/hierarchy.js');
 require('./src/api/statistics.js');
 
 // connectors
 require('./src/connector/default');
 require('./src/connector/dsv');
 require('./src/connector/geojson');
+require('./src/connector/hierarchy');
 require('./src/connector/topojson');
 
 // transforms
@@ -37,5 +39,8 @@ require('./src/transform/geo/projection');
 require('./src/transform/geo/region');
 // diagram
 require('./src/transform/diagram/voronoi');
+
+// hierarchy
+require('./src/transform/hierarchy/treemap');
 
 module.exports = require('./src/data-set');

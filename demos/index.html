@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    #graph {
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="graph"></div>
+  <script src="https://a.alipayobjects.com/g/datavis/g2/2.3.5/g2.js"></script>
+  <script>
+    const _ = require('lodash')
+    const DataSet = require('../index')
+    const data = require('../test/fixtures/flare.json')
+    const tiles = [
+      'treemapBinary',
+      'treemapDice',
+      'treemapSlice',
+      'treemapSliceDice',
+      'treemapSquarify',
+      'treemapResquarify'
+    ]
+    const height = window.innerHeight - 20
+
+    const dataSet = new DataSet()
+    dataSet.state.treemapTile = tiles[0]
+    const flare = dataSet.createView('flare').source(data, {
+      type: 'hierarchy'
+    })
+    flare.transform({
+      type: 'hierarchy.treemap',
+      tile: '$state.treemapTile',
+      as: ['x', 'y']
+    })
+
+    const chart = new G2.Chart({
+      id: 'graph',
+      forceFit: true,
+      height,
+      plotCfg: {
+        margin: 0
+      }
+    })
+
+    let count = 0
+    const timer = setInterval(() => {
+      const index = count % tiles.length
+      dataSet.setState('treemapTile', tiles[index])
+      count++
+      // if (count > 6) {
+      //   clearInterval(timer)
+      // }
+    }, 1000)
+
+    dataSet.on('statechange', () => {
+      chart.clear()
+      chart.source(_.map(flare.getAllNodes(), node => {
+        node.name = node.data.name
+        return node
+      }))
+      chart.axis(false)
+      chart.legend(false)
+      chart.polygon().position('x*y').color('name')
+      chart.render()
+    })
+  </script>
+</body>
+
+</html>
