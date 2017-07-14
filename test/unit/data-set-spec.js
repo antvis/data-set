@@ -27,7 +27,7 @@ describe('DataSet', () => {
       hey: 'jude'
     };
     let count = 0;
-    dataSet.on('state-change', () => {
+    dataSet.on('statechange', () => {
       count++;
     });
     forIn(newState, (value, key) => {

@@ -31,7 +31,7 @@ class DataView extends EventEmitter {
       rows: [],
       transforms: []
     });
-    dataSet.on('state-change', () => {
+    dataSet.on('statechange', () => {
       me._reExecute();
     });
   }
@@ -165,6 +165,7 @@ class DataView extends EventEmitter {
     } = me._source;
     me.source(source, options);
     me._reExecuteTransforms();
+    me.trigger('change');
   }
 }
 

@@ -60,7 +60,7 @@
       // }
     }, 1000)
 
-    dataSet.on('state-change', () => {
+    dataSet.on('statechange', () => {
       chart.clear()
       chart.source(_.map(flare.getAllNodes(), node => {
         node.name = node.data.name

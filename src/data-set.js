@@ -35,9 +35,10 @@ class DataSet extends EventEmitter {
     me.state[name] = value;
     if (me._onChangeTimer) {
       clearTimeout(me._onChangeTimer);
+      me._onChangeTimer = null;
     }
     me._onChangeTimer = setTimeout(() => {
-      me.trigger('state-change');
+      me.trigger('statechange');
     }, 16); // execute after one frame
   }
 }
