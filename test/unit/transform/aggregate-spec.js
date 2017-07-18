@@ -62,8 +62,10 @@ describe('DataView.transform(): aggregate', () => {
     forIn(groups, (group, i) => {
       partitions[i] = map(group, row => row.a);
     });
-    const results = map(partitions, part => {
-      const result = {};
+    const results = map(partitions, (part, i) => {
+      const result = {
+        b: groups[i][0].b
+      };
       each(VALID_AGGREGATES, operation => {
         if (simpleStatistics[operation]) {
           result[operation] = simpleStatistics[operation](part);
@@ -76,6 +78,5 @@ describe('DataView.transform(): aggregate', () => {
       return result;
     });
     expect(dataView.rows).to.eql(results);
-    // console.log(dataView.rows)
   });
 });
