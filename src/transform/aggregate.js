@@ -4,6 +4,7 @@ const forIn = require('lodash/forIn');
 const isArray = require('lodash/isArray');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
+const pick = require('lodash/pick');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
@@ -62,7 +63,7 @@ function transform(dataView, options) {
   const groups = partition(rows, dims);
   const results = [];
   forIn(groups, group => {
-    const result = {};
+    const result = pick(group[0], dims);
     each(operations, (operation, i) => {
       const outputName = outputNames[i];
       const field = fields[i];
