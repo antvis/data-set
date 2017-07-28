@@ -6,7 +6,6 @@ const {
 } = require('chai');
 const {
   DataSet,
-  DataView,
   getTransform
 } = require('../../../../index');
 
@@ -22,50 +21,48 @@ const data = [
 ];
 
 describe('DataView.transform(): bin.quantile', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = new DataView(dataSet);
-    dataView.source(clone(data));
+    dv = ds.createView().source(clone(data));
   });
 
   it('api', () => {
     expect(getTransform('bin.quantile')).to.be.a('function');
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'bin.quantile'
       });
     }).to.throw();
   });
 
   it('fields', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.quantile',
       field: 'z'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows[0]._bin.length).to.equal(5);
   });
 
   it('as', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.quantile',
       field: 'z',
       as: '_z'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows[0]._z.length).to.equal(5);
   });
 
   it('grouBy', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.quantile',
       field: 'z',
       groupBy: [ 'x' ],
       as: '_z'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows.length).to.equal(4);
     expect(rows[0]._z.length).to.equal(5);
   });

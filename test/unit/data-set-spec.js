@@ -1,5 +1,6 @@
 const {
-  forIn
+  forIn,
+  keys
 } = require('lodash');
 const {
   expect
@@ -12,29 +13,51 @@ describe('DataSet', () => {
     expect(new DataSet()).to.be.an('object');
   });
 
+  it('init with state', () => {
+    // init with state
+    const ds0 = new DataSet();
+    expect(ds0.state).to.eql({});
+
+    const ds1 = new DataSet({
+      state: {
+        foo: 'bar'
+      }
+    });
+    expect(ds1.state.foo).to.equal('bar');
+  });
+
+  it('createView(name)', () => {
+    const ds = new DataSet();
+    ds.createView('test');
+    expect(keys(ds.views).length).to.equal(1);
+    ds.createView();
+    expect(keys(ds.views).length).to.equal(2);
+    expect(() => { ds.createView('test'); }).to.throw();
+  });
+
   it('setView(name, view)', () => {
-    const dataSet = new DataSet();
-    const dataView = dataSet.createView('test1');
-    dataSet.setView('test2', dataView);
-    expect(dataSet.getView('test2')).to.equal(dataSet.getView('test1'));
+    const ds = new DataSet();
+    const dv = ds.createView('test1');
+    ds.setView('test2', dv);
+    expect(ds.getView('test2')).to.equal(ds.getView('test1'));
   });
 
   it('setState(name, value)', () => {
-    const dataSet = new DataSet();
+    const ds = new DataSet();
     const newState = {
       foo: 'bar',
       hello: 'world',
       hey: 'jude'
     };
     let count = 0;
-    dataSet.on('statechange', () => {
+    ds.on('statechange', () => {
       count++;
     });
     forIn(newState, (value, key) => {
-      dataSet.setState(key, value);
+      ds.setState(key, value);
     });
-    expect(dataSet.state).to.not.equal(newState);
-    expect(dataSet.state).to.eql(newState);
+    expect(ds.state).to.not.equal(newState);
+    expect(ds.state).to.eql(newState);
     expect(count).to.equal(0);
     setTimeout(() => {
       expect(count).to.equal(1);

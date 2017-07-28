@@ -21,11 +21,10 @@ const source = {
 };
 
 describe('DataView.source(): dsv', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -35,32 +34,32 @@ describe('DataView.source(): dsv', () => {
   });
 
   it('dsv', () => {
-    dataView.source(source.psv, {
+    dv.source(source.psv, {
       type: 'dsv',
       delimiter: '|'
     });
-    expect(dataView.origin).to.eql(data);
+    expect(dv.origin).to.eql(data);
   });
 
   it('csv', () => {
-    dataView.source(source.csv, {
+    dv.source(source.csv, {
       type: 'csv'
     });
-    expect(dataView.origin).to.eql(data);
-    dataView.source(source.csv2, {
+    expect(dv.origin).to.eql(data);
+    dv.source(source.csv2, {
       type: 'csv'
     });
-    expect(dataView.origin).to.eql(data2);
+    expect(dv.origin).to.eql(data2);
   });
 
   it('tsv', () => {
-    dataView.source(source.tsv, {
+    dv.source(source.tsv, {
       type: 'tsv'
     });
-    expect(dataView.origin).to.eql(data);
-    dataView.source(source.tsv2, {
+    expect(dv.origin).to.eql(data);
+    dv.source(source.tsv2, {
       type: 'tsv'
     });
-    expect(dataView.origin).to.eql(data2);
+    expect(dv.origin).to.eql(data2);
   });
 });

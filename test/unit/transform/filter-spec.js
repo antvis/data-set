@@ -8,11 +8,10 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): filter', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -20,29 +19,29 @@ describe('DataView.transform(): filter', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'filter'
     });
-    expect(dataView.rows.length).to.equal(dataView.origin.length);
+    expect(dv.rows.length).to.equal(dv.origin.length);
   });
 
   it('callback', () => {
-    dataView.transform({
+    dv.transform({
       type: 'filter',
       callback(row) {
         return row.year > '2002'; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows.length).to.equal(dataView.origin.length - 1);
+    expect(dv.rows.length).to.equal(dv.origin.length - 1);
   });
 
   it('empty condiction', () => {
-    dataView.transform({
+    dv.transform({
       type: 'filter',
       callback(row) {
         return row.year > '2100'; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows.length).to.equal(0);
+    expect(dv.rows.length).to.equal(0);
   });
 });

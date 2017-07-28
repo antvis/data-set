@@ -11,8 +11,8 @@ const {
 } = require('../../../index');
 
 describe('DataView.transform(): sort-by', () => {
-  const dataSet = new DataSet();
-  let dataView;
+  const ds = new DataSet();
+  let dv;
   let populationChina;
 
   beforeEach(() => {
@@ -21,7 +21,7 @@ describe('DataView.transform(): sort-by', () => {
       year: '2001',
       population: '1274530000'
     });
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -30,26 +30,26 @@ describe('DataView.transform(): sort-by', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'sort-by'
     });
-    expect(dataView.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
+    expect(dv.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
   });
 
   it('specify columns', () => {
-    dataView.transform({
+    dv.transform({
       type: 'sort-by',
       columns: [ 'year' ]
     });
-    expect(dataView.rows).to.eql(sortBy(populationChina, [ 'year' ]));
+    expect(dv.rows).to.eql(sortBy(populationChina, [ 'year' ]));
   });
 
   it('specify order', () => {
-    dataView.transform({
+    dv.transform({
       type: 'sort-by',
       columns: [ 'year' ],
       order: 'DESC'
     });
-    expect(dataView.rows).to.eql(reverse(sortBy(populationChina, [ 'year' ])));
+    expect(dv.rows).to.eql(reverse(sortBy(populationChina, [ 'year' ])));
   });
 });

@@ -8,11 +8,10 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): default', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -22,8 +21,8 @@ describe('DataView.transform(): default', () => {
   });
 
   it('default', () => {
-    dataView.transform();
-    expect(dataView.rows).to.eql(populationChina);
+    dv.transform();
+    expect(dv.rows).to.eql(populationChina);
   });
 });
 

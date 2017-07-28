@@ -18,51 +18,49 @@ const mockRow = {
 const columnNames = keys(populationChina[0]);
 
 describe('DataView', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = new DataSet().createView().source(populationChina);
   });
 
   // constructor
   it('Constructor', () => {
     expect(DataView).to.be.a('function');
-    expect(dataView).to.be.an('object');
+    expect(dv).to.be.an('object');
     expect(() => { new DataView(); }).to.throw();
   });
 
   // rows
   it('addRow(row)', () => {
-    dataView.addRow(mockRow);
-    expect(dataView.rows.length).to.equal(dataView.origin.length + 1);
+    dv.addRow(mockRow);
+    expect(dv.rows.length).to.equal(dv.origin.length + 1);
   });
   it('removeRow(index)', () => {
-    dataView.removeRow(0);
-    expect(dataView.rows.length).to.equal(dataView.origin.length - 1);
+    dv.removeRow(0);
+    expect(dv.rows.length).to.equal(dv.origin.length - 1);
   });
   it('updateRow(index, newRow)', () => {
-    dataView.updateRow(0, mockRow);
-    expect(dataView.rows[0]).to.eql(mockRow);
+    dv.updateRow(0, mockRow);
+    expect(dv.rows[0]).to.eql(mockRow);
   });
   it('findRows(query)', () => {
-    dataView.addRow(mockRow);
-    const rows = dataView.findRows({
+    dv.addRow(mockRow);
+    const rows = dv.findRows({
       year: '2016'
     });
     expect(rows[0]).to.equal(mockRow);
-    const rows2 = dataView.findRows({
+    const rows2 = dv.findRows({
       year: '2020'
     });
     expect(rows2.length).to.equal(0);
   });
   it('findRow(query)', () => {
-    dataView.addRow(mockRow);
-    const row = dataView.findRow({
+    dv.addRow(mockRow);
+    const row = dv.findRow({
       year: '2016'
     });
     expect(row).to.equal(mockRow);
-    const row2 = dataView.findRow({
+    const row2 = dv.findRow({
       year: '2020'
     });
     expect(isNil(row2)).to.be.true;
@@ -70,29 +68,29 @@ describe('DataView', () => {
 
   // columns
   it('getColumnNames()', () => {
-    expect(dataView.getColumnNames()).to.eql(columnNames);
+    expect(dv.getColumnNames()).to.eql(columnNames);
   });
   it('getColumnName(index)', () => {
-    expect(dataView.getColumnName(0)).to.equal(columnNames[0]);
+    expect(dv.getColumnName(0)).to.equal(columnNames[0]);
   });
   it('getColumnIndex(columnName)', () => {
-    expect(dataView.getColumnIndex('year')).to.equal(indexOf(columnNames, 'year'));
+    expect(dv.getColumnIndex('year')).to.equal(indexOf(columnNames, 'year'));
   });
   it('getColumn(columnName)', () => {
-    expect(dataView.getColumn('year')).to.eql(map(populationChina, row => row.year));
+    expect(dv.getColumn('year')).to.eql(map(populationChina, row => row.year));
   });
   it('getColumnData(columnName)', () => {
-    expect(dataView.getColumnData('year')).to.eql(map(populationChina, row => row.year));
+    expect(dv.getColumnData('year')).to.eql(map(populationChina, row => row.year));
   });
 
   // data process
   it('getSubset(startRowIndex, endRowIndex, columnNames)', () => {
-    dataView.addRow(mockRow);
-    const len = dataView.rows.length;
-    expect(dataView.getSubset(len - 1, len - 1, columnNames)).to.eql([ mockRow ]);
+    dv.addRow(mockRow);
+    const len = dv.rows.length;
+    expect(dv.getSubset(len - 1, len - 1, columnNames)).to.eql([ mockRow ]);
   });
   it('toString(prettyPrint)', () => {
-    expect(dataView.toString()).to.equal(JSON.stringify(populationChina));
-    expect(dataView.toString(true)).to.equal(JSON.stringify(populationChina, null, 2));
+    expect(dv.toString()).to.equal(JSON.stringify(populationChina));
+    expect(dv.toString(true)).to.equal(JSON.stringify(populationChina, null, 2));
   });
 });

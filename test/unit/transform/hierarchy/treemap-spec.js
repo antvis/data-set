@@ -8,11 +8,10 @@ const {
 const flare = require('../../../fixtures/flare.json');
 
 describe('DataView.transform(): hierarchy.treemap', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -22,13 +21,13 @@ describe('DataView.transform(): hierarchy.treemap', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'hierarchy.treemap',
         as: [ 'x', 'y' ]
       });
     }).to.throw();
     expect(() => {
-      dataView.source(flare, {
+      dv.source(flare, {
         type: 'hierarchy'
       }).transform({
         type: 'hierarchy.treemap',
@@ -38,13 +37,13 @@ describe('DataView.transform(): hierarchy.treemap', () => {
   });
 
   it('treemap', () => {
-    dataView.source(flare, {
+    dv.source(flare, {
       type: 'hierarchy'
     }).transform({
       type: 'hierarchy.treemap',
       as: [ 'x', 'y' ]
     });
-    const root = dataView.root;
+    const root = dv.root;
     expect(root.x).to.be.an('array');
     expect(root.y).to.be.an('array');
     expect(root.x.length).to.equal(4);

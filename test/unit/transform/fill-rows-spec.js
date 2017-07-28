@@ -7,7 +7,6 @@ const {
 } = require('../../../index');
 
 describe('DataView.transform(): fill-rows', () => {
-  const dataSet = new DataSet();
   const data = [
     { x: 0, y: 28, c: 0 },
     { x: 0, y: 55, c: 1 },
@@ -18,10 +17,11 @@ describe('DataView.transform(): fill-rows', () => {
     { x: 3, y: 19, c: 0 }
   ];
   const originLength = data.length;
-  let dataView;
+  const ds = new DataSet();
+  let dv;
 
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -30,18 +30,18 @@ describe('DataView.transform(): fill-rows', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'fill-rows'
     });
-    expect(dataView.rows.length).to.equal(originLength);
+    expect(dv.rows.length).to.equal(originLength);
   });
 
   it('groupBy', () => {
-    dataView.transform({
+    dv.transform({
       type: 'fill-rows',
       groupBy: [ 'x' ]
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows.length).to.equal(originLength + 1);
     expect(rows[originLength]).to.eql({
       x: 3
@@ -49,20 +49,20 @@ describe('DataView.transform(): fill-rows', () => {
   });
 
   it('orderBy', () => {
-    dataView.transform({
+    dv.transform({
       type: 'fill-rows',
       orderBy: [ 'c' ]
     });
-    expect(dataView.rows.length).to.equal(originLength);
+    expect(dv.rows.length).to.equal(originLength);
   });
 
   it('groupBy and orderBy', () => {
-    dataView.transform({
+    dv.transform({
       type: 'fill-rows',
       groupBy: [ 'x' ],
       orderBy: [ 'c' ]
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows.length).to.equal(originLength + 1);
     expect(rows[originLength]).to.eql({
       x: 3,

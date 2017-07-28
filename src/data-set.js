@@ -1,22 +1,38 @@
 const assign = require('lodash/assign');
+const isNil = require('lodash/isNil');
+const uniqueId = require('lodash/uniqueId');
 const EventEmitter = require('wolfy87-eventemitter');
 const DataView = require('./data-view');
 
 class DataSet extends EventEmitter {
-  constructor() {
+  constructor(initialProps = { state: {} }) {
     super();
     const me = this;
     assign(me, {
       _onChangeTimer: null,
       DataSet,
       isDataSet: true,
-      state: {},
       views: {}
-    });
+    }, initialProps);
+  }
+
+  _getUniqueViewName() {
+    const me = this;
+    let name = uniqueId('view_');
+    while (me.views[name]) {
+      name = uniqueId('view_');
+    }
+    return name;
   }
 
   createView(name) {
     const me = this;
+    if (isNil(name)) {
+      name = me._getUniqueViewName();
+    }
+    if (me.views[name]) {
+      throw new Error(`data view exists: ${name}`);
+    }
     const view = new DataView(me);
     me.views[name] = view;
     return view;

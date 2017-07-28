@@ -7,7 +7,6 @@ const {
 } = require('../../../index');
 
 describe('DataView.transform(): impute', () => {
-  const dataSet = new DataSet();
   const data = [
     { x: 0, y: 1 },
     { x: 0, y: 2 },
@@ -21,10 +20,11 @@ describe('DataView.transform(): impute', () => {
     { x: 2 }
   ];
   // const length = data.length;
-  let dataView;
+  const ds = new DataSet();
+  let dv;
 
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -33,46 +33,46 @@ describe('DataView.transform(): impute', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'impute'
       });
     }).to.throw();
   });
 
   it('value', () => {
-    dataView.transform({
+    dv.transform({
       field: 'y',
       groupBy: [ 'x' ],
       method: 'value',
       type: 'impute',
       value: 10
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows[3].y).to.equal(10);
     expect(rows[7].y).to.equal(10);
     expect(rows[9].y).to.equal(10);
   });
 
   it('max', () => {
-    dataView.transform({
+    dv.transform({
       field: 'y',
       groupBy: [ 'x' ],
       method: 'max',
       type: 'impute'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows[3].y).to.equal(3);
     expect(rows[7].y).to.equal(9);
     expect(rows[9].y).to.equal(9);
   });
 
   it('not grouping', () => {
-    dataView.transform({
+    dv.transform({
       field: 'y',
       method: 'max',
       type: 'impute'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(rows[3].y).to.equal(9);
     expect(rows[7].y).to.equal(9);
     expect(rows[9].y).to.equal(9);
