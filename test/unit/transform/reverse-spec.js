@@ -11,11 +11,11 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): reverse', () => {
-  const dataSet = new DataSet();
-  let dataView;
+  const ds = new DataSet();
+  let dv;
 
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -23,9 +23,9 @@ describe('DataView.transform(): reverse', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'reverse'
     });
-    expect(dataView.rows).to.eql(reverse(populationChina));
+    expect(dv.rows).to.eql(reverse(populationChina));
   });
 });

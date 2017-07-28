@@ -22,14 +22,14 @@ const data = [
 ];
 
 describe('DataView.transform(): geo.centroid', () => {
-  const dataSet = new DataSet();
-  let dataView;
-  dataSet.createView('geo').source(geoWorld, {
+  const ds = new DataSet();
+  let dv;
+  ds.createView('geo').source(geoWorld, {
     type: 'geo'
   });
 
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -38,12 +38,12 @@ describe('DataView.transform(): geo.centroid', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'geo.centroid'
       });
     }).to.throw();
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'geo.centroid',
         geoDataView: 'geo'
       });
@@ -51,12 +51,12 @@ describe('DataView.transform(): geo.centroid', () => {
   });
 
   it('geo.region', () => {
-    dataView.transform({
+    dv.transform({
       type: 'geo.centroid',
       field: 'name',
       geoDataView: 'geo'
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     expect(isArray(rows[0]._centroid)).to.be.true;
   });
 });

@@ -15,11 +15,10 @@ for (let i = 0; i <= 10; i++) {
 }
 
 describe('DataView.transform(): bin.hexagon', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -28,26 +27,26 @@ describe('DataView.transform(): bin.hexagon', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.hexagon',
       fields: [ 'a', 'b' ]
     });
-    expect(dataView.rows[0].x.length).to.equal(6);
-    expect(dataView.rows[0].y.length).to.equal(6);
+    expect(dv.rows[0].x.length).to.equal(6);
+    expect(dv.rows[0].y.length).to.equal(6);
   });
 
   it('radius', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.hexagon',
       fields: [ 'a', 'b' ],
       radius: 10
     });
-    expect(dataView.rows[0].x).to.eql(dataView.rows[1].x);
-    expect(dataView.rows[9].x).to.eql(dataView.rows[10].x);
+    expect(dv.rows[0].x).to.eql(dv.rows[1].x);
+    expect(dv.rows[9].x).to.eql(dv.rows[10].x);
   });
 
   // it('extent', () => {
-  //   dataView.transform({
+  //   dv.transform({
   //     type: 'bin.hexagon',
   //     fields: [ 'a', 'b' ],
   //     extent: [[-10, -10], [10, 10]]

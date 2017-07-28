@@ -28,11 +28,10 @@ for (let i = 1; i <= 10; i++) {
 }
 
 describe('DataView.transform(): aggregate', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -40,17 +39,17 @@ describe('DataView.transform(): aggregate', () => {
   });
 
   it('default: count', () => {
-    dataView.transform({
+    dv.transform({
       type: 'aggregate'
     });
-    expect(dataView.rows.length).to.equal(1);
-    expect(dataView.rows[0]).to.eql({
+    expect(dv.rows.length).to.equal(1);
+    expect(dv.rows[0]).to.eql({
       count: 10
     });
   });
 
   it('all', () => {
-    dataView.transform({
+    dv.transform({
       type: 'aggregate',
       fields: map(VALID_AGGREGATES, () => 'a'),
       groupBy: [ 'b' ],
@@ -77,6 +76,6 @@ describe('DataView.transform(): aggregate', () => {
       });
       return result;
     });
-    expect(dataView.rows).to.eql(results);
+    expect(dv.rows).to.eql(results);
   });
 });

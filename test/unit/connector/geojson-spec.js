@@ -8,11 +8,10 @@ const {
 const geoWorld = require('../../fixtures/countries-geo.json');
 
 describe('DataView.source(): geojson', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -23,7 +22,7 @@ describe('DataView.source(): geojson', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.source(geoWorld, {
+      dv.source(geoWorld, {
         type: 'geo'
       });
     }).to.not.throw();

@@ -7,8 +7,8 @@ const {
 } = require('../../../../index');
 
 describe('DataView.transform(): diagram.voronoi', () => {
-  const dataSet = new DataSet();
-  let dataView;
+  const ds = new DataSet();
+  let dv;
   const data = [];
   for (let i = 0; i < 10; i++) {
     data.push({
@@ -16,9 +16,8 @@ describe('DataView.transform(): diagram.voronoi', () => {
       y: Math.random() * 100
     });
   }
-
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -28,13 +27,13 @@ describe('DataView.transform(): diagram.voronoi', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'diagram.voronoi',
         as: [ '_x', '_y' ]
       });
     }).to.throw();
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'diagram.voronoi',
         x: 'x',
         y: 'y',
@@ -44,13 +43,13 @@ describe('DataView.transform(): diagram.voronoi', () => {
   });
 
   it('voronoi', () => {
-    dataView.transform({
+    dv.transform({
       type: 'diagram.voronoi',
       x: 'x',
       y: 'y',
       as: [ '_x', '_y' ]
     });
-    const rows = dataView.rows;
+    const rows = dv.rows;
     const firstRow = rows[0];
     expect(firstRow._x).to.be.an('array');
     expect(firstRow._y).to.be.an('array');

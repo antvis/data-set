@@ -14,11 +14,10 @@ for (let i = 0; i <= 100; i++) {
 }
 
 describe('DataView.transform(): bin.histogram', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(data);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -27,31 +26,31 @@ describe('DataView.transform(): bin.histogram', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.histogram',
       field: 'a'
     });
-    expect(dataView.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
-    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
+    expect(dv.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
+    expect(dv.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
   });
 
   it('domain', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.histogram',
       field: 'a',
       domain: [ 10, 100 ]
     });
-    expect(dataView.rows[0]).to.eql({ a: 0 });
-    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
+    expect(dv.rows[0]).to.eql({ a: 0 });
+    expect(dv.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
   });
 
   it('thresholds', () => {
-    dataView.transform({
+    dv.transform({
       type: 'bin.histogram',
       field: 'a',
       thresholds: [ 0, 10, 100 ]
     });
-    expect(dataView.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
-    expect(dataView.rows[99]).to.eql({ a: 99, x: [ 10, 100 ] });
+    expect(dv.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
+    expect(dv.rows[99]).to.eql({ a: 99, x: [ 10, 100 ] });
   });
 });

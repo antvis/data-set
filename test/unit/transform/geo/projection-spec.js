@@ -8,11 +8,10 @@ const {
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
 describe('DataView.transform(): geo.projection', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -21,14 +20,14 @@ describe('DataView.transform(): geo.projection', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.transform({
+      dv.transform({
         type: 'geo.projection',
         projection: 'geoAiry',
         as: [ 'x', 'y', 'centroid' ]
       });
     }).to.throw();
     expect(() => {
-      dataView.source(geoWorld, {
+      dv.source(geoWorld, {
         type: 'geo'
       }).transform({
         type: 'geo.projection',
@@ -38,14 +37,14 @@ describe('DataView.transform(): geo.projection', () => {
   });
 
   it('geo', () => {
-    dataView.source(geoWorld, {
+    dv.source(geoWorld, {
       type: 'geo'
     }).transform({
       type: 'geo.projection',
       projection: 'geoAiry',
       as: [ 'x', 'y', 'centroid' ]
     });
-    const features = dataView.rows;
+    const features = dv.rows;
     const feature = features[0];
     expect(feature.x).to.exist;
     expect(feature.y).to.exist;

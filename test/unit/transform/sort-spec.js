@@ -10,8 +10,8 @@ const {
 } = require('../../../index');
 
 describe('DataView.transform(): sort', () => {
-  const dataSet = new DataSet();
-  let dataView;
+  const ds = new DataSet();
+  let dv;
   let populationChina;
 
   beforeEach(() => {
@@ -20,7 +20,7 @@ describe('DataView.transform(): sort', () => {
       year: '2001',
       population: '1274530000'
     });
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -28,20 +28,20 @@ describe('DataView.transform(): sort', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'sort'
     });
-    expect(dataView.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
+    expect(dv.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
   });
 
   it('callback', () => {
-    dataView.transform({
+    dv.transform({
       type: 'sort',
       callback(a, b) {
         return a.year - b.year;
       }
     });
-    expect(dataView.rows).to.eql(sortBy(populationChina, [ 'year' ]));
+    expect(dv.rows).to.eql(sortBy(populationChina, [ 'year' ]));
   });
 });
 

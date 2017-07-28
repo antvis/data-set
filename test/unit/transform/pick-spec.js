@@ -12,11 +12,10 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): pick', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -24,17 +23,17 @@ describe('DataView.transform(): pick', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'pick'
     });
-    expect(dataView.rows).to.eql(populationChina);
+    expect(dv.rows).to.eql(populationChina);
   });
 
   it('fields', () => {
-    dataView.transform({
+    dv.transform({
       type: 'pick',
       fields: [ 'year' ]
     });
-    expect(dataView.rows).to.eql(map(populationChina, row => pick(row, [ 'year' ])));
+    expect(dv.rows).to.eql(map(populationChina, row => pick(row, [ 'year' ])));
   });
 });

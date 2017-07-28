@@ -8,11 +8,10 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): subset', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -20,47 +19,47 @@ describe('DataView.transform(): subset', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'subset'
     });
-    expect(dataView.rows).to.eql(populationChina);
+    expect(dv.rows).to.eql(populationChina);
   });
 
   it('only specify endRowIndex', () => {
-    dataView.transform({
+    dv.transform({
       type: 'subset',
       endRowIndex: 2
     });
-    expect(dataView.rows.length).to.equal(3);
-    expect(dataView.getColumnNames().length).to.equal(2);
+    expect(dv.rows.length).to.equal(3);
+    expect(dv.getColumnNames().length).to.equal(2);
   });
 
   it('only specify startRowIndex', () => {
-    dataView.transform({
+    dv.transform({
       type: 'subset',
       startRowIndex: 1
     });
-    expect(dataView.rows.length).to.equal(populationChina.length - 1);
-    expect(dataView.getColumnNames().length).to.equal(2);
+    expect(dv.rows.length).to.equal(populationChina.length - 1);
+    expect(dv.getColumnNames().length).to.equal(2);
   });
 
   it('only specify columns', () => {
-    dataView.transform({
+    dv.transform({
       type: 'subset',
       fields: [ 'year' ]
     });
-    expect(dataView.rows.length).to.equal(populationChina.length);
-    expect(dataView.getColumnNames().length).to.equal(1);
+    expect(dv.rows.length).to.equal(populationChina.length);
+    expect(dv.getColumnNames().length).to.equal(1);
   });
 
   it('specify all options', () => {
-    dataView.transform({
+    dv.transform({
       type: 'subset',
       startRowIndex: 1,
       endRowIndex: 2,
       fields: [ 'year' ]
     });
-    expect(dataView.rows.length).to.equal(2);
-    expect(dataView.getColumnNames().length).to.equal(1);
+    expect(dv.rows.length).to.equal(2);
+    expect(dv.getColumnNames().length).to.equal(1);
   });
 });

@@ -8,11 +8,10 @@ const {
 const topoUS = require('../../fixtures/us-topo.json');
 
 describe('DataView.source(): topojson', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -22,13 +21,13 @@ describe('DataView.source(): topojson', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.source(topoUS, {
+      dv.source(topoUS, {
         type: 'topojson'
       });
     }).to.throw();
 
     expect(() => {
-      dataView.source(topoUS, {
+      dv.source(topoUS, {
         type: 'topojson',
         object: 'states'
       });

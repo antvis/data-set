@@ -8,11 +8,10 @@ const {
 const flare = require('../../fixtures/flare.json');
 
 describe('DataView.source(): hierarchy', () => {
-  const dataSet = new DataSet();
-  let dataView;
-
+  const ds = new DataSet();
+  let dv;
   beforeEach(() => {
-    dataView = dataSet.createView('test');
+    dv = ds.createView();
   });
 
   it('api', () => {
@@ -22,7 +21,7 @@ describe('DataView.source(): hierarchy', () => {
 
   it('default', () => {
     expect(() => {
-      dataView.source(flare, {
+      dv.source(flare, {
         type: 'geo'
       });
     }).to.not.throw();

@@ -11,11 +11,11 @@ const {
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('DataView.transform(): map', () => {
-  const dataSet = new DataSet();
-  let dataView;
+  const ds = new DataSet();
+  let dv;
 
   beforeEach(() => {
-    dataView = dataSet.createView('test').source(populationChina);
+    dv = ds.createView().source(populationChina);
   });
 
   it('api', () => {
@@ -23,19 +23,19 @@ describe('DataView.transform(): map', () => {
   });
 
   it('default', () => {
-    dataView.transform({
+    dv.transform({
       type: 'map'
     });
-    expect(dataView.rows.length).to.equal(populationChina.length);
+    expect(dv.rows.length).to.equal(populationChina.length);
   });
 
   it('callback', () => {
-    dataView.transform({
+    dv.transform({
       type: 'map',
       callback(row) {
         return row.year; // origin data range: [2002, 2015]
       }
     });
-    expect(dataView.rows).to.eql(map(populationChina, row => row.year));
+    expect(dv.rows).to.eql(map(populationChina, row => row.year));
   });
 });
