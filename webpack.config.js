@@ -1,7 +1,5 @@
 const webpack = require('webpack');
-const {
-  resolve
-} = require('path');
+const resolve = require('path').resolve;
 
 module.exports = {
   entry: {
@@ -22,8 +20,16 @@ module.exports = {
           loader: 'babel-loader',
           options: {
             babelrc: false,
+            plugins: [
+              'transform-remove-strict-mode'
+            ],
             presets: [
-              'es2015',
+              [
+                'es2015', {
+                  loose: true
+                  // modules: false
+                }
+              ],
               'stage-0'
             ]
           }
@@ -32,6 +38,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.NoEmitOnErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin(),
+    new webpack.optimize.AggressiveMergingPlugin()
   ]
 };
