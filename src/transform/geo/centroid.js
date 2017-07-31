@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const each = require('lodash/each');
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
   registerTransform
@@ -8,7 +9,7 @@ const {
 const DEFAULT_OPTIONS = {
   // field: 'name', // required
   // geoDataView: dataView, // required
-  as: '_centroid'
+  as: [ '_centroid_x', '_centroid_y' ]
 };
 
 function transform(dataView, options) {
@@ -25,13 +26,21 @@ function transform(dataView, options) {
     throw new TypeError('Invalid geoDataView');
   }
   const as = options.as;
-  if (!as || !isString(as)) {
+  if (!as || !isArray(as)) {
     throw new TypeError('Invalid as');
   }
+  const centroidX = as[0];
+  const centroidY = as[1];
   each(dataView.rows, row => {
     const feature = geoDataView.geoFeatureByName(row[field]);
     if (feature) {
-      row[as] = feature.centroid;
+      if (geoDataView._projectedAs) {
+        row[centroidX] = feature[geoDataView._projectedAs[2]];
+        row[centroidY] = feature[geoDataView._projectedAs[3]];
+      } else {
+        row[centroidX] = feature.centroidX;
+        row[centroidY] = feature.centroidY;
+      }
     }
   });
 }
