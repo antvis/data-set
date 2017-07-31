@@ -34,8 +34,13 @@ function transform(dataView, options) {
   each(dataView.rows, row => {
     const feature = geoDataView.geoFeatureByName(row[field]);
     if (feature) {
-      row[lonField] = feature.longitude;
-      row[latField] = feature.latitude;
+      if (geoDataView._projectedAs) {
+        row[lonField] = feature[geoDataView._projectedAs[0]];
+        row[latField] = feature[geoDataView._projectedAs[1]];
+      } else {
+        row[lonField] = feature.longitude;
+        row[latField] = feature.latitude;
+      }
     }
   });
 }

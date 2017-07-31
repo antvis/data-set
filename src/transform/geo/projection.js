@@ -13,7 +13,7 @@ const {
 } = d3Geo;
 const DEFAULT_OPTIONS = {
   // projection: '', // default to null
-  as: [ '_x', '_y', '_centroid' ]
+  as: [ '_x', '_y', '_centroid_x', '_centroid_y' ]
 };
 
 function transform(dataView, options) {
@@ -28,16 +28,17 @@ function transform(dataView, options) {
   projection = getGeoProjection(projection);
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
-  if (!isArray(as) || as.length !== 3) {
+  if (!isArray(as) || as.length !== 4) {
     throw new TypeError('Invalid option: as');
   }
+  dataView._projectedAs = as;
   const lonField = as[0];
   const latField = as[1];
-  const centroid = as[2];
+  const centroidX = as[2];
+  const centroidY = as[3];
   each(dataView.rows, row => {
     row[lonField] = [];
     row[latField] = [];
-    row[centroid] = [];
     const pathData = geoPathGenerator(row);
     if (pathData) {
       // TODO projection returns null
@@ -46,7 +47,9 @@ function transform(dataView, options) {
         row[lonField].push(point[1]);
         row[latField].push(point[2]);
       });
-      row[centroid] = geoPathGenerator.centroid(row);
+      const centroid = geoPathGenerator.centroid(row);
+      row[centroidX] = centroid[0];
+      row[centroidY] = centroid[1];
     }
   });
 }

@@ -1,5 +1,5 @@
 const {
-  isArray
+  isNumber
 } = require('lodash');
 const {
   expect
@@ -50,13 +50,33 @@ describe('DataView.transform(): geo.centroid', () => {
     }).to.throw();
   });
 
-  it('geo.region', () => {
+  it('geo.centroid', () => {
     dv.transform({
       type: 'geo.centroid',
       field: 'name',
       geoDataView: 'geo'
     });
     const rows = dv.rows;
-    expect(isArray(rows[0]._centroid)).to.be.true;
+    expect(isNumber(rows[0]._centroid_x)).to.be.true;
+    expect(isNumber(rows[0]._centroid_y)).to.be.true;
+  });
+
+  // projected
+  const geoDataView = ds.getView('geo');
+  geoDataView.transform({
+    type: 'geo.projection',
+    projection: 'geoAiry'
+  });
+
+  it('geo.centroid: on a projected data view', () => {
+    dv.transform({
+      type: 'geo.centroid',
+      field: 'name',
+      geoDataView: 'geo'
+    });
+    const firstRow = dv.rows[0];
+    const feature = geoDataView.geoFeatureByName(firstRow.name);
+    expect(firstRow._centroid_x).to.equal(feature._centroid_x);
+    expect(firstRow._centroid_y).to.equal(feature._centroid_y);
   });
 });

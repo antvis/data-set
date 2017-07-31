@@ -25,11 +25,12 @@ function GeoJSONConnector(data, options, dataView) {
       feature.longitude.push(point[1]);
       feature.latitude.push(point[2]);
     });
-    feature.centroid = geoPathGenerator.centroid(feature);
+    const centroid = geoPathGenerator.centroid(feature);
+    feature.centroidX = centroid[0];
+    feature.centroidY = centroid[1];
   });
 
   dataView.rows = features;
-  // console.log(features)
   return data.features;
 }
 

@@ -23,7 +23,7 @@ describe('DataView.transform(): geo.projection', () => {
       dv.transform({
         type: 'geo.projection',
         projection: 'geoAiry',
-        as: [ 'x', 'y', 'centroid' ]
+        as: [ 'x', 'y', 'centroidX', 'centroidY' ]
       });
     }).to.throw();
     expect(() => {
@@ -31,7 +31,7 @@ describe('DataView.transform(): geo.projection', () => {
         type: 'geo'
       }).transform({
         type: 'geo.projection',
-        as: [ 'x', 'y', 'centroid' ]
+        as: [ 'x', 'y', 'centroidX', 'centroidY' ]
       });
     }).to.throw();
   });
@@ -42,13 +42,13 @@ describe('DataView.transform(): geo.projection', () => {
     }).transform({
       type: 'geo.projection',
       projection: 'geoAiry',
-      as: [ 'x', 'y', 'centroid' ]
+      as: [ 'x', 'y', 'centroidX', 'centroidY' ]
     });
     const features = dv.rows;
     const feature = features[0];
     expect(feature.x).to.exist;
     expect(feature.y).to.exist;
-    expect(feature.centroid).to.exist;
-    // console.log(feature)
+    expect(feature.centroidX).to.exist;
+    expect(feature.centroidY).to.exist;
   });
 });
