@@ -92,13 +92,13 @@ describe('DataView.transform(): aggregate: performance of partition', () => {
     type: 'aggregate'
   });
   const t3 = Date.now();
-  it('deepClone should be done in less than 300ms', () => {
-    expect((t2 - t1) < 300).to.equal(true);
+  it('deepClone should be done in less than 500ms', () => {
+    expect((t2 - t1) < 500).to.equal(true);
   });
-  it('partition should be done in less than 200ms', () => {
-    expect((t3 - t2) < 200).to.equal(true);
+  it('partition should be done in less than 500ms', () => {
+    expect((t3 - t2) < 500).to.equal(true);
   });
-  it('it should be done in less than 500ms in total', () => {
-    expect((t3 - t1) < 500).to.equal(true);
+  it('it should be done in less than 1000ms in total', () => {
+    expect((t3 - t1) < 1000).to.equal(true);
   });
 });
