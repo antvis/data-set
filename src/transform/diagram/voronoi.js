@@ -9,8 +9,7 @@ const {
 } = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
-  // x: 'x', // field x, required
-  // y: 'y', // field y, required
+  // fields: [ 'x', 'y' ] // field x and field y, required
   // extend: [[x0, y0], [x1, y1]], // optional
   // size: [width, height], // optional
   as: [ '_x', '_y' ]
@@ -26,11 +25,12 @@ function transform(dataView, options) {
   const xField = as[0];
   const yField = as[1];
 
-  const x = options.x;
-  const y = options.y;
-  if (!x || !y) {
+  const fields = options.fields;
+  if (!isArray(fields) && fields.length !== 2) {
     throw new TypeError('Invalid options');
   }
+  const x = fields[0];
+  const y = fields[1];
 
   const rows = dataView.rows;
   const data = map(rows, row => [ row[x], row[y] ]);
