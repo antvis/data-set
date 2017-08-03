@@ -35,8 +35,7 @@ describe('DataView.transform(): diagram.voronoi', () => {
     expect(() => {
       dv.transform({
         type: 'diagram.voronoi',
-        x: 'x',
-        y: 'y',
+        fields: [ 'x', 'y' ],
         as: [ '_x', '_y', 'extra' ]
       });
     }).to.throw();
@@ -45,8 +44,7 @@ describe('DataView.transform(): diagram.voronoi', () => {
   it('voronoi', () => {
     dv.transform({
       type: 'diagram.voronoi',
-      x: 'x',
-      y: 'y',
+      fields: [ 'x', 'y' ],
       as: [ '_x', '_y' ]
     });
     const rows = dv.rows;

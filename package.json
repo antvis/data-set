@@ -1,8 +1,10 @@
 {
-  "name": "@antv/data-set",
-  "version": "0.1.3",
+  "name": "@alipay/data-set",
+  "version": "0.1.4",
   "description": "data set with state management",
-  "main": "index.js",
+  "main": "build/data-set.js",
+  "browser": "build/data-set.js",
+  "module": "index.js",
   "repository": {
     "type": "git",
     "url": "git@gitlab.alibaba-inc.com:datavis/data-set.git"
@@ -41,6 +43,7 @@
     "dist": "rm -rf dist && mkdir dist && npm run build && npm run compress",
     "lint": "eslint ./",
     "lint-fix": "eslint --fix ./",
+    "prepublish": "npm run build",
     "test": "torch --renderer --recursive ./test/unit",
     "test-live": "torch --interactive --watch --recursive ./test/unit"
   },
@@ -50,6 +53,9 @@
       "test"
     ],
     "silent": false
+  },
+  "publishConfig": {
+    "registry": "http://registry.npm.alibaba-inc.com"
   },
   "dependencies": {
     "d3-array": "^1.2.0",

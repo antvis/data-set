@@ -60,7 +60,7 @@ typings/
 # dotenv environment variables file
 .env
 
-build
+# build
 dist
 temp
 .DS_Store
