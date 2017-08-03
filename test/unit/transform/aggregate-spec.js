@@ -17,17 +17,16 @@ const {
   VALID_AGGREGATES
 } = require('../../../src/transform/aggregate');
 
-const data = [];
-for (let i = 1; i <= 10; i++) {
-  // 1~10
-  const b = i % 2;
-  data.push({
-    a: i,
-    b
-  });
-}
-
 describe('DataView.transform(): aggregate', () => {
+  const data = [];
+  for (let i = 1; i <= 10; i++) {
+    // 1~10
+    const b = i % 2;
+    data.push({
+      a: i,
+      b
+    });
+  }
   const ds = new DataSet();
   let dv;
   beforeEach(() => {
@@ -77,5 +76,29 @@ describe('DataView.transform(): aggregate', () => {
       return result;
     });
     expect(dv.rows).to.eql(results);
+  });
+});
+
+describe('DataView.transform(): aggregate: performance of partition', () => {
+  const top2000 = require('../../fixtures/top2000.json');
+  const t1 = Date.now();
+  const ds = new DataSet();
+  const dv = ds.createView('test').source(top2000);
+  const t2 = Date.now();
+  dv.transform({
+    as: [ 'count' ],
+    groupBy: [ 'release' ],
+    operations: [ 'count' ],
+    type: 'aggregate'
+  });
+  const t3 = Date.now();
+  it('deepClone should be done in less than 500ms', () => {
+    expect((t2 - t1) < 500).to.equal(true);
+  });
+  it('partition should be done in less than 500ms', () => {
+    expect((t3 - t2) < 500).to.equal(true);
+  });
+  it('it should be done in less than 1000ms in total', () => {
+    expect((t3 - t1) < 1000).to.equal(true);
   });
 });
