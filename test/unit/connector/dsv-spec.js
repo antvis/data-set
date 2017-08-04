@@ -8,19 +8,17 @@ const {
 const {
   readFileSync
 } = require('../../support/util');
-
 const data = require('../../fixtures/sample.json');
 const data2 = require('../../fixtures/sample2.json');
 
-const source = {
-  psv: readFileSync('./test/fixtures/sample.psv'),
-  csv: readFileSync('./test/fixtures/sample.csv'),
-  csv2: readFileSync('./test/fixtures/sample2.csv'),
-  tsv: readFileSync('./test/fixtures/sample.tsv'),
-  tsv2: readFileSync('./test/fixtures/sample2.tsv')
-};
-
 describe('DataView.source(): dsv', () => {
+  const source = {
+    psv: readFileSync('./test/fixtures/sample.psv'),
+    csv: readFileSync('./test/fixtures/sample.csv'),
+    csv2: readFileSync('./test/fixtures/sample2.csv'),
+    tsv: readFileSync('./test/fixtures/sample.tsv'),
+    tsv2: readFileSync('./test/fixtures/sample2.tsv')
+  };
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

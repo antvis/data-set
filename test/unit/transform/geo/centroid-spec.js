@@ -10,18 +10,17 @@ const {
 } = require('../../../../index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
-const data = [
-  {
-    name: 'Afghanistan',
-    value: 4
-  },
-  {
-    name: 'Angola',
-    value: 5
-  }
-];
-
 describe('DataView.transform(): geo.centroid', () => {
+  const data = [
+    {
+      name: 'Afghanistan',
+      value: 4
+    },
+    {
+      name: 'Angola',
+      value: 5
+    }
+  ];
   const ds = new DataSet();
   let dv;
   ds.createView('geo').source(geoWorld, {

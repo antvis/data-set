@@ -11,13 +11,13 @@ const DataSet = require('../../src/data-set');
 const DataView = require('../../src/data-view');
 const populationChina = require('../fixtures/population-china.json');
 
-const mockRow = {
-  year: '2016',
-  population: '1384530000'
-};
-const columnNames = keys(populationChina[0]);
-
 describe('DataView', () => {
+  const mockRow = {
+    year: '2016',
+    population: '1384530000'
+  };
+  const columnNames = keys(populationChina[0]);
+
   let dv;
   beforeEach(() => {
     dv = new DataSet().createView().source(populationChina);

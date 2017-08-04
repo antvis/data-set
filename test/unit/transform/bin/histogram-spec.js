@@ -6,14 +6,13 @@ const {
   getTransform
 } = require('../../../../index');
 
-const data = [];
-for (let i = 0; i <= 100; i++) {
-  data.push({
-    a: i
-  });
-}
-
 describe('DataView.transform(): bin.histogram', () => {
+  const data = [];
+  for (let i = 0; i <= 100; i++) {
+    data.push({
+      a: i
+    });
+  }
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

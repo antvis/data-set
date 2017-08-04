@@ -6,15 +6,14 @@ const {
   getTransform
 } = require('../../../../index');
 
-const data = [];
-for (let i = 0; i <= 10; i++) {
-  data.push({
-    a: i,
-    b: i
-  });
-}
-
 describe('DataView.transform(): bin.rectangle', () => {
+  const data = [];
+  for (let i = 0; i <= 10; i++) {
+    data.push({
+      a: i,
+      b: i
+    });
+  }
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

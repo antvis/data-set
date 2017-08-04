@@ -6,15 +6,14 @@ const {
   getTransform
 } = require('../../../../index');
 
-const data = [];
-for (let i = 0; i <= 10; i++) {
-  data.push({
-    a: i,
-    b: i
-  });
-}
-
 describe('DataView.transform(): bin.hexagon', () => {
+  const data = [];
+  for (let i = 0; i <= 10; i++) {
+    data.push({
+      a: i,
+      b: i
+    });
+  }
   const ds = new DataSet();
   let dv;
   beforeEach(() => {
@@ -52,4 +51,7 @@ describe('DataView.transform(): bin.hexagon', () => {
   //     extent: [[-10, -10], [10, 10]]
   //   });
   // });
+});
+
+describe('DataView.transform: bin.hexagon: the real world use case', () => {
 });
