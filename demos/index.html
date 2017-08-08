@@ -5,70 +5,63 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
+  <title>data-set demos</title>
   <style>
-    #graph {
-      width: 100%;
+    html, body {
+      height: 100%;
+      overflow: hidden;
     }
   </style>
 </head>
 
 <body>
-  <div id="graph"></div>
-  <script src="https://a.alipayobjects.com/g/datavis/g2/2.3.5/g2.js"></script>
+  <div id="canvas"></div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="./assets/lodash-4.17.4.min.js"></script>
+  <script src="./assets/g2.min.js"></script>
+  <script src="./assets/d3-4.10.0.min.js"></script>
+  <script src="../build/data-set.js"></script>
   <script>
-    const _ = require('lodash')
-    const DataSet = require('../index')
-    const data = require('../test/fixtures/flare.json')
-    const tiles = [
-      'treemapBinary',
-      'treemapDice',
-      'treemapSlice',
-      'treemapSliceDice',
-      'treemapSquarify',
-      'treemapResquarify'
-    ]
-    const height = window.innerHeight - 20
-
-    const dataSet = new DataSet()
-    dataSet.state.treemapTile = tiles[0]
-    const flare = dataSet.createView('flare').source(data, {
-      type: 'hierarchy'
-    })
-    flare.transform({
-      type: 'hierarchy.treemap',
-      tile: '$state.treemapTile',
-      as: ['x', 'y']
-    })
-
-    const chart = new G2.Chart({
-      id: 'graph',
-      forceFit: true,
-      height,
-      plotCfg: {
-        margin: 0
-      }
-    })
-
-    let count = 0
-    const timer = setInterval(() => {
-      const index = count % tiles.length
-      dataSet.setState('treemapTile', tiles[index])
-      count++
-      // if (count > 6) {
-      //   clearInterval(timer)
-      // }
-    }, 1000)
-
-    dataSet.on('statechange', () => {
-      chart.clear()
-      chart.source(_.map(flare.getAllNodes(), node => {
-        node.name = node.data.name
-        return node
-      }))
-      chart.axis(false)
-      chart.legend(false)
-      chart.polygon().position('x*y').color('name')
+    $.getJSON('../test/fixtures/diamond.json', (data) => {
+      const randomX = d3.randomNormal(500, 80);
+      const randomY = d3.randomNormal(500, 80);
+      const points = d3.range(2000).map(() => {
+        return {
+          carat: randomX(),
+          price: randomY()
+        };
+      });
+      const ds = new DataSet();
+      // const dv = ds.createView('diamond').source(data)
+      console.log(points);
+      const dv = ds.createView('diamond').source(points)
+      dv.transform({
+        type: 'bin.hexagon',
+        fields: [ 'carat', 'price' ],
+        bins: [ 10, 10 ],
+        // radiusByCount: true // calculate bin radius by binning count
+      }).transform({
+        type: 'sortBy',
+        fields: ['count'],
+        order: 'ASC'
+      })
+      const chart = new G2.Chart({
+        container: 'canvas',
+        forceFit: true,
+        height: window.innerHeight
+      })
+      chart.source(dv, {
+        x: {
+          alias: '克拉数'
+        },
+        y: {
+          alias: '价格（元）'
+        },
+      })
+      chart.tooltip(false)
+      chart.polygon()
+        .position('x*y')
+        .color('count', ['rgb(200, 200, 255)', 'rgb(0, 0, 255)'])
       chart.render()
     })
   </script>
