@@ -8,19 +8,18 @@ const {
   DataSet,
   getTransform
 } = require('../../../index');
+const populationChina = require('../../fixtures/population-china.json');
+const data = populationChina.concat({
+  year: '2001',
+  population: '1274530000'
+});
 
 describe('DataView.transform(): sort', () => {
   const ds = new DataSet();
   let dv;
-  let populationChina;
 
   beforeEach(() => {
-    populationChina = require('../../fixtures/population-china.json');
-    populationChina.push({
-      year: '2001',
-      population: '1274530000'
-    });
-    dv = ds.createView().source(populationChina);
+    dv = ds.createView().source(data);
   });
 
   it('api', () => {
@@ -31,7 +30,7 @@ describe('DataView.transform(): sort', () => {
     dv.transform({
       type: 'sort'
     });
-    expect(dv.rows).to.eql(populationChina.sort((a, b) => a.year - b.year));
+    expect(dv.rows).to.eql(data.sort((a, b) => a.year - b.year));
   });
 
   it('callback', () => {
@@ -41,7 +40,7 @@ describe('DataView.transform(): sort', () => {
         return a.year - b.year;
       }
     });
-    expect(dv.rows).to.eql(sortBy(populationChina, [ 'year' ]));
+    expect(dv.rows).to.eql(sortBy(data, [ 'year' ]));
   });
 });
 
