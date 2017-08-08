@@ -38,10 +38,6 @@
         fields: [ 'carat', 'price' ],
         bins: [ 10, 10 ]
         // radiusByCount: true // calculate bin radius by binning count
-      }).transform({
-        type: 'sortBy',
-        fields: [ 'count' ],
-        order: 'ASC'
       });
       const chart = new G2.Chart({
         container: 'canvas',
