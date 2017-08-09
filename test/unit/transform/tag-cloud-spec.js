@@ -29,7 +29,7 @@ describe('DataView.transform(): tag-cloud', () => {
     expect(getTransform('word-cloud') === getTransform('tag-cloud')).to.equal(true);
   });
 
-  it.only('default', () => {
+  it('default', () => {
     dv.transform({
       type: 'tag-cloud'
     });
