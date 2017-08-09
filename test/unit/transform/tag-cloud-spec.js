@@ -29,9 +29,17 @@ describe('DataView.transform(): tag-cloud', () => {
     expect(getTransform('word-cloud') === getTransform('tag-cloud')).to.equal(true);
   });
 
-  it('default', () => {
+  it.only('default', () => {
     dv.transform({
       type: 'tag-cloud'
     });
+    const firstRow = dv.rows[0];
+    expect(dv.rows.length).to.equal(dv.origin.length);
+    expect(firstRow.hasText).to.equal(true);
+    expect(firstRow.x).to.be.a('number');
+    expect(firstRow.y).to.be.a('number');
+    expect(firstRow.text).to.be.a('string');
+    expect(firstRow.size).to.be.a('number');
+    expect(firstRow.font).to.be.a('string');
   });
 });
