@@ -39,8 +39,9 @@ require('./src/transform/geo/projection');
 require('./src/transform/geo/region');
 // diagram
 require('./src/transform/diagram/voronoi');
-
 // hierarchy
 require('./src/transform/hierarchy/treemap');
+// tag cloud
+require('./src/transform/tag-cloud');
 
 module.exports = require('./src/data-set');

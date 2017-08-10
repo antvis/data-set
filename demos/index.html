@@ -1,64 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>data-set demos</title>
-  <style>
-    html, body {
-      height: 100%;
-      overflow: hidden;
-    }
-  </style>
+  <title>Demos</title>
 </head>
-
 <body>
-  <div id="canvas"></div>
-  <script src="./assets/jquery-3.2.1.min.js"></script>
-  <script src="./assets/lodash-4.17.4.min.js"></script>
-  <script src="./assets/g2.min.js"></script>
-  <script src="./assets/d3-4.10.0.min.js"></script>
-  <script src="../build/data-set.js"></script>
-  <script>
-    $.getJSON('../test/fixtures/diamond.json', data => {
-      const randomX = d3.randomNormal(500, 80);
-      const randomY = d3.randomNormal(500, 80);
-      data = d3.range(2000).map(() => {
-        return {
-          carat: randomX(),
-          price: randomY()
-        };
-      });
-      const ds = new DataSet();
-      const dv = ds.createView('diamond').source(data);
-      dv.transform({
-        type: 'bin.hexagon',
-        fields: [ 'carat', 'price' ],
-        bins: [ 10, 10 ]
-        // radiusByCount: true // calculate bin radius by binning count
-      });
-      const chart = new G2.Chart({
-        container: 'canvas',
-        forceFit: true,
-        height: window.innerHeight
-      });
-      chart.source(dv, {
-        x: {
-          alias: '克拉数'
-        },
-        y: {
-          alias: '价格（元）'
-        }
-      });
-      chart.tooltip(false);
-      chart.polygon()
-        .position('x*y')
-        .color('count', [ 'rgb(200, 200, 255)', 'rgb(0, 0, 255)' ]);
-      chart.render();
-    });
-  </script>
+<ul>
+  <li>
+    <a href="./hexagon-binning.html">Hexagon Binning</a>
+    <a href="./tag-cloud.html">Tag Cloud</a>
+  </li>
+</ul>
 </body>
-
 </html>

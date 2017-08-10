@@ -67,6 +67,7 @@
   },
   "dependencies": {
     "d3-array": "^1.2.0",
+    "d3-cloud": "^1.2.4",
     "d3-composite-projections": "^1.2.0",
     "d3-dsv": "^1.0.5",
     "d3-geo": "^1.6.4",
