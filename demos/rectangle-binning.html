@@ -28,8 +28,8 @@
     const ds = new DataSet();
     const dv = ds.createView('diamond').source(data);
     dv.transform({
-      // sizeByCount: true, // calculate bin size by binning count
-      type: 'bin.hexagon',
+      sizeByCount: true, // calculate bin size by binning count
+      type: 'bin.rectangle',
       fields: [ 'x', 'y' ],
       bins: [ 10, 10 ]
     });
