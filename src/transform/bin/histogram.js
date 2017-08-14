@@ -46,11 +46,15 @@ function transform(dataView, options) {
     bins[binKey].count ++;
   });
   const rows = [];
-  const [ xField, countField ] = options.as;
+  const [ asX, asCount ] = options.as;
+  if (!asX || !asCount) {
+    throw new TypeError('Invalid option: as');
+  }
+
   forIn(bins, bin => {
     const row = {};
-    row[xField] = [ bin.x0, bin.x1 ];
-    row[countField] = bin.count;
+    row[asX] = [ bin.x0, bin.x1 ];
+    row[asCount] = bin.count;
     rows.push(row);
   });
   dataView.rows = rows;

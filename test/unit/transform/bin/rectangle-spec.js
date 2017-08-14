@@ -8,7 +8,7 @@ const {
 
 describe('DataView.transform(): bin.rectangle', () => {
   const data = [];
-  for (let i = 0; i <= 10; i++) {
+  for (let i = 0; i <= 100; i++) {
     data.push({
       a: i,
       b: i
@@ -30,23 +30,27 @@ describe('DataView.transform(): bin.rectangle', () => {
       type: 'bin.rectangle',
       fields: [ 'a', 'b' ]
     });
-    expect(dv.rows[0].x).to.eql([ 0, 2, 2, 0 ]);
-    expect(dv.rows[0].y).to.eql([ 0, 0, 2, 2 ]);
-    expect(dv.rows[10].x).to.eql([ 8, 10, 10, 8 ]);
-    expect(dv.rows[10].y).to.eql([ 8, 8, 10, 10 ]);
+    expect(dv.rows.length).to.equal(31);
+    expect(dv.rows[30].count).to.equal(1);
   });
 
-  it('thresholds', () => {
+  it('bins', () => {
     dv.transform({
       type: 'bin.rectangle',
       fields: [ 'a', 'b' ],
-      thresholdsX: [ 0, 5, 11 ],
-      thresholdsY: [ 0, 5, 11 ]
+      bins: [ 20, 20 ]
     });
-    expect(dv.rows[0].x).to.eql(dv.rows[1].x);
-    expect(dv.rows[0].y).to.eql(dv.rows[1].y);
-    expect(dv.rows[9].x).to.eql(dv.rows[10].x);
-    expect(dv.rows[9].y).to.eql(dv.rows[10].y);
+    expect(dv.rows.length).to.equal(21);
+    expect(dv.rows[20].count).to.equal(1);
   });
 
+  it('binWidth', () => {
+    dv.transform({
+      type: 'bin.rectangle',
+      fields: [ 'a', 'b' ],
+      binWidth: [ 20, 20 ]
+    });
+    expect(dv.rows.length).to.equal(6);
+    expect(dv.rows[5].count).to.equal(1);
+  });
 });
