@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>data-set demos</title>
+</head>
+
+<body>
+  <div id="canvas"></div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="./assets/g2.min.js"></script>
+  <script src="../build/data-set.js"></script>
+  <script>
+    $.getJSON('../test/fixtures/top2000.json', data => {
+      // const t1 = Date.now();
+      const ds = new DataSet();
+      const dv = ds.createView('test')
+        .source(data)
+        .transform({
+          as: [ 'count' ],
+          groupBy: [ 'release' ],
+          operations: [ 'count' ],
+          type: 'aggregate'
+        });
+      // console.log(Date.now() - t1);
+
+      const chart = new G2.Chart({
+        animate: false,
+        container: 'canvas',
+        forceFit: true,
+        height: window.innerHeight
+      });
+      chart.source(dv.rows); // TODO
+      chart.scale({
+        count: {
+          alias: 'top2000 唱片总量'
+        },
+        release: {
+          tickInterval: 5,
+          alias: '唱片发行年份'
+        }
+      });
+      chart.interval()
+        .position('release*count')
+        .color('#e50000');
+      chart.render();
+    });
+  </script>
+</body>
+
+</html>

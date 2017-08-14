@@ -1,7 +1,6 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
 const clone = require('lodash/clone');
-const cloneDeep = require('lodash/cloneDeep');
 const each = require('lodash/each');
 const filter = require('lodash/filter');
 const find = require('lodash/find');
@@ -13,6 +12,7 @@ const isString = require('lodash/isString');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
 const pick = require('lodash/pick');
+const cloneItems = require('./util/clone-items');
 
 class DataView extends EventEmitter {
   // constructor
@@ -78,7 +78,7 @@ class DataView extends EventEmitter {
       me.origin = me.DataSet.getConnector(options.type)(source, options, me);
     }
     if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
-      me.rows = cloneDeep(me.origin);
+      me.rows = cloneItems(me.origin);
     }
     return me;
   }
