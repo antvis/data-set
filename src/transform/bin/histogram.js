@@ -7,16 +7,14 @@ const {
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'count' ],
-  bins: 20
+  bins: 30
   // field: '', // required
   // binWidth: 10, // override bins
 };
 
-function nearestBinsCenters(value, scale) {
+function nearestBin(value, scale) {
   const div = Math.floor(value / scale);
-  const rounded = scale * (div + (div % 2 === 1 ? 1 : 0));
-  const roundedScaled = scale * (div + (div % 2 === 1 ? 0 : 1));
-  return [ rounded, roundedScaled ];
+  return [ div * scale, (div + 1) * scale ];
 }
 
 function transform(dataView, options) {
@@ -38,18 +36,11 @@ function transform(dataView, options) {
   }
   const bins = {};
   each(column, value => {
-    const [ rounded, roundedScaled ] = nearestBinsCenters(value, binWidth);
-    let binKey;
-    const d1 = Math.abs(value - rounded);
-    const d2 = Math.abs(value - roundedScaled);
-    if (d1 < d2) {
-      binKey = rounded;
-    } else {
-      binKey = roundedScaled;
-    }
+    const [ x0, x1 ] = nearestBin(value, binWidth);
+    const binKey = `${x0}-${x1}`;
     bins[binKey] = bins[binKey] || {
-      x0: binKey - binWidth / 2,
-      x1: binKey + binWidth / 2,
+      x0,
+      x1,
       count: 0
     };
     bins[binKey].count ++;
