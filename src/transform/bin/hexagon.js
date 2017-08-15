@@ -9,10 +9,10 @@ const {
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
-  bins: [ 30, 30 ], // numeric vector giving number of bins in both horizontal and vertical directions
+  bins: [ 30, 30 ], // Numeric vector giving number of bins in both horizontal and vertical directions
+  sizeByCount: false // calculate bin size by binning count
   // fields: ['field0', 'field1'], // required
   // binWidth: [ 30, 30 ], Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
-  radiusByCount: false // calculate bin radius by binning count
 };
 const SQRT3 = Math.sqrt(3);
 const THIRD_PI = Math.PI / 3;
@@ -107,7 +107,7 @@ function transform(dataView, options) {
   const hexagonPoints = ANGLES.map(angle => [ Math.sin(angle) * radius, -Math.cos(angle) * radius ]);
   const result = [];
   let maxCount = 0;
-  if (options.radiusByCount) {
+  if (options.sizeByCount) {
     forIn(bins, bin => {
       if (bin.count > maxCount) {
         maxCount = bin.count;
@@ -118,7 +118,7 @@ function transform(dataView, options) {
     const { x, y, count } = bin;
     const row = {};
     row[asCount] = count;
-    if (options.radiusByCount) {
+    if (options.sizeByCount) {
       row[asX] = map(hexagonPoints, p => x + (bin.count / maxCount) * p[0]);
       row[asY] = map(hexagonPoints, p => (y + (bin.count / maxCount) * p[1]) / yScale);
     } else {

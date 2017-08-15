@@ -1,48 +1,63 @@
 const assign = require('lodash/assign');
 const each = require('lodash/each');
-const {
-  histogram
-} = require('d3-array');
+const forIn = require('lodash/forIn');
 const {
   registerTransform
 } = require('../../data-set');
 
 const DEFAULT_OPTIONS = {
-  as: 'x'
+  as: [ 'x', 'count' ],
+  bins: 30
   // field: '', // required
-  // domain: [/* min, max */],
-  // thresholds: [/* min, max */],
-  // TODO step?
+  // binWidth: 10, // override bins
 };
 
+function nearestBin(value, scale) {
+  const div = Math.floor(value / scale);
+  return [ div * scale, (div + 1) * scale ];
+}
+
 function transform(dataView, options) {
-  const histogramGenerator = histogram();
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = options.field;
-  const domain = options.domain;
-  const thresholds = options.thresholds;
   if (!field) {
     throw new TypeError('Invalid option: field');
   }
-  const rows = dataView.rows;
   const column = dataView.getColumn(field);
-  if (domain) {
-    histogramGenerator.domain(domain);
+  const range = dataView.range(field);
+  const width = range[1] - range[0];
+  let binWidth = options.binWidth;
+  if (!binWidth) {
+    const bins = options.bins;
+    if (bins <= 0) {
+      throw new TypeError('Invalid option: bins');
+    }
+    binWidth = width / bins;
   }
-  if (thresholds) {
-    histogramGenerator.thresholds(thresholds);
+  const bins = {};
+  each(column, value => {
+    const [ x0, x1 ] = nearestBin(value, binWidth);
+    const binKey = `${x0}-${x1}`;
+    bins[binKey] = bins[binKey] || {
+      x0,
+      x1,
+      count: 0
+    };
+    bins[binKey].count ++;
+  });
+  const rows = [];
+  const [ asX, asCount ] = options.as;
+  if (!asX || !asCount) {
+    throw new TypeError('Invalid option: as');
   }
-  const binByValue = {};
-  each(histogramGenerator(column), bin => {
-    each(bin, value => {
-      const currentBin = binByValue[value] = {};
-      currentBin[options.as] = [ bin.x0, bin.x1 ];
-    });
+
+  forIn(bins, bin => {
+    const row = {};
+    row[asX] = [ bin.x0, bin.x1 ];
+    row[asCount] = bin.count;
+    rows.push(row);
   });
-  each(rows, row => {
-    const bin = binByValue[row[field]];
-    assign(row, bin);
-  });
+  dataView.rows = rows;
 }
 
 registerTransform('bin.histogram', transform);

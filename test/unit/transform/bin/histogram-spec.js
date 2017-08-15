@@ -29,27 +29,27 @@ describe('DataView.transform(): bin.histogram', () => {
       type: 'bin.histogram',
       field: 'a'
     });
-    expect(dv.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
-    expect(dv.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
+    const firstRow = dv.rows[0];
+    expect(firstRow.x[1] - firstRow.x[0]).to.equal(100 / 30);
   });
 
-  it('domain', () => {
+  it('bins', () => {
     dv.transform({
       type: 'bin.histogram',
       field: 'a',
-      domain: [ 10, 100 ]
+      bins: 10
     });
-    expect(dv.rows[0]).to.eql({ a: 0 });
-    expect(dv.rows[99]).to.eql({ a: 99, x: [ 90, 100 ] });
+    expect(dv.rows[0]).to.eql({ x: [ 0, 10 ], count: 10 });
+    expect(dv.rows[10]).to.eql({ x: [ 100, 110 ], count: 1 });
   });
 
-  it('thresholds', () => {
+  it('binWidth', () => {
     dv.transform({
       type: 'bin.histogram',
       field: 'a',
-      thresholds: [ 0, 10, 100 ]
+      binWidth: 10
     });
-    expect(dv.rows[0]).to.eql({ a: 0, x: [ 0, 10 ] });
-    expect(dv.rows[99]).to.eql({ a: 99, x: [ 10, 100 ] });
+    expect(dv.rows[0]).to.eql({ x: [ 0, 10 ], count: 10 });
+    expect(dv.rows[10]).to.eql({ x: [ 100, 110 ], count: 1 });
   });
 });
