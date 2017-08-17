@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Quantile Binning</title>
+</head>
+
+<body>
+  <div id="canvas"></div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="./assets/g2.min.js"></script>
+  <script src="../build/data-set.js"></script>
+  <script>
+    $.getJSON('../test/fixtures/iris.json', data => {
+      const ds = new DataSet();
+      const dv = ds.createView().source(data)
+        .transform({
+          type: 'fold',
+          key: 'type',
+          fields: [ '萼片长度', '萼片宽度', '花瓣长度', '花瓣宽度' ]
+        })
+        .transform({
+          type: 'bin.quantile',
+          groupBy: [ 'type', '品种' ],
+          field: 'value',
+          as: 'bin'
+        });
+      const chart = new G2.Chart({
+        container: 'canvas',
+        forceFit: true,
+        height: window.innerHeight
+      });
+      chart.source(dv);
+      chart.schema()
+        .position('type*bin', 'dodge')
+        .color('品种')
+        .shape('box')
+        .size(15);
+      chart.render();
+    });
+  </script>
+</body>
+
+</html>
