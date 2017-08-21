@@ -10,6 +10,7 @@ const {
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
   bins: [ 30, 30 ], // Numeric vector giving number of bins in both horizontal and vertical directions
+  offset: [ 0, 0 ],
   sizeByCount: false // calculate bin size by binning count
   // fields: ['field0', 'field1'], // required
   // binWidth: [ 30, 30 ], Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
@@ -21,21 +22,23 @@ const ANGLES = [ 0, THIRD_PI, 2 * THIRD_PI, 3 * THIRD_PI, 4 * THIRD_PI, 5 * THIR
 function distance(x0, y0, x1, y1) {
   return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
 }
-function nearestBinsCenters(value, scale) {
+function nearestBinsCenters(value, scale, offset) {
+  const temp = value - offset;
   scale = scale / 2;
-  const div = Math.floor(value / scale);
-  const rounded = scale * (div + (div % 2 === 1 ? 1 : 0));
-  const roundedScaled = scale * (div + (div % 2 === 1 ? 0 : 1));
-  return [ rounded, roundedScaled ];
+  const div = Math.floor(temp / scale);
+  const rounded = scale * (div + (Math.abs(div % 2) === 1 ? 1 : 0));
+  const roundedScaled = scale * (div + (Math.abs(div % 2) === 1 ? 0 : 1));
+  return [ rounded + offset, roundedScaled + offset ];
 }
-function generateBins(points, binWidth = [ 1, 1 ]) { // processing aligned data
+function generateBins(points, binWidth = [ 1, 1 ], offset = [ 0, 0 ]) { // processing aligned data
   const bins = {};
   const [ binWidthX, binWidthY ] = binWidth;
+  const [ offsetX, offsetY ] = offset;
   each(points, point => {
     const [ x, y ] = point;
     // step3.1: nearest two centers
-    const [ xRounded, xRoundedScaled ] = nearestBinsCenters(x, binWidthX);
-    const [ yRounded, yRoundedScaled ] = nearestBinsCenters(y, binWidthY);
+    const [ xRounded, xRoundedScaled ] = nearestBinsCenters(x, binWidthX, offsetX);
+    const [ yRounded, yRoundedScaled ] = nearestBinsCenters(y, binWidthY, offsetY);
     // step3.2: compare distances
     const d1 = distance(x, y, xRounded, yRounded);
     const d2 = distance(x, y, xRoundedScaled, yRoundedScaled);
@@ -93,11 +96,12 @@ function transform(dataView, options) {
    *
    *           0
    */
+  const [ offsetX, offsetY ] = options.offset;
   const yScale = 3 * binWidth[0] / (SQRT3 * binWidth[1]);
   // const yScale = binWidth[0] / (SQRT3 * binWidth[1]);
   const points = map(dataView.rows, row => [ row[fieldX], yScale * row[fieldY] ]);
   // step3: binning
-  const bins = generateBins(points, [ binWidth[0], yScale * binWidth[1] ]);
+  const bins = generateBins(points, [ binWidth[0], yScale * binWidth[1] ], [ offsetX, yScale * offsetY ]);
   // step4: restore scale (for Y)
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
