@@ -8,6 +8,7 @@ const forIn = require('lodash/forIn');
 const indexOf = require('lodash/indexOf');
 const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
+const isObject = require('lodash/isObject');
 const isString = require('lodash/isString');
 const keys = require('lodash/keys');
 const map = require('lodash/map');
@@ -70,6 +71,9 @@ class DataView extends EventEmitter {
       } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = source;
+      } else if (isObject(source) && source.type) {
+        options = me._preparseOptions(source); // connector without source
+        me.origin = me.DataSet.getConnector(options.type)(options, me);
       } else {
         throw new TypeError('Invalid source');
       }

@@ -6,6 +6,7 @@ require('./src/api/statistics.js');
 // connectors
 require('./src/connector/default');
 require('./src/connector/dsv');
+require('./src/connector/geo-graticule');
 require('./src/connector/geojson');
 require('./src/connector/hierarchy');
 require('./src/connector/topojson');
