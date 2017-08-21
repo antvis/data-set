@@ -2,6 +2,7 @@ const assign = require('lodash/assign');
 const d3Geo = require('d3-geo');
 const each = require('lodash/each');
 const isArray = require('lodash/isArray');
+const filter = require('lodash/filter');
 const getPointAtLength = require('point-at-length');
 const {
   registerTransform
@@ -17,7 +18,7 @@ const DEFAULT_OPTIONS = {
 };
 
 function transform(dataView, options) {
-  if (dataView.dataType !== 'geo') {
+  if (dataView.dataType !== 'geo' && dataView.dataType !== 'geo-graticule') {
     throw new TypeError('This transform is for Geo data only');
   }
   options = assign({}, DEFAULT_OPTIONS, options);
@@ -32,10 +33,7 @@ function transform(dataView, options) {
     throw new TypeError('Invalid option: as');
   }
   dataView._projectedAs = as;
-  const lonField = as[0];
-  const latField = as[1];
-  const centroidX = as[2];
-  const centroidY = as[3];
+  const [ lonField, latField, centroidX, centroidY ] = as;
   each(dataView.rows, row => {
     row[lonField] = [];
     row[latField] = [];
@@ -52,6 +50,7 @@ function transform(dataView, options) {
       row[centroidY] = centroid[1];
     }
   });
+  dataView.rows = filter(dataView.rows, row => row[lonField].length !== 0);
 }
 
 registerTransform('geo.projection', transform);
