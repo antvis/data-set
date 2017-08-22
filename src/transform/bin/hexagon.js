@@ -13,7 +13,7 @@ const DEFAULT_OPTIONS = {
   offset: [ 0, 0 ],
   sizeByCount: false // calculate bin size by binning count
   // fields: ['field0', 'field1'], // required
-  // binWidth: [ 30, 30 ], Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
+  // binWidth: [ 30, 30 ], // Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
 };
 const SQRT3 = Math.sqrt(3);
 const THIRD_PI = Math.PI / 3;
