@@ -7,14 +7,16 @@ const {
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'count' ],
-  bins: 30
+  bins: 30,
+  offset: 0
   // field: '', // required
   // binWidth: 10, // override bins
 };
 
-function nearestBin(value, scale) {
-  const div = Math.floor(value / scale);
-  return [ div * scale, (div + 1) * scale ];
+function nearestBin(value, scale, offset) {
+  const temp = value - offset;
+  const div = Math.floor(temp / scale);
+  return [ div * scale + offset, (div + 1) * scale + offset ];
 }
 
 function transform(dataView, options) {
@@ -34,9 +36,10 @@ function transform(dataView, options) {
     }
     binWidth = width / bins;
   }
+  const offset = options.offset % binWidth;
   const bins = {};
   each(column, value => {
-    const [ x0, x1 ] = nearestBin(value, binWidth);
+    const [ x0, x1 ] = nearestBin(value, binWidth, offset);
     const binKey = `${x0}-${x1}`;
     bins[binKey] = bins[binKey] || {
       x0,

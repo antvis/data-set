@@ -10,41 +10,72 @@
 </head>
 
 <body>
-  <div id="canvas"></div>
-  <script src="./assets/g2.min.js"></script>
-  <script src="./assets/d3-4.10.0.min.js"></script>
-  <script src="../build/data-set.js"></script>
-  <script>
-    // random (Gaussion) distribution data
-    const randomX = d3.randomNormal(500, 80);
-    const randomY = d3.randomNormal(500, 80);
-    const data = d3.range(2000).map(() => {
-      return {
-        x: randomX(),
-        y: randomY()
-      };
+<div id="canvas"></div>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  const data = [];
+  for (let i = 0; i < 1000; i++) {
+    data.push({
+      x: Math.random() * 10,
+      y: Math.random() * 10
+    });
+  }
+  const ds = new DataSet();
+  const dv = ds.createView().source(data);
+  dv.transform({
+    // sizeByCount: true, // calculate bin size by binning count
+    type: 'bin.rectangle',
+    fields: [ 'x', 'y' ],
+    // offset: [ -0.1, -0.1 ],
+    binWidth: [ 1, 1 ]
+  });
+  const chart = new G2.Chart({
+    container: 'canvas',
+    forceFit: true,
+    height: window.innerHeight
+  });
+
+  chart.scale({
+    x: {
+      sync: true
+    },
+    y: {
+      sync: true
+    }
+  });
+
+  const binView = chart.view();
+  binView.source(dv);
+  binView.axis('x', {
+    grid: {
+      lineStyle: {
+        stroke: '#d9d9d9',
+        lineWidth: 1,
+        lineDash: [ 2, 2 ]
+      }
+    }
+  });
+  binView.tooltip(false);
+  binView.polygon()
+    .position('x*y')
+    .color('count', [ 'rgb(255, 255, 200)', 'rgb(255, 255, 0)' ])
+    .style({
+      stroke: 'green',
+      lineWidth: 0.5
     });
 
-    const ds = new DataSet();
-    const dv = ds.createView('diamond').source(data);
-    dv.transform({
-      sizeByCount: true, // calculate bin size by binning count
-      type: 'bin.rectangle',
-      fields: [ 'x', 'y' ],
-      bins: [ 10, 10 ]
-    });
-    const chart = new G2.Chart({
-      container: 'canvas',
-      forceFit: true,
-      height: window.innerHeight
-    });
-    chart.source(dv);
-    chart.tooltip(false);
-    chart.polygon()
-      .position('x*y')
-      .color('count', [ 'rgb(200, 200, 255)', 'rgb(0, 0, 255)' ]);
-    chart.render();
-  </script>
+  const pointView = chart.view();
+  pointView.source(data);
+  pointView.tooltip(false);
+  pointView.point()
+    .position('x*y')
+    .size(2)
+    .shape('circle')
+    .color('grey');
+
+  chart.render();
+</script>
 </body>
 
 </html>

@@ -9,14 +9,16 @@ const {
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
   bins: [ 30, 30 ], // Numeric vector giving number of bins in both horizontal and vertical directions
+  offset: [ 0, 0 ],
   sizeByCount: false // calculate bin size by binning count
   // fields: ['field0', 'field1'], // required
   // binWidth: [ 30, 30 ], // Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
 };
 
-function nearestBin(value, scale) {
-  const div = Math.floor(value / scale);
-  return [ div * scale, (div + 1) * scale ];
+function nearestBin(value, scale, offset) {
+  const temp = value - offset;
+  const div = Math.floor(temp / scale);
+  return [ div * scale + offset, (div + 1) * scale + offset ];
 }
 
 function transform(dataView, options) {
@@ -36,9 +38,10 @@ function transform(dataView, options) {
   }
   const points = map(dataView.rows, row => [ row[fieldX], row[fieldY] ]);
   const bins = {};
+  const [ offsetX, offsetY ] = options.offset;
   each(points, point => {
-    const [ x0, x1 ] = nearestBin(point[0], binWidth[0]);
-    const [ y0, y1 ] = nearestBin(point[1], binWidth[1]);
+    const [ x0, x1 ] = nearestBin(point[0], binWidth[0], offsetX);
+    const [ y0, y1 ] = nearestBin(point[1], binWidth[1], offsetY);
     const binKey = `${x0}-${x1}-${y0}-${y1}`;
     bins[binKey] = bins[binKey] || {
       x0,
