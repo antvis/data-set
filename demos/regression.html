@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Regression</title>
+</head>
+
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/diamond.json', data => {
+    const ds = new DataSet();
+
+    const chart = new G2.Chart({
+      animate: false,
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+    chart.scale({
+      carat: {
+        sync: true
+      },
+      price: {
+        sync: true
+      }
+    });
+
+    // background
+    const pointsView = chart.view();
+    pointsView.source(data);
+    pointsView.point().position('carat*price');
+
+    const REGRESSION_METHODS = [
+      'linear',
+      'exponential',
+      'logarithmic',
+      'power',
+      'polynomial'
+    ];
+    REGRESSION_METHODS.forEach(method => {
+      const dv = ds.createView(method).source(data)
+        .transform({
+          type: 'regression',
+          method,
+          fields: [ 'carat', 'price' ],
+          bandwidth: 0.1,
+          extent: [ 0, 4 ],
+          as: [ 'carat', 'price' ]
+        });
+      const view = chart.view();
+      view.source(dv);
+      view.line().position('carat*price');
+    });
+
+    chart.render();
+  });
+</script>
+</body>
+
+</html>
+
