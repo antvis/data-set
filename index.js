@@ -29,6 +29,8 @@ require('./src/transform/fill-rows');
 require('./src/transform/impute');
 // statistics
 require('./src/transform/aggregate');
+// regression
+require('./src/transform/regression');
 // binning
 require('./src/transform/bin/hexagon');
 require('./src/transform/bin/histogram');
