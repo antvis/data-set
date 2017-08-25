@@ -22,6 +22,7 @@ registerTransform('fold', (dataView, options) => {
     throw new TypeError('Invalid option `fields`: expected an array.');
   }
   if (fields.length === 0) {
+    console.warn('warning: option \'fields\' is not specified, will fold all columns.');
     fields = columns;
   }
   const key = options.key;
