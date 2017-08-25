@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>folding transform</title>
+</head>
+<body>
+<div id="canvas"></div>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  const data = [
+    { name: 'Nailpolish', Florida: 12814, Texas: 3054, Arizona: 4376, Nevada: 4229 },
+    { name: 'Eyebrowpencil', Florida: 13012, Texas: 5067, Arizona: 3987, Nevada: 3932 },
+    { name: 'Rouge', Florida: 11624, Texas: 7004, Arizona: 3574, Nevada: 5221 },
+    { name: 'Pomade', Florida: 8814, Texas: 9054, Arizona: 4376, Nevada: 9256 },
+    { name: 'Eyeshadows', Florida: 12998, Texas: 12043, Arizona: 4572, Nevada: 3308 },
+    { name: 'Eyeliner', Florida: 12321, Texas: 15067, Arizona: 3417, Nevada: 5432 },
+    { name: 'Foundation', Florida: 10342, Texas: 10119, Arizona: 5231, Nevada: 13701 },
+    { name: 'Lipgloss', Florida: 22998, Texas: 12043, Arizona: 4572, Nevada: 4008 },
+    { name: 'Mascara', Florida: 11261, Texas: 10419, Arizona: 6134, Nevada: 18712 },
+    { name: 'Powder', Florida: 10261, Texas: 14419, Arizona: 5134, Nevada: 25712 }
+  ];
+
+  const chart = new G2.Chart({
+    container: 'canvas',
+    forceFit: true,
+    height: window.innerHeight,
+    plotBackground: {
+      stroke: '#eee',
+      fill: '#fbfffb'
+    }
+  });
+
+  const ds = new DataSet();
+  const dv = ds.createView('tt');
+  dv.source(data);
+  dv.transform({
+    type: 'fold',
+    fields: [ 'Florida', 'Texas', 'Arizona', 'Nevada' ],
+    value: 'Revenue',
+    key: 'key'
+  });
+
+  chart.source(dv);
+
+  chart.area()
+    .position('name*Revenue')
+    .color('key')
+    .shape('smooth');
+
+  chart.render();
+</script>
+</body>
+</html>
