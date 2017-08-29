@@ -17,12 +17,12 @@
 <script>
   $.getJSON('../test/fixtures/diamond.json', data => {
     const ds = new DataSet();
-    const dv = ds.createView('diamond').source(data);
+    const dv = ds.createView().source(data);
     dv.transform({
       type: 'bin.histogram',
       field: 'depth',
       binWidth: 1,
-      offset: 0.3,
+      // offset: -0.3,
       as: [ 'depth', 'count' ]
     });
     const chart = new G2.Chart({
@@ -31,6 +31,15 @@
       height: window.innerHeight
     });
     chart.source(dv);
+    chart.axis('depth', {
+      grid: {
+        lineStyle: {
+          stroke: '#d9d9d9',
+          lineWidth: 1,
+          lineDash: [ 2, 2 ]
+        }
+      }
+    });
     chart.interval()
       .position('depth*count')
       .color('yellow')

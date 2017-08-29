@@ -18,14 +18,13 @@
     $.getJSON('../test/fixtures/top2000.json', data => {
       // const t1 = Date.now();
       const ds = new DataSet();
-      const dv = ds.createView('test')
-        .source(data)
-        .transform({
-          as: [ 'count' ],
-          groupBy: [ 'release' ],
-          operations: [ 'count' ],
-          type: 'aggregate'
-        });
+      const dv = ds.createView().source(data);
+      dv.transform({
+        as: [ 'count' ],
+        groupBy: [ 'release' ],
+        operations: [ 'count' ],
+        type: 'aggregate'
+      });
       // console.log(Date.now() - t1);
 
       const chart = new G2.Chart({

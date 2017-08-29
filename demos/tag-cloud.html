@@ -94,9 +94,7 @@
         chart.point()
           .position('x*y')
           .color('text')
-          .size('size', function(size) {
-            return size;
-          })
+          .size('size', size => size)
           .shape('cloud');
         chart.tooltip('site*pv');
         chart.render();
