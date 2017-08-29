@@ -6,13 +6,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="./assets/common.css">
-  <title>Arc Diagram</title>
+  <title>Chord Diagram</title>
 </head>
 
 <body>
 <div id="canvas"></div>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="./assets/g2.min.js"></script>
+<!--<script src="./assets/g2.js"></script>-->
 <script src="../build/data-set.js"></script>
 <script>
   $.getJSON('../test/fixtures/relationship-with-weight.json', data => {
@@ -24,8 +25,10 @@
     });
     dv.transform({
       type: 'diagram.arc',
-      marginRatio: 0.5,
-      sortBy: 'frequency' // id, weight, frequency, {function}
+      sourceWeight: e => e.sourceWeight,
+      targetWeight: e => e.targetWeight,
+      weight: true,
+      marginRatio: 0.3
     });
 
     const chart = new G2.Chart({
@@ -38,6 +41,15 @@
       showTitle: false
     });
 
+    chart.scale({
+      x: {
+        sync: true
+      },
+      y: {
+        sync: true
+      }
+    });
+
     const edgeView = chart.view();
     edgeView.source(dv.edges);
     edgeView.coord('polar').reflect('y');
@@ -47,29 +59,15 @@
       .shape('arc')
       .color('source')
       .opacity(0.5)
-      .tooltip('source*target');
+      .tooltip('source*target*value');
 
     const nodeView = chart.view();
     nodeView.source(dv.nodes);
     nodeView.coord('polar').reflect('y');
     nodeView.axis(false);
-    nodeView.point()
+    nodeView.polygon()
       .position('x*y')
-      .shape('circle')
-      .size('value')
       .color('id')
-      .opacity(0.5)
-      .style({
-        stroke: 'grey'
-      })
-//      .label('name', { // label configuration for non-polar coord
-//        offset: -10,
-//        textStyle: {
-//          textAlign: 'left',
-//          rotate: 90,
-//          fill: 'black',
-//        }
-//      });
       .label('name', {
         labelEmit: true,
         textStyle: {

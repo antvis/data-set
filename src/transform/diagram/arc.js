@@ -14,7 +14,7 @@ const {
 const DEFAULT_OPTIONS = {
   y: 0,
   thickness: 0.05, // thickness of the node, (0, 1)
-  weight: true,
+  weight: false,
   marginRatio: 0.1, // margin ratio, [0, 1)
   id: node => node.id,
   source: edge => edge.source,
@@ -45,8 +45,8 @@ function _nodesFromEdges(edges, options, map = {}) {
 function _processGraph(nodeById, edges, options) {
   forIn(nodeById, (node, id) => {
     // in edges, out edges
-    node.inEdges = edges.filter(edge => options.target(edge) === id);
-    node.outEdges = edges.filter(edge => options.source(edge) === id);
+    node.inEdges = edges.filter(edge => `${options.target(edge)}` === `${id}`);
+    node.outEdges = edges.filter(edge => `${options.source(edge)}` === `${id}`);
     // frequency
     node.edges = node.outEdges.concat(node.inEdges);
     node.frequency = node.edges.length;
@@ -65,7 +65,7 @@ function _sortNodes(nodes, options) {
   const sortMethods = {
     weight: (a, b) => b.value - a.value,
     frequency: (a, b) => b.frequency - a.frequency,
-    id: (a, b) => `${options.id(a)}`.localeCompare(`${options.id(b)}`)
+    id: (a, b) => (`${options.id(a)}`).localeCompare(`${options.id(b)}`)
   };
   let method = sortMethods[options.sortBy];
   if (!method && isFunction(options.sortBy)) {
@@ -99,7 +99,6 @@ function _layoutNodes(nodes, options) {
       node.weight = node.value / totalValue;
       node.width = node.weight * (1 - marginRatio);
       node.height = thickness;
-      node.y = options.y;
     });
     nodes.forEach((node, index) => {
       // x
@@ -107,7 +106,19 @@ function _layoutNodes(nodes, options) {
       for (let i = index - 1; i >= 0; i--) {
         deltaX += nodes[i].width + 2 * margin;
       }
-      node.x = margin + 0.5 * node.width + deltaX;
+      const minX = node.minX = margin + deltaX;
+      const maxX = node.maxX = node.minX + node.width;
+      const minY = node.minY = options.y - thickness / 2;
+      const maxY = node.maxY = minY + thickness;
+      node.x = [ minX, maxX, maxX, minX ];
+      node.y = [ minY, minY, maxY, maxY ];
+      /* points
+       * 3---2
+       * |   |
+       * 0---1
+       */
+      // node.x = minX + 0.5 * node.width;
+      // node.y = options.y;
     });
   } else {
     const deltaX = 1 / len;
@@ -119,25 +130,44 @@ function _layoutNodes(nodes, options) {
 }
 
 function _locatingEdges(nodeById, edges, options) {
-  edges.forEach(edge => {
-    const sNode = nodeById[options.source(edge)];
-    const tNode = nodeById[options.target(edge)];
-    if (sNode && tNode) {
-      if (options.weight) {
-        const sStart = sNode.x - 0.5 * sNode.width;
-        const tStart = tNode.x - 0.5 * tNode.width;
-        const sWeight = options.sourceWeight(edge) * sNode.width / sNode.value;
-        const tWeight = options.targetWeight(edge) * tNode.width / tNode.value;
-        const sEnd = sStart + sWeight;
-        const tEnd = tStart + tWeight;
+  if (options.weight) {
+    const valueById = {};
+    forIn(nodeById, (node, id) => {
+      valueById[id] = node.value;
+    });
+    edges.forEach(edge => {
+      const sId = options.source(edge);
+      const tId = options.target(edge);
+      const sNode = nodeById[sId];
+      const tNode = nodeById[tId];
+      if (sNode && tNode) {
+        const sValue = valueById[sId];
+        const currentSValue = options.sourceWeight(edge);
+        const sStart = sNode.minX + ((sNode.value - sValue) / sNode.value) * sNode.width;
+        const sEnd = sStart + currentSValue / sNode.value * sNode.width;
+        valueById[sId] -= currentSValue;
+
+        const tValue = valueById[tId];
+        const currentTValue = options.targetWeight(edge);
+        const tStart = tNode.minX + ((tNode.value - tValue) / tNode.value) * tNode.width;
+        const tEnd = tStart + currentTValue / tNode.value * tNode.width;
+        valueById[tId] -= currentTValue;
+
+        const y = options.y;
         edge.x = [ sStart, sEnd, tStart, tEnd ];
-        edge.y = [ sNode.y, sNode.y, tNode.y, tNode.y ];
-      } else {
+        edge.y = [ y, y, y, y ];
+      }
+    });
+  } else {
+    edges.forEach(edge => {
+      const sNode = nodeById[options.source(edge)];
+      const tNode = nodeById[options.target(edge)];
+      if (sNode && tNode) {
         edge.x = [ sNode.x, tNode.x ];
         edge.y = [ sNode.y, tNode.y ];
       }
-    }
-  });
+    });
+  }
 }
 
 function transform(dv, options) {
