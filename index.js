@@ -8,6 +8,7 @@ require('./src/connector/default');
 require('./src/connector/dsv');
 require('./src/connector/geo-graticule');
 require('./src/connector/geojson');
+require('./src/connector/graph');
 require('./src/connector/hierarchy');
 require('./src/connector/topojson');
 
@@ -41,6 +42,7 @@ require('./src/transform/geo/centroid');
 require('./src/transform/geo/projection');
 require('./src/transform/geo/region');
 // diagram
+require('./src/transform/diagram/arc');
 require('./src/transform/diagram/voronoi');
 // hierarchy
 require('./src/transform/hierarchy/treemap');
