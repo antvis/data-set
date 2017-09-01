@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const isNil = require('lodash/isNil');
+const isObject = require('lodash/isObject');
 const uniqueId = require('lodash/uniqueId');
 const EventEmitter = require('wolfy87-eventemitter');
 const DataView = require('./data-view');
@@ -25,15 +26,19 @@ class DataSet extends EventEmitter {
     return name;
   }
 
-  createView(name) {
+  createView(name, options = {}) {
     const me = this;
     if (isNil(name)) {
+      name = me._getUniqueViewName();
+    }
+    if (isObject(name)) {
+      options = name;
       name = me._getUniqueViewName();
     }
     if (me.views[name]) {
       throw new Error(`data view exists: ${name}`);
     }
-    const view = new DataView(me);
+    const view = new DataView(me, options);
     me.views[name] = view;
     return view;
   }
@@ -54,7 +59,7 @@ class DataSet extends EventEmitter {
       me._onChangeTimer = null;
     }
     me._onChangeTimer = setTimeout(() => {
-      me.trigger('statechange');
+      me.emit('statechange', name, value);
     }, 16); // execute after one frame
   }
 }
@@ -79,6 +84,12 @@ assign(DataSet, {
 
   getTransform(name) {
     return DataSet.transforms[name] || DataSet.transforms.default;
+  }
+});
+
+assign(DataSet.prototype, {
+  view(name, options) {
+    this.createView(name, options);
   }
 });
 

@@ -17,7 +17,7 @@ const cloneItems = require('./util/clone-items');
 
 class DataView extends EventEmitter {
   // constructor
-  constructor(dataSet) {
+  constructor(dataSet, options) {
     super();
     const me = this;
     if (!dataSet || !dataSet.isDataSet) {
@@ -30,10 +30,18 @@ class DataView extends EventEmitter {
       isDataView: true,
       origin: [],
       rows: [],
-      transforms: []
-    });
-    dataSet.on('statechange', () => {
-      me._reExecute();
+      transforms: [],
+      watchingStates: null
+    }, options);
+    const { watchingStates } = me;
+    dataSet.on('statechange', name => {
+      if (isArray(watchingStates)) {
+        if (indexOf(watchingStates, name) > -1) {
+          me._reExecute();
+        }
+      } else {
+        me._reExecute();
+      }
     });
   }
 
