@@ -63,4 +63,23 @@ describe('DataSet', () => {
       expect(count).to.equal(1);
     }, 16);
   });
+
+  it('setState(name, value): DataView watching or not watching', () => {
+    let emittedCount = 0;
+    const ds = new DataSet();
+    const dv = ds.createView({
+      watchingStates: [
+        'foo'
+      ]
+    });
+    dv.on('change', () => {
+      emittedCount++;
+    });
+    ds.setState('hello', 'world');
+    ds.setState('foo', 'bar');
+    expect(emittedCount).to.equal(0);
+    setTimeout(() => {
+      expect(emittedCount).to.equal(1);
+    }, 16);
+  });
 });
