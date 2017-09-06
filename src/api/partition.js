@@ -1,0 +1,14 @@
+const assign = require('lodash/assign');
+const values = require('lodash/values');
+const partition = require('../util/partition');
+const DataView = require('../data-view');
+
+assign(DataView.prototype, {
+  partition(group_by = [], order_by = []) {
+    return partition(this.rows, group_by, order_by);
+  },
+  groups(group_by, order_by) {
+    const groups = this.partition(group_by, order_by);
+    return values(groups);
+  }
+});
