@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const values = require('lodash/values');
 const {
   registerTransform
 } = require('../data-set');
@@ -9,10 +10,15 @@ const DEFAULT_OPTIONS = {
   orderBy: []
 };
 
-function transform(dataView, options = {}) {
+registerTransform('partition', (dataView, options = {}) => {
   options = assign({}, DEFAULT_OPTIONS, options);
   dataView.rows = partition(dataView.rows, options.groupBy, options.orderBy);
+});
+
+function group(dataView, options = {}) {
+  options = assign({}, DEFAULT_OPTIONS, options);
+  dataView.rows = values(partition(dataView.rows, options.groupBy, options.orderBy));
 }
 
-registerTransform('partition', transform);
-registerTransform('group', transform);
+registerTransform('group', group);
+registerTransform('groups', group);
