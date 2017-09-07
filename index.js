@@ -1,7 +1,8 @@
 // extra APIs
-require('./src/api/geo.js');
-require('./src/api/hierarchy.js');
-require('./src/api/statistics.js');
+require('./src/api/geo');
+require('./src/api/hierarchy');
+require('./src/api/partition');
+require('./src/api/statistics');
 
 // connectors
 require('./src/connector/default');
@@ -18,6 +19,7 @@ require('./src/transform/default');
 require('./src/transform/filter');
 require('./src/transform/fold');
 require('./src/transform/map');
+require('./src/transform/partition');
 require('./src/transform/percent');
 require('./src/transform/pick');
 require('./src/transform/proportion');
