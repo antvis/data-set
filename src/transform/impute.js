@@ -2,6 +2,7 @@ const assign = require('lodash/assign');
 const each = require('lodash/each');
 const filter = require('lodash/filter');
 const has = require('lodash/has');
+const isFunction = require('lodash/isFunction');
 const isNil = require('lodash/isNil');
 const map = require('lodash/map');
 const simpleStatistics = require('simple-statistics');
@@ -29,9 +30,9 @@ const STATISTICS_METHODS = [
 ];
 const imputations = {};
 each(STATISTICS_METHODS, method => {
-  imputations[method] = values => simpleStatistics[method](values);
+  imputations[method] = (row, values) => simpleStatistics[method](values);
 });
-imputations.value = (values, value) => value;
+imputations.value = (row, values, value) => value;
 
 function transform(dataView, options = {}) {
   const rows = dataView.rows;
@@ -51,7 +52,11 @@ function transform(dataView, options = {}) {
     }
     each(group, row => {
       if (isNil(row[field])) {
-        row[field] = imputations[method](fieldValues, options.value);
+        if (isFunction(method)) {
+          row[field] = method(row, fieldValues, options.value, group);
+        } else {
+          row[field] = imputations[method](row, fieldValues, options.value);
+        }
       }
     });
   });
