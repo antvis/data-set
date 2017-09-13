@@ -20,12 +20,15 @@ class DataView extends EventEmitter {
   constructor(dataSet, options) {
     super();
     const me = this;
-    if (!dataSet || !dataSet.isDataSet) {
-      throw new TypeError('Not a valid DataSet instance');
+    options = options || {};
+    dataSet = dataSet || {};
+    if (!dataSet.isDataSet) {
+      options = dataSet;
+      dataSet = null;
     }
     assign(me, {
-      DataSet: dataSet.DataSet,
       dataSet,
+      loose: !dataSet,
       dataType: 'table',
       isDataView: true,
       origin: [],
@@ -33,16 +36,18 @@ class DataView extends EventEmitter {
       transforms: [],
       watchingStates: null
     }, options);
-    const { watchingStates } = me;
-    dataSet.on('statechange', name => {
-      if (isArray(watchingStates)) {
-        if (indexOf(watchingStates, name) > -1) {
+    if (!me.loose) {
+      const { watchingStates } = me;
+      dataSet.on('statechange', name => {
+        if (isArray(watchingStates)) {
+          if (indexOf(watchingStates, name) > -1) {
+            me._reExecute();
+          }
+        } else {
           me._reExecute();
         }
-      } else {
-        me._reExecute();
-      }
-    });
+      });
+    }
   }
 
   _parseStateExpression(expr) {
@@ -57,6 +62,9 @@ class DataView extends EventEmitter {
   _preparseOptions(options) {
     const me = this;
     const optionsCloned = clone(options);
+    if (me.loose) {
+      return optionsCloned;
+    }
     forIn(optionsCloned, (value, key) => {
       if (isString(value) && /^\$state\./.test(value)) {
         optionsCloned[key] = me._parseStateExpression(value);
@@ -75,19 +83,19 @@ class DataView extends EventEmitter {
     };
     if (!options) {
       if (source instanceof DataView || isString(source)) {
-        me.origin = me.DataSet.getConnector('default')(source, me.dataSet);
+        me.origin = DataView.DataSet.getConnector('default')(source, me.dataSet);
       } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = source;
       } else if (isObject(source) && source.type) {
         options = me._preparseOptions(source); // connector without source
-        me.origin = me.DataSet.getConnector(options.type)(options, me);
+        me.origin = DataView.DataSet.getConnector(options.type)(options, me);
       } else {
         throw new TypeError('Invalid source');
       }
     } else {
       options = me._preparseOptions(options);
-      me.origin = me.DataSet.getConnector(options.type)(source, options, me);
+      me.origin = DataView.DataSet.getConnector(options.type)(source, options, me);
     }
     if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
       me.rows = cloneItems(me.origin);
@@ -105,7 +113,7 @@ class DataView extends EventEmitter {
   _executeTransform(options) {
     const me = this;
     options = me._preparseOptions(options);
-    const transform = me.DataSet.getTransform(options.type);
+    const transform = DataView.DataSet.getTransform(options.type);
     transform(me, options);
   }
   _reExecuteTransforms() {

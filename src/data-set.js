@@ -87,6 +87,8 @@ assign(DataSet, {
   }
 });
 
+DataView.DataSet = DataSet;
+
 assign(DataSet.prototype, {
   view(name, options) {
     this.createView(name, options);
