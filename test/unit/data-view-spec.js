@@ -9,6 +9,7 @@ const {
 } = require('chai');
 const DataSet = require('../../src/data-set');
 const DataView = require('../../src/data-view');
+require('../../src/transform/map');
 const populationChina = require('../fixtures/population-china.json');
 
 describe('DataView', () => {
@@ -27,7 +28,6 @@ describe('DataView', () => {
   it('Constructor', () => {
     expect(DataView).to.be.a('function');
     expect(dv).to.be.an('object');
-    expect(() => { new DataView(); }).to.throw();
   });
 
   // rows
@@ -92,5 +92,24 @@ describe('DataView', () => {
   it('toString(prettyPrint)', () => {
     expect(dv.toString()).to.equal(JSON.stringify(populationChina));
     expect(dv.toString(true)).to.equal(JSON.stringify(populationChina, null, 2));
+  });
+
+  // loose mode
+  it('loose mode', () => {
+    expect(() => {
+      new DataView();
+      new DataView({});
+    }).to.not.throw();
+
+    const dv = new DataView()
+      .source(populationChina)
+      .transform({
+        type: 'map',
+        callback(row) {
+          row.loose = true;
+          return row;
+        }
+      });
+    expect(dv.rows[0].loose).to.equal(true);
   });
 });
