@@ -33,8 +33,8 @@ function transform(dataView, options = {}) {
       const innerCount = innerGroup.length;
       // const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
       const resultRow = innerGroup[0];
-      resultRow[as] = innerCount / totalCount;
       resultRow[field] = innerCount;
+      resultRow[as] = innerCount / totalCount;
       result.push(resultRow);
     });
   });
