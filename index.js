@@ -23,6 +23,7 @@ require('./src/transform/partition');
 require('./src/transform/percent');
 require('./src/transform/pick');
 require('./src/transform/proportion');
+require('./src/transform/rename');
 require('./src/transform/reverse');
 require('./src/transform/sort');
 require('./src/transform/sort-by');
