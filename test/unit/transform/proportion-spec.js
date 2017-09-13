@@ -41,6 +41,7 @@ describe('DataView.transform(): proportion', () => {
     });
     expect(dv.rows.length).to.equal(2);
     expect(dv.rows[0]).to.eql({
+      x: 1,
       y: 1,
       z: 4,
       _proportion: 0.5
@@ -56,6 +57,7 @@ describe('DataView.transform(): proportion', () => {
     });
     expect(dv.rows.length).to.equal(2);
     expect(dv.rows[0]).to.eql({
+      x: 1,
       y: 1,
       z: 4,
       _z: 0.5

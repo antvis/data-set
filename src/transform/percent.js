@@ -1,8 +1,8 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const map = require('lodash/map');
-const pick = require('lodash/pick');
-const union = require('lodash/union');
+// const pick = require('lodash/pick');
+// const union = require('lodash/union');
 const {
   sum
 } = require('simple-statistics');
@@ -35,9 +35,10 @@ function transform(dataView, options = {}) {
     const innerGroups = partition(group, [ dimension ]);
     forIn(innerGroups, innerGroup => {
       const innerSum = sum(map(innerGroup, row => row[field]));
-      const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
-      resultRow[as] = innerSum / totalSum;
+      // const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
+      const resultRow = innerGroup[0];
       resultRow[field] = innerSum;
+      resultRow[as] = innerSum / totalSum;
       result.push(resultRow);
     });
   });

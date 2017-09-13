@@ -8,14 +8,14 @@ const {
 
 describe('DataView.transform(): percent', () => {
   const data = [
-    { x: 1, y: 1, z: 1 },
-    { x: 2, y: 1, z: 2 },
-    { x: 3, y: 1, z: 3 },
-    { x: 4, y: 1, z: 4 },
-    { x: 1, y: 2, z: 5 },
-    { x: 2, y: 2, z: 6 },
-    { x: 3, y: 2, z: 7 },
-    { x: 4, y: 2, z: 8 }
+    { x: 1, y: 1, z: 1, extra: 'test' },
+    { x: 2, y: 1, z: 2, extra: 'test' },
+    { x: 3, y: 1, z: 3, extra: 'test' },
+    { x: 4, y: 1, z: 4, extra: 'test' },
+    { x: 1, y: 2, z: 5, extra: 'test' },
+    { x: 2, y: 2, z: 6, extra: 'test' },
+    { x: 3, y: 2, z: 7, extra: 'test' },
+    { x: 4, y: 2, z: 8, extra: 'test' }
   ];
   const ds = new DataSet();
   let dv;
@@ -41,8 +41,10 @@ describe('DataView.transform(): percent', () => {
     });
     expect(dv.rows.length).to.equal(2);
     expect(dv.rows[0]).to.eql({
+      x: 1,
       y: 1,
       z: 10,
+      extra: 'test',
       _percent: 10 / 36
     });
   });
@@ -56,8 +58,10 @@ describe('DataView.transform(): percent', () => {
     });
     expect(dv.rows.length).to.equal(2);
     expect(dv.rows[0]).to.eql({
+      x: 1,
       y: 1,
       z: 10,
+      extra: 'test',
       _z: 10 / 36
     });
   });
@@ -75,6 +79,7 @@ describe('DataView.transform(): percent', () => {
       x: 1,
       y: 1,
       z: 1,
+      extra: 'test',
       _z: 1 / 6
     });
   });

@@ -1,7 +1,7 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-const pick = require('lodash/pick');
-const union = require('lodash/union');
+// const pick = require('lodash/pick');
+// const union = require('lodash/union');
 const {
   registerTransform
 } = require('../data-set');
@@ -31,9 +31,10 @@ function transform(dataView, options = {}) {
     const innerGroups = partition(group, [ dimension ]);
     forIn(innerGroups, innerGroup => {
       const innerCount = innerGroup.length;
-      const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
-      resultRow[as] = innerCount / totalCount;
+      // const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
+      const resultRow = innerGroup[0];
       resultRow[field] = innerCount;
+      resultRow[as] = innerCount / totalCount;
       result.push(resultRow);
     });
   });

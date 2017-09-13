@@ -2,7 +2,7 @@ const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const isArray = require('lodash/isArray');
 const map = require('lodash/map');
-const pick = require('lodash/pick');
+// const pick = require('lodash/pick');
 const {
   quantile
 } = require('simple-statistics');
@@ -36,7 +36,8 @@ function transform(dataView, options) {
   const groups = partition(rows, groupBy);
   const result = [];
   forIn(groups, group => {
-    const resultRow = pick(group[0], groupBy);
+    // const resultRow = pick(group[0], groupBy);
+    const resultRow = group[0];
     const binningColumn = map(group, row => row[field]);
     const quantiles = map(pArray, p => quantile(binningColumn, p));
     resultRow[options.as] = quantiles;

@@ -43,9 +43,7 @@ describe('DataView.transform(): aggregate', () => {
       type: 'aggregate'
     });
     expect(dv.rows.length).to.equal(1);
-    expect(dv.rows[0]).to.eql({
-      count: 10
-    });
+    expect(dv.rows[0].count).to.equal(10);
   });
 
   it('all', () => {
@@ -63,6 +61,7 @@ describe('DataView.transform(): aggregate', () => {
     });
     const results = map(partitions, (part, i) => {
       const result = {
+        a: groups[i][0].a,
         b: groups[i][0].b
       };
       each(VALID_AGGREGATES, operation => {
