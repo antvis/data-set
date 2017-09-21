@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Histogram</title>
+</head>
+
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/diamond.json', data => {
+    const ds = new DataSet();
+    const dv = ds.createView().source(data);
+    dv.transform({
+      type: 'bin.histogram',
+      field: 'depth',
+      binWidth: 1,
+      // offset: -0.3,
+      // groupBy: [ 'cut' ],
+      as: [ 'depth', 'count' ]
+    });
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+    chart.source(dv);
+    chart.axis('depth', {
+      grid: {
+        lineStyle: {
+          stroke: '#d9d9d9',
+          lineWidth: 1,
+          lineDash: [ 2, 2 ]
+        }
+      }
+    });
+    chart.interval()
+      .position('depth*count')
+      .color('yellow')
+      .style({
+        stroke: 'green',
+        lineWidth: 1
+      });
+    chart.render();
+  });
+</script>
+</body>
+
+</html>

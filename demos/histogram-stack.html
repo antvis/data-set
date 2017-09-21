@@ -23,6 +23,7 @@
       field: 'depth',
       binWidth: 1,
       // offset: -0.3,
+      groupBy: [ 'cut' ],
       as: [ 'depth', 'count' ]
     });
     const chart = new G2.Chart({
@@ -42,7 +43,7 @@
     });
     chart.interval()
       .position('depth*count')
-      .color('yellow')
+      .color('cut')
       .style({
         stroke: 'green',
         lineWidth: 1
