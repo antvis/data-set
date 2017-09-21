@@ -71,7 +71,7 @@ describe('DataView.transform(): fill-rows', () => {
   });
 });
 
-describe.only('DataView.transform(): fill-rows: fillBy order', () => {
+describe('DataView.transform(): fill-rows: fillBy order', () => {
   const data = [
     { x: 0, y: 28, c: 1 },
     { x: 0, y: 55, c: 2 },
