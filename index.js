@@ -46,6 +46,7 @@ require('./src/transform/geo/projection');
 require('./src/transform/geo/region');
 // diagram
 require('./src/transform/diagram/arc');
+require('./src/transform/diagram/sankey');
 require('./src/transform/diagram/voronoi');
 // hierarchy
 require('./src/transform/hierarchy/treemap');

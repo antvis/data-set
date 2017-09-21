@@ -51,7 +51,7 @@
     "dist": "rm -rf dist && mkdir dist && npm run build && npm run compress",
     "lint": "eslint --ext .html,.js ./",
     "lint-fix": "eslint --ext .html,.js --fix ./",
-    "prepublish": "npm run build",
+    "prepublish": "npm run dist",
     "test": "torch --renderer --recursive ./test/unit",
     "test-live": "torch --interactive --watch --recursive ./test/unit"
   },
@@ -72,6 +72,7 @@
     "d3-geo": "^1.6.4",
     "d3-geo-projection": "^2.1.2",
     "d3-hierarchy": "^1.1.5",
+    "d3-sankey": "^0.7.1",
     "d3-voronoi": "^1.1.2",
     "lodash": "^4.17.4",
     "point-at-length": "^1.0.2",

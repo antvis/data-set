@@ -61,6 +61,5 @@ typings/
 .env
 
 # build
-dist
 temp
 .DS_Store
