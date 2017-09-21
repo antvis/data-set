@@ -9,6 +9,7 @@ const {
 } = require('../data-set');
 
 const DEFAULT_OPTIONS = {
+  fillBy: 'group', // group | order
   groupBy: [],
   orderBy: []
 };
@@ -46,6 +47,33 @@ function transform(dataView, options = {}) {
     referenceOrderByKeys.push(key);
     referenceRowByOrderByKey[key] = row;
   });
+  if (options.fillBy === 'order') {
+    const first = referenceGroup[0];
+    const allOrderByKeys = [];
+    const rowByOrderByKey = {};
+    each(rows, row => {
+      const key = map(orderBy, col => row[col]).join('-');
+      if (indexOf(allOrderByKeys, key) === -1) {
+        allOrderByKeys.push(key);
+        rowByOrderByKey[key] = row;
+      }
+    });
+    const _missingOrderByKeys = arrayDifference(allOrderByKeys, referenceOrderByKeys);
+    each(_missingOrderByKeys, key => {
+      const row = {};
+      each(groupBy, col => {
+        row[col] = first[col];
+      });
+      each(orderBy, col => {
+        row[col] = rowByOrderByKey[key][col];
+      });
+      rows.push(row);
+      referenceGroup.push(row);
+      referenceOrderByKeys.push(key);
+      referenceRowByOrderByKey[key] = row;
+    });
+    maxLength = referenceGroup.length;
+  }
   each(groups, group => {
     if (group !== referenceGroup && group.length < maxLength) {
       const first = group[0];
