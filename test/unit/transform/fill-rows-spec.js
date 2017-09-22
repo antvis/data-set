@@ -70,3 +70,26 @@ describe('DataView.transform(): fill-rows', () => {
     });
   });
 });
+
+describe('DataView.transform(): fill-rows: fillBy order', () => {
+  const data = [
+    { x: 0, y: 28, c: 1 },
+    { x: 0, y: 55, c: 2 },
+    { x: 1, y: 43, c: 3 },
+    { x: 1, y: 91, c: 4 },
+    { x: 2, y: 81, c: 5 },
+    { x: 2, y: 53, c: 6 }
+  ];
+  const ds = new DataSet();
+  const dv = ds.createView().source(data);
+  dv.transform({
+    type: 'fill-rows',
+    fillBy: 'order',
+    groupBy: [ 'x' ],
+    orderBy: [ 'c' ]
+  });
+  it('fillBy order', () => {
+    const rows = dv.rows;
+    expect(rows.length).to.equal(18);
+  });
+});
