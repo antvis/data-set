@@ -10,7 +10,7 @@ const {
 } = require('../../../index');
 const populationChina = require('../../fixtures/population-china.json');
 
-describe('DataView.transform(): reverse', () => {
+describe('View.transform(): reverse', () => {
   const ds = new DataSet();
   let dv;
 

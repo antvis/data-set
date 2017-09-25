@@ -9,7 +9,7 @@ const {
   getTransform
 } = require('../../../../index');
 
-describe('DataView.transform(): bin.quantile', () => {
+describe('View.transform(): bin.quantile', () => {
   const data = [
     { x: 1, y: 1, z: 1 },
     { x: 2, y: 1, z: 2 },

@@ -1,9 +1,9 @@
 /* eslint-disable no-cond-assign, no-loop-func */
 const assign = require('lodash/assign');
 const each = require('lodash/each');
-const DataView = require('../data-view');
+const View = require('../view');
 
-assign(DataView.prototype, {
+assign(View.prototype, {
   getAllNodes() {
     const nodes = [];
     this.root.each(node => {

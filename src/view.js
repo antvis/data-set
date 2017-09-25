@@ -15,7 +15,7 @@ const map = require('lodash/map');
 const pick = require('lodash/pick');
 const cloneItems = require('./util/clone-items');
 
-class DataView extends EventEmitter {
+class View extends EventEmitter {
   // constructor
   constructor(dataSet, options) {
     super();
@@ -30,7 +30,7 @@ class DataView extends EventEmitter {
       dataSet,
       loose: !dataSet,
       dataType: 'table',
-      isDataView: true,
+      isView: true,
       origin: [],
       rows: [],
       transforms: [],
@@ -76,26 +76,27 @@ class DataView extends EventEmitter {
   // connectors
   source(source, options) {
     const me = this;
+    const DataSet = View.DataSet;
     // warning me.origin is protected
     me._source = {
       source,
       options
     };
     if (!options) {
-      if (source instanceof DataView || isString(source)) {
-        me.origin = DataView.DataSet.getConnector('default')(source, me.dataSet);
+      if (source instanceof View || isString(source)) {
+        me.origin = DataSet.getConnector('default')(source, me.dataSet);
       } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = source;
       } else if (isObject(source) && source.type) {
         options = me._preparseOptions(source); // connector without source
-        me.origin = DataView.DataSet.getConnector(options.type)(options, me);
+        me.origin = DataSet.getConnector(options.type)(options, me);
       } else {
         throw new TypeError('Invalid source');
       }
     } else {
       options = me._preparseOptions(options);
-      me.origin = DataView.DataSet.getConnector(options.type)(source, options, me);
+      me.origin = DataSet.getConnector(options.type)(source, options, me);
     }
     if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
       me.rows = cloneItems(me.origin);
@@ -113,7 +114,7 @@ class DataView extends EventEmitter {
   _executeTransform(options) {
     const me = this;
     options = me._preparseOptions(options);
-    const transform = DataView.DataSet.getTransform(options.type);
+    const transform = View.DataSet.getTransform(options.type);
     transform(me, options);
   }
   _reExecuteTransforms() {
@@ -189,4 +190,4 @@ class DataView extends EventEmitter {
   }
 }
 
-module.exports = DataView;
+module.exports = View;

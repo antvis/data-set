@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): percent', () => {
+describe('View.transform(): percent', () => {
   const data = [
     { x: 1, y: 1, z: 1, extra: 'test' },
     { x: 2, y: 1, z: 2, extra: 'test' },

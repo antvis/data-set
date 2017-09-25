@@ -10,7 +10,7 @@ const {
 } = require('../../../../index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
-describe('DataView.transform(): geo.region', () => {
+describe('View.transform(): geo.region', () => {
   const data = [
     {
       name: 'Afghanistan',
@@ -44,7 +44,7 @@ describe('DataView.transform(): geo.region', () => {
     expect(() => {
       dv.transform({
         type: 'geo.region',
-        geoDataView: 'geo'
+        geoView: 'geo'
       });
     }).to.throw();
   });
@@ -53,7 +53,7 @@ describe('DataView.transform(): geo.region', () => {
     dv.transform({
       type: 'geo.region',
       field: 'name',
-      geoDataView: 'geo'
+      geoView: 'geo'
     });
     const rows = dv.rows;
     expect(isArray(rows[0]._x)).to.be.true;
@@ -61,8 +61,8 @@ describe('DataView.transform(): geo.region', () => {
   });
 
   // projected
-  const geoDataView = ds.getView('geo');
-  geoDataView.transform({
+  const geoView = ds.getView('geo');
+  geoView.transform({
     type: 'geo.projection',
     projection: 'geoAiry'
   });
@@ -71,10 +71,10 @@ describe('DataView.transform(): geo.region', () => {
     dv.transform({
       type: 'geo.region',
       field: 'name',
-      geoDataView: 'geo'
+      geoView: 'geo'
     });
     const firstRow = dv.rows[0];
-    const feature = geoDataView.geoFeatureByName(firstRow.name);
+    const feature = geoView.geoFeatureByName(firstRow.name);
     expect(firstRow._x).to.equal(feature._x);
     expect(firstRow._y).to.equal(feature._y);
   });

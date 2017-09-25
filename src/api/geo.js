@@ -10,10 +10,10 @@ const {
 const {
   geoProject
 } = require('d3-geo-projection');
-const DataView = require('../data-view');
+const View = require('../view');
 const getGeoProjection = require('../util/get-geo-projection');
 
-assign(DataView.prototype, {
+assign(View.prototype, {
   // geo maintain
   geoArea(feature) {
     return geoArea(feature);

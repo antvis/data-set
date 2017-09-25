@@ -12,7 +12,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): fold', () => {
+describe('View.transform(): fold', () => {
   const data = [ // token from vega-dataFlow
     { a: '!', b: 5, c: 7, d: '|' },
     { a: '?', b: 2, c: 4, d: '/' }

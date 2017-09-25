@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../../index');
 
-describe('DataView.transform(): diagram.voronoi', () => {
+describe('View.transform(): diagram.voronoi', () => {
   const ds = new DataSet();
   let dv;
   const data = [];

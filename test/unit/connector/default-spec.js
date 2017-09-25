@@ -6,7 +6,7 @@ const {
   getConnector
 } = require('../../../index');
 
-describe('DataView.source(): default', () => {
+describe('View.source(): default', () => {
   const ds = new DataSet();
   const testView = ds.createView('test').source([
     {
@@ -18,7 +18,7 @@ describe('DataView.source(): default', () => {
     expect(getConnector('default')).to.be.a('function');
   });
 
-  it('DataView instance', () => {
+  it('View instance', () => {
     const testView2 = ds.createView('test2').source(testView);
     expect(testView2.origin).to.eql(testView.rows);
     expect(testView2.origin === testView.rows).to.equal(false);

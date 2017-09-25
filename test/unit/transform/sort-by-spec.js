@@ -15,7 +15,7 @@ const data = populationChina.concat({
   population: '1274530000'
 });
 
-describe('DataView.transform(): sort-by', () => {
+describe('View.transform(): sort-by', () => {
   const ds = new DataSet();
   let dv;
 

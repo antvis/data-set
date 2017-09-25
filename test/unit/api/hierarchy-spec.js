@@ -4,7 +4,7 @@ const {
 const DataSet = require('../../../index');
 const flare = require('../../fixtures/flare.json');
 
-describe('DataView API: hierarchy', () => {
+describe('View API: hierarchy', () => {
   const dv = new DataSet().createView('test').source(flare, {
     type: 'hierarchy'
   });

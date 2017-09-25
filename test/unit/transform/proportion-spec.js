@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): proportion', () => {
+describe('View.transform(): proportion', () => {
   const ds = new DataSet();
   const data = [
     { x: 1, y: 1, z: 1 },

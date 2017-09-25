@@ -5,7 +5,7 @@ const d3GeoProjection = require('d3-geo-projection');
 const DataSet = require('../../../index');
 const geoWorld = require('../../fixtures/countries-geo.json');
 
-describe('DataView API: geo', () => {
+describe('View API: geo', () => {
   const dv = new DataSet().createView('test').source(geoWorld, {
     type: 'geojson'
   });

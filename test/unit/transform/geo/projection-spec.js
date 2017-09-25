@@ -7,7 +7,7 @@ const {
 } = require('../../../../index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
-describe('DataView.transform(): geo.projection', () => {
+describe('View.transform(): geo.projection', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

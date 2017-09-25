@@ -13,7 +13,7 @@ const {
   REGRESSION_METHODS
 } = require('../../../src/transform/regression');
 
-describe('DataView.transform(): regression', () => {
+describe('View.transform(): regression', () => {
   const data = [];
   for (let i = 1; i <= 10; i++) {
     // 1~10

@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): tag-cloud', () => {
+describe('View.transform(): tag-cloud', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

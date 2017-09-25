@@ -11,10 +11,10 @@ const {
   sum,
   variance
 } = require('simple-statistics');
-const DataView = require('../data-view');
+const View = require('../view');
 const pByFraction = require('../util/p-by-fraction');
 
-assign(DataView.prototype, {
+assign(View.prototype, {
   // statistics
   max(column) {
     return max(this.getColumn(column));
