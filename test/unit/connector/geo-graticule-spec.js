@@ -6,7 +6,7 @@ const {
   getConnector
 } = require('../../../index');
 
-describe('DataView.source(): geo-graticule', () => {
+describe('View.source(): geo-graticule', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): rename', () => {
+describe('View.transform(): rename', () => {
   const data = [
     { a: 1, b: 2 }
   ];

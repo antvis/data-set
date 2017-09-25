@@ -18,7 +18,7 @@ const {
 } = require('../../../src/transform/aggregate');
 const top2000 = require('../../fixtures/top2000.json');
 
-describe('DataView.transform(): aggregate', () => {
+describe('View.transform(): aggregate', () => {
   const data = [];
   for (let i = 1; i <= 10; i++) {
     // 1~10
@@ -79,7 +79,7 @@ describe('DataView.transform(): aggregate', () => {
   });
 });
 
-describe('DataView.transform(): aggregate: performance of partition', () => {
+describe('View.transform(): aggregate: performance of partition', () => {
   const t1 = Date.now();
   const ds = new DataSet();
   const dv = ds.createView('test').source(top2000);

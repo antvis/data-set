@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../../index');
 
-describe('DataView.transform(): bin.histogram', () => {
+describe('View.transform(): bin.histogram', () => {
   const data = [];
   for (let i = 0; i <= 100; i++) {
     data.push({

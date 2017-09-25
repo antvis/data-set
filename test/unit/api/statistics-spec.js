@@ -16,7 +16,7 @@ const {
 const DataSet = require('../../../src/data-set');
 const populationChina = require('../../fixtures/population-china.json');
 
-describe('DataView API: statistics', () => {
+describe('View API: statistics', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

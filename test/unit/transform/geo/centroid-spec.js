@@ -10,7 +10,7 @@ const {
 } = require('../../../../index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
-describe('DataView.transform(): geo.centroid', () => {
+describe('View.transform(): geo.centroid', () => {
   const data = [
     {
       name: 'Afghanistan',
@@ -44,7 +44,7 @@ describe('DataView.transform(): geo.centroid', () => {
     expect(() => {
       dv.transform({
         type: 'geo.centroid',
-        geoDataView: 'geo'
+        geoView: 'geo'
       });
     }).to.throw();
   });
@@ -53,7 +53,7 @@ describe('DataView.transform(): geo.centroid', () => {
     dv.transform({
       type: 'geo.centroid',
       field: 'name',
-      geoDataView: 'geo'
+      geoView: 'geo'
     });
     const rows = dv.rows;
     expect(isNumber(rows[0]._centroid_x)).to.be.true;
@@ -61,8 +61,8 @@ describe('DataView.transform(): geo.centroid', () => {
   });
 
   // projected
-  const geoDataView = ds.getView('geo');
-  geoDataView.transform({
+  const geoView = ds.getView('geo');
+  geoView.transform({
     type: 'geo.projection',
     projection: 'geoAiry'
   });
@@ -71,10 +71,10 @@ describe('DataView.transform(): geo.centroid', () => {
     dv.transform({
       type: 'geo.centroid',
       field: 'name',
-      geoDataView: 'geo'
+      geoView: 'geo'
     });
     const firstRow = dv.rows[0];
-    const feature = geoDataView.geoFeatureByName(firstRow.name);
+    const feature = geoView.geoFeatureByName(firstRow.name);
     expect(firstRow._centroid_x).to.equal(feature._centroid_x);
     expect(firstRow._centroid_y).to.equal(feature._centroid_y);
   });

@@ -7,7 +7,7 @@ const {
 } = require('../../../index');
 const topoUS = require('../../fixtures/us-topo.json');
 
-describe('DataView.source(): topojson', () => {
+describe('View.source(): topojson', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

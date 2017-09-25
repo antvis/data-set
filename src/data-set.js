@@ -3,7 +3,7 @@ const isNil = require('lodash/isNil');
 const isObject = require('lodash/isObject');
 const uniqueId = require('lodash/uniqueId');
 const EventEmitter = require('wolfy87-eventemitter');
-const DataView = require('./data-view');
+const View = require('./view');
 
 class DataSet extends EventEmitter {
   constructor(initialProps = { state: {} }) {
@@ -38,7 +38,7 @@ class DataSet extends EventEmitter {
     if (me.views[name]) {
       throw new Error(`data view exists: ${name}`);
     }
-    const view = new DataView(me, options);
+    const view = new View(me, options);
     me.views[name] = view;
     return view;
   }
@@ -66,7 +66,8 @@ class DataSet extends EventEmitter {
 
 assign(DataSet, {
   DataSet,
-  DataView,
+  DataView: View, // alias
+  View,
   connectors: {},
   transforms: {},
 
@@ -87,12 +88,9 @@ assign(DataSet, {
   }
 });
 
-DataView.DataSet = DataSet;
-
+View.DataSet = DataSet;
 assign(DataSet.prototype, {
-  view(name, options) {
-    this.createView(name, options);
-  }
+  view: DataSet.prototype.createView // alias
 });
 
 module.exports = DataSet;

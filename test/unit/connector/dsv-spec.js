@@ -11,7 +11,7 @@ const {
 const data = require('../../fixtures/sample.json');
 const data2 = require('../../fixtures/sample2.json');
 
-describe('DataView.source(): dsv', () => {
+describe('View.source(): dsv', () => {
   const source = {
     psv: readFileSync('./test/fixtures/sample.psv'),
     csv: readFileSync('./test/fixtures/sample.csv'),

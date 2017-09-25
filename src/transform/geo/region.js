@@ -8,22 +8,23 @@ const {
 
 const DEFAULT_OPTIONS = {
   // field: 'name', // required
-  // geoDataView: dataView, // required
+  // geoView: view, // required
+  // geoDataView: view, // alias
   as: [ '_x', '_y' ]
 };
 
-function transform(dataView, options) {
+function transform(view, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = options.field;
   if (!field) {
     throw new TypeError('Invalid field');
   }
-  let geoDataView = options.geoDataView;
-  if (isString(geoDataView)) {
-    geoDataView = dataView.dataSet.getView(geoDataView);
+  let geoView = options.geoView || options.geoDataView; // alias
+  if (isString(geoView)) {
+    geoView = view.dataSet.getView(geoView);
   }
-  if (!geoDataView || geoDataView.dataType !== 'geo') {
-    throw new TypeError('Invalid geoDataView');
+  if (!geoView || geoView.dataType !== 'geo') {
+    throw new TypeError('Invalid geoView');
   }
   const as = options.as;
   if (!isArray(as) || as.length !== 2) {
@@ -31,12 +32,12 @@ function transform(dataView, options) {
   }
   const lonField = as[0];
   const latField = as[1];
-  each(dataView.rows, row => {
-    const feature = geoDataView.geoFeatureByName(row[field]);
+  each(view.rows, row => {
+    const feature = geoView.geoFeatureByName(row[field]);
     if (feature) {
-      if (geoDataView._projectedAs) {
-        row[lonField] = feature[geoDataView._projectedAs[0]];
-        row[latField] = feature[geoDataView._projectedAs[1]];
+      if (geoView._projectedAs) {
+        row[lonField] = feature[geoView._projectedAs[0]];
+        row[latField] = feature[geoView._projectedAs[1]];
       } else {
         row[lonField] = feature.longitude;
         row[latField] = feature.latitude;

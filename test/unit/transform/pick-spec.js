@@ -11,7 +11,7 @@ const {
 } = require('../../../index');
 const populationChina = require('../../fixtures/population-china.json');
 
-describe('DataView.transform(): pick', () => {
+describe('View.transform(): pick', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

@@ -7,7 +7,7 @@ const {
 } = require('../../../../index');
 const flare = require('../../../fixtures/flare.json');
 
-describe('DataView.transform(): hierarchy.treemap', () => {
+describe('View.transform(): hierarchy.treemap', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {

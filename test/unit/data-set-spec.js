@@ -64,7 +64,7 @@ describe('DataSet', () => {
     }, 16);
   });
 
-  it('setState(name, value): DataView watching or not watching', () => {
+  it('setState(name, value): View watching or not watching', () => {
     let emittedCount = 0;
     const ds = new DataSet();
     const dv = ds.createView({

@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../../index');
 
-describe('DataView.transform(): bin.hexagon', () => {
+describe('View.transform(): bin.hexagon', () => {
   const data = [];
   for (let i = 0; i <= 10; i++) {
     data.push({

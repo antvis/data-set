@@ -8,11 +8,11 @@ const {
   expect
 } = require('chai');
 const DataSet = require('../../src/data-set');
-const DataView = require('../../src/data-view');
+const View = require('../../src/view');
 require('../../src/transform/map');
 const populationChina = require('../fixtures/population-china.json');
 
-describe('DataView', () => {
+describe('View', () => {
   const mockRow = {
     year: '2016',
     population: '1384530000'
@@ -26,7 +26,7 @@ describe('DataView', () => {
 
   // constructor
   it('Constructor', () => {
-    expect(DataView).to.be.a('function');
+    expect(View).to.be.a('function');
     expect(dv).to.be.an('object');
   });
 
@@ -97,11 +97,11 @@ describe('DataView', () => {
   // loose mode
   it('loose mode', () => {
     expect(() => {
-      new DataView();
-      new DataView({});
+      new View();
+      new View({});
     }).to.not.throw();
 
-    const dv = new DataView()
+    const dv = new View()
       .source(populationChina)
       .transform({
         type: 'map',

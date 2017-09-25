@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../index');
 
-describe('DataView.transform(): impute', () => {
+describe('View.transform(): impute', () => {
   const data = [
     { x: 0, y: 1 },
     { x: 0, y: 2 },

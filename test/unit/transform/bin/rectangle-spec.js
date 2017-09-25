@@ -6,7 +6,7 @@ const {
   getTransform
 } = require('../../../../index');
 
-describe('DataView.transform(): bin.rectangle', () => {
+describe('View.transform(): bin.rectangle', () => {
   const data = [];
   for (let i = 0; i <= 100; i++) {
     data.push({

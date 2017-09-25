@@ -7,7 +7,7 @@ const {
 } = require('../../../index');
 const populationChina = require('../../fixtures/population-china.json');
 
-describe('DataView.transform(): subset', () => {
+describe('View.transform(): subset', () => {
   const ds = new DataSet();
   let dv;
   beforeEach(() => {
