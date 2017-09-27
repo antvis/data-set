@@ -66,8 +66,8 @@ function transform(dv, options) {
       source,
       target
     } = edge;
-    const sx = (source.x0 + source.x1) / 2;
-    const tx = (target.x0 + target.x1) / 2;
+    const sx = source.x1;
+    const tx = target.x0;
     edge.x = [ sx, sx, tx, tx ];
     const offset = edge.width / 2;
     edge.y = [ edge.y0 + offset, edge.y0 - offset, edge.y1 + offset, edge.y1 - offset ];
