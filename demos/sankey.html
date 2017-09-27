@@ -47,8 +47,8 @@
     edgeView.source(dv.edges);
     edgeView.axis(false);
     edgeView.edge()
-      .position('x*y') // detachment：是否将节点的输入边和输出边权重分开计算的标志
-      .shape('arc') // 使用弧线完成边的绘制
+      .position('x*y')
+      .shape('arc')
       .color('#bbb')
       .opacity(0.6)
       .tooltip('value');
@@ -58,7 +58,7 @@
     nodeView.axis(false);
     nodeView.source(dv.nodes);
     nodeView.polygon()
-      .position('x*y') // nodes数据的x、y由layout方法计算得出
+      .position('x*y')
       .color('name')
       // .label('name', {
       //   labelEmit: true,
