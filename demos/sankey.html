@@ -17,7 +17,7 @@
 <script src="../build/data-set.js"></script>
 <script>
   $.getJSON('../test/fixtures/energy.json', data => {
-    // arc diagram layout
+    // sankey diagram layout
     const ds = new DataSet();
     const dv = ds.createView().source(data, {
       type: 'graph',
@@ -25,6 +25,7 @@
     });
     dv.transform({
       type: 'diagram.sankey'
+      // nodeAlign: 'sankeyCenter', // sankeyRight / sankeyCenter
     });
     const chart = new G2.Chart({
       container: 'canvas',
@@ -37,12 +38,8 @@
     });
 
     chart.scale({
-      x: {
-        sync: true
-      },
-      y: {
-        sync: true
-      }
+      x: { sync: true },
+      y: { sync: true }
     });
 
     // edge view
