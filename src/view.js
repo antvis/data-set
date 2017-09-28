@@ -31,6 +31,7 @@ class View extends EventEmitter {
       loose: !dataSet,
       dataType: 'table',
       isView: true,
+      isDataView: true, // alias
       origin: [],
       rows: [],
       transforms: [],
