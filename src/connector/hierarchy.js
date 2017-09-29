@@ -2,6 +2,7 @@ const {
   hierarchy
 } = require('d3-hierarchy');
 const {
+  HIERARCHY,
   registerConnector
 } = require('../data-set');
 
@@ -14,7 +15,7 @@ const {
  */
 
 function connector(data, options, dataView) {
-  dataView.dataType = 'hierarchy';
+  dataView.dataType = HIERARCHY;
   const children = options && options.children ? options.children : null;
 
   dataView.rows = dataView.root = hierarchy(data, children);

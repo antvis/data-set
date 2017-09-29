@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Adjacency Diagram</title>
+</head>
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/flare.json', data => {
+    const ds = new DataSet();
+    const dv = ds.createView().source(data, {
+      type: 'hierarchy'
+    });
+    dv.transform({
+      type: 'hierarchy.partition'
+    });
+
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+    chart.source(dv.getAllNodes().map(node => ({
+      name: node.data.name,
+      value: node.value,
+      x: node.x,
+      y: node.y
+    })));
+    // chart.coord('polar'); // sunburst diagram
+    chart.axis(false);
+    chart.legend(false);
+    chart.polygon()
+      .position('x*y')
+      .color('name')
+      .label('name', {
+        offset: 0,
+        // labelEmit: true, /* 文字的方向，沿半径方向*/
+        label: {
+          fontSize: 9,
+          fill: '#fff',
+          textAlign: 'center'
+        }
+      });
+    chart.render();
+  });
+</script>
+</body>
+</html>
