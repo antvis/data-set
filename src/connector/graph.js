@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const {
+  GRAPH,
   registerConnector
 } = require('../data-set');
 
@@ -14,7 +15,7 @@ const DEFAULT_OPTIONS = {
 
 function connector(data, options, dataView) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  dataView.dataType = 'graph';
+  dataView.dataType = GRAPH;
   dataView.rows = dataView.graph = {
     nodes: options.nodes(data),
     edges: options.edges(data)

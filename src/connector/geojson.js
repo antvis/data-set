@@ -5,13 +5,14 @@ const {
 } = require('d3-geo');
 const cloneItems = require('../util/clone-items');
 const {
+  GEO,
   registerConnector
 } = require('../data-set');
 
 const geoPathGenerator = geoPath();
 
 function GeoJSONConnector(data, options, dataView) {
-  dataView.dataType = 'geo';
+  dataView.dataType = GEO;
   const features = cloneItems(data.features);
 
   // pre-process

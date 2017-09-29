@@ -50,6 +50,7 @@ require('./src/transform/diagram/sankey');
 require('./src/transform/diagram/voronoi');
 // hierarchy
 require('./src/transform/hierarchy/treemap');
+require('./src/transform/hierarchy/partition');
 // tag cloud
 require('./src/transform/tag-cloud');
 

@@ -4,6 +4,7 @@ const isObject = require('lodash/isObject');
 const uniqueId = require('lodash/uniqueId');
 const EventEmitter = require('wolfy87-eventemitter');
 const View = require('./view');
+const CONSTANTS = require('./constants');
 
 class DataSet extends EventEmitter {
   constructor(initialProps = { state: {} }) {
@@ -65,6 +66,7 @@ class DataSet extends EventEmitter {
 }
 
 assign(DataSet, {
+  CONSTANTS,
   DataSet,
   DataView: View, // alias
   View,
@@ -86,7 +88,7 @@ assign(DataSet, {
   getTransform(name) {
     return DataSet.transforms[name] || DataSet.transforms.default;
   }
-});
+}, CONSTANTS);
 
 View.DataSet = DataSet;
 assign(DataSet.prototype, {

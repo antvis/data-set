@@ -10,17 +10,11 @@ const {
 
 const DEFAULT_OPTIONS = {
   field: 'value',
-  tile: 'treemapSquarify', // treemapBinary, treemapDice, treemapSlice, treemapSliceDice, treemapSquarify, treemapResquarify
   size: [ 1, 1 ], // width, height
   round: false,
   // ratio: 1.618033988749895, // golden ratio
   padding: 0,
-  paddingInner: 0,
-  paddingOuter: 0,
-  paddingTop: 0,
-  paddingRight: 0,
-  paddingBottom: 0,
-  paddingLeft: 0,
+  sort: true,
   as: [ 'x', 'y' ]
 };
 
@@ -40,19 +34,12 @@ function transform(dataView, options) {
     root.sum(d => d[options.field]);
   }
 
-  const treemapLayout = d3Hierarchy.treemap();
-  treemapLayout
-    .tile(d3Hierarchy[options.tile])
+  const partitionLayout = d3Hierarchy.partition();
+  partitionLayout
     .size(options.size)
     .round(options.round)
-    .padding(options.padding)
-    .paddingInner(options.paddingInner)
-    .paddingOuter(options.paddingOuter)
-    .paddingTop(options.paddingTop)
-    .paddingRight(options.paddingRight)
-    .paddingBottom(options.paddingBottom)
-    .paddingLeft(options.paddingLeft);
-  treemapLayout(root);
+    .padding(options.padding);
+  partitionLayout(root);
 
   /*
    * points:
@@ -72,5 +59,5 @@ function transform(dataView, options) {
   });
 }
 
-registerTransform('hierarchy.treemap', transform);
-registerTransform('treemap', transform);
+registerTransform('hierarchy.partition', transform);
+registerTransform('adjacency', transform);
