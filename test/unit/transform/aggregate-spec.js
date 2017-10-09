@@ -54,8 +54,8 @@ describe('View.transform(): aggregate', () => {
       operations: VALID_AGGREGATES,
       as: VALID_AGGREGATES
     });
-    const groups = groupBy(data, row => row.b);
-    const partitions = [[], []];
+    const groups = groupBy(data, row => `_${row.b}`);
+    const partitions = {};
     forIn(groups, (group, i) => {
       partitions[i] = map(group, row => row.a);
     });
