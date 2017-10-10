@@ -37,7 +37,10 @@ function transform(dataView, options = {}) {
       const innerSum = sum(map(innerGroup, row => row[field]));
       // const resultRow = pick(innerGroup[0], union(groupBy, [ dimension ]));
       const resultRow = innerGroup[0];
+      // FIXME in case dimension and field is the same
+      const dimensionValue = resultRow[dimension];
       resultRow[field] = innerSum;
+      resultRow[dimension] = dimensionValue;
       resultRow[as] = innerSum / totalSum;
       result.push(resultRow);
     });

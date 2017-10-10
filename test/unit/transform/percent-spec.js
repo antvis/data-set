@@ -83,4 +83,21 @@ describe('View.transform(): percent', () => {
       _z: 1 / 6
     });
   });
+
+  it('when dimension and field is the same', () => {
+    dv.transform({
+      type: 'percent',
+      field: 'y',
+      dimension: 'y',
+      as: '_y'
+    });
+    expect(dv.rows.length).to.equal(2);
+    expect(dv.rows[0]).to.eql({
+      x: 1,
+      y: 1,
+      z: 1,
+      extra: 'test',
+      _y: 4 / 12
+    });
+  });
 });
