@@ -27,6 +27,7 @@
     chart.source(dv.getAllNodes().map(node => ({
       name: node.data.name,
       value: node.value,
+      depth: node.depth,
       x: node.x,
       y: node.y
     })));

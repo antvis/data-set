@@ -21,8 +21,8 @@ describe('util: partition(rows, groupBy, orderBy)', () => {
 
   it('groupBy', () => {
     const groups = partition(data, [ 'c' ], [ 'x' ]);
-    expect(groups[0].length).to.equal(2);
-    expect(groups[1].length).to.equal(1);
+    expect(groups._0.length).to.equal(2);
+    expect(groups._1.length).to.equal(1);
   });
 
   it.skip('performance', () => {
