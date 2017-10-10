@@ -80,4 +80,20 @@ describe('View.transform(): proportion', () => {
       _z: 0.5
     });
   });
+
+  it('when dimension and field is the same', () => {
+    dv.transform({
+      type: 'proportion',
+      field: 'y',
+      dimension: 'y',
+      as: '_y'
+    });
+    expect(dv.rows.length).to.equal(2);
+    expect(dv.rows[0]).to.eql({
+      x: 1,
+      y: 1,
+      z: 1,
+      _y: 1 / 2
+    });
+  });
 });
