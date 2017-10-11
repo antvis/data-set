@@ -65,7 +65,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = options.fields;
   if (!Array.isArray(fields) || fields.length !== 2) {
-    throw new TypeError('Invalid option: fields');
+    throw new TypeError('Invalid fields: it must be an array with two elements!');
   }
   const [ fieldX, fieldY ] = fields;
   const rangeFieldX = dataView.range(fieldX);
@@ -76,7 +76,7 @@ function transform(dataView, options) {
   if (binWidth.length !== 2) {
     const [ binsX, binsY ] = options.bins;
     if (binsX <= 0 || binsY <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: must be an array with two positive numbers (e.g. [ 30, 30 ])!');
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
@@ -102,7 +102,7 @@ function transform(dataView, options) {
   // step4: restore scale (for Y)
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with three elements (e.g. [ "x", "y", "count" ])!');
   }
   const radius = binWidth[0] / SQRT3;
   const hexagonPoints = ANGLES.map(angle => [ Math.sin(angle) * radius, -Math.cos(angle) * radius ]);

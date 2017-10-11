@@ -16,18 +16,18 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   if (dataView.dataType !== 'geo' && dataView.dataType !== 'geo-graticule') {
-    throw new TypeError('This transform is for Geo data only');
+    throw new TypeError('Invalid dataView: this transform is for Geo data only!');
   }
   options = assign({}, DEFAULT_OPTIONS, options);
   let projection = options.projection;
   if (!projection) {
-    throw new TypeError('Invalid projection');
+    throw new TypeError('Invalid projection!');
   }
   projection = getGeoProjection(projection);
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
   if (!Array.isArray(as) || as.length !== 4) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with 4 strings (e.g. [ "x", "y", "cX", "cY" ])!');
   }
   dataView._projectedAs = as;
   const [ lonField, latField, centroidX, centroidY ] = as;

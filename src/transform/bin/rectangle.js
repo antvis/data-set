@@ -23,7 +23,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const [ fieldX, fieldY ] = options.fields;
   if (!fieldX || !fieldY) {
-    throw new TypeError('Invalid option: fields');
+    throw new TypeError('Invalid fields: must be an array with two string elements!');
   }
   const rangeFieldX = dataView.range(fieldX);
   const rangeFieldY = dataView.range(fieldY);
@@ -33,7 +33,7 @@ function transform(dataView, options) {
   if (binWidth.length !== 2) {
     const [ binsX, binsY ] = options.bins;
     if (binsX <= 0 || binsY <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: must be an array with two positive numbers (e.g. [ 30, 30 ])!');
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
@@ -56,7 +56,7 @@ function transform(dataView, options) {
   const rows = [];
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with three elements (e.g. [ "x", "y", "count" ])!');
   }
   /* points
    * 3---2

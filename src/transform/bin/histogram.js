@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const isString = require('lodash/isString');
 const forIn = require('lodash/forIn');
 const pick = require('lodash/pick');
 const partition = require('../../util/partition');
@@ -24,8 +25,8 @@ function nearestBin(value, scale, offset) {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid option: field');
+  if (!isString(field)) {
+    throw new TypeError('Invalid field: it must be a string!');
   }
   const range = dataView.range(field);
   const width = range[1] - range[0];
@@ -33,7 +34,7 @@ function transform(dataView, options) {
   if (!binWidth) {
     const bins = options.bins;
     if (bins <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: it must be a positive number!');
     }
     binWidth = width / bins;
   }
@@ -58,7 +59,7 @@ function transform(dataView, options) {
     });
     const [ asX, asCount ] = options.as;
     if (!asX || !asCount) {
-      throw new TypeError('Invalid option: as');
+      throw new TypeError('Invalid as: it must be an array with two elements (e.g. [ "x", "count" ])!');
     }
 
     const meta = pick(group[0], groupBy);

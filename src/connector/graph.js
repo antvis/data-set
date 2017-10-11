@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const isFunction = require('lodash/isFunction');
 const {
   GRAPH,
   registerConnector
@@ -16,9 +17,16 @@ const DEFAULT_OPTIONS = {
 function connector(data, options, dataView) {
   options = assign({}, DEFAULT_OPTIONS, options);
   dataView.dataType = GRAPH;
+  const { nodes, edges } = options;
+  if (nodes && !isFunction(nodes)) {
+    throw new TypeError('Invalid nodes: must be a function!');
+  }
+  if (edges && !isFunction(edges)) {
+    throw new TypeError('Invalid edges: must be a function!');
+  }
   dataView.rows = dataView.graph = {
-    nodes: options.nodes(data),
-    edges: options.edges(data)
+    nodes: nodes(data),
+    edges: edges(data)
   };
   assign(dataView, dataView.graph);
   return dataView.rows;

@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isString = require('lodash/isString');
 const {
   registerTransform
 } = require('../data-set');
@@ -18,8 +19,11 @@ function transform(dataView, options = {}) {
   const dimension = options.dimension;
   const groupBy = options.groupBy;
   const as = options.as;
-  if (!field || !dimension) {
-    throw new TypeError('Invalid options');
+  if (!isString(field)) {
+    throw new TypeError('Invalid field: must be a string!');
+  }
+  if (!isString(dimension)) {
+    throw new TypeError('Invalid dimension: must be a string!');
   }
   const rows = dataView.rows;
   const result = [];

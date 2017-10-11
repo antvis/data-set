@@ -22,11 +22,11 @@ function transform(view, options) {
     geoView = view.dataSet.getView(geoView);
   }
   if (!geoView || geoView.dataType !== 'geo') {
-    throw new TypeError('Invalid geoView');
+    throw new TypeError('Invalid geoView: must be a DataView of GEO dataType!');
   }
   const as = options.as;
   if (!Array.isArray(as) || as.length !== 2) {
-    throw new TypeError('Invalid as');
+    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
   const lonField = as[0];
   const latField = as[1];

@@ -11,7 +11,7 @@ const {
 registerConnector('dsv', (str, options = {}) => {
   const delimiter = options.delimiter || ',';
   if (!isString(delimiter)) {
-    throw new TypeError('Invalid option: delimiter must be a string!');
+    throw new TypeError('Invalid delimiter: must be a string!');
   }
   return dsvFormat(delimiter).parse(str);
 });

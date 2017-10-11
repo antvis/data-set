@@ -27,12 +27,12 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = options.fields;
   if (!Array.isArray(fields) || fields.length !== 2) {
-    throw new TypeError(`invalid fields: ${options.fields}`);
+    throw new TypeError('invalid fields: must be an array of 2 strings.');
   }
   const [ xField, yField ] = fields;
   const method = options.method;
   if (REGRESSION_METHODS.indexOf(method) === -1) {
-    throw new TypeError(`invalid method: ${method}`);
+    throw new TypeError(`invalid method: ${method} must be one of ${REGRESSION_METHODS.join(',')}`);
   }
   const points = dataView.rows.map(row => [ row[xField], row[yField] ]);
   const regressionResult = regression[method](points, options);

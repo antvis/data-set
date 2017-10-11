@@ -18,7 +18,7 @@ function transform(dataView, options = {}) {
   dataView.rows = sortBy(dataView.rows, options.fields || [ dataView.getColumnName(0) ]);
   const order = options.order;
   if (order && VALID_ORDERS.indexOf(order) === -1) {
-    console.warn('Invalid order');
+    throw new TypeError(`Invalid order: ${order} must be one of ${VALID_ORDERS.join(',')}`);
   } else if (order === 'DESC') {
     dataView.rows = reverse(dataView.rows);
   }

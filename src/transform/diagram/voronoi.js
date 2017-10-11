@@ -16,14 +16,14 @@ function transform(dataView, options) {
 
   const as = options.as;
   if (!Array.isArray(as) || as.length !== 2) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: must be an array with two strings!');
   }
   const xField = as[0];
   const yField = as[1];
 
   const fields = options.fields;
   if (!Array.isArray(fields) && fields.length !== 2) {
-    throw new TypeError('Invalid options');
+    throw new TypeError('Invalid fields: must be an array with two strings!');
   }
   const x = fields[0];
   const y = fields[1];

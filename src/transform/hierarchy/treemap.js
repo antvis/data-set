@@ -23,14 +23,14 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   if (dataView.dataType !== HIERARCHY) {
-    throw new TypeError('This transform is for Hierarchy data only');
+    throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
   const root = dataView.root;
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
   if (!Array.isArray(as) || as.length !== 2) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
 
   if (options.field) {

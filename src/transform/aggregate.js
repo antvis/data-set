@@ -54,6 +54,7 @@ function transform(dataView, options) {
   let outputNames = options.as || [];
   let operations = options.operations;
   if (!Array.isArray(operations) || !operations.length) {
+    console.warn('operations is not defined, will use [ "count" ] directly.');
     operations = [ DEFAULT_OPERATION ];
     outputNames = operations;
   }

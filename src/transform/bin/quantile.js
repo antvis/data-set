@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isString = require('lodash/isString');
 // const pick = require('lodash/pick');
 const {
   quantile
@@ -21,8 +22,8 @@ const DEFAULT_OPTIONS = {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid option: field');
+  if (!isString(field)) {
+    throw new TypeError('Invalid field: it must be a string!');
   }
   let pArray = options.p;
   const fraction = options.fraction;

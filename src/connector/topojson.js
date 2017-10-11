@@ -10,7 +10,7 @@ const {
 function TopoJSONConnector(data, options, dataView) {
   const object = options.object;
   if (!isString(object)) {
-    throw new TypeError('Invalid option: "object" must be a string!');
+    throw new TypeError('Invalid object: must be a string!');
   }
   const geoData = feature(data, data.objects[object]);
   return GeoJSONConnector(geoData, options, dataView);

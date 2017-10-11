@@ -38,8 +38,14 @@ function transform(dataView, options = {}) {
   const field = options.field;
   const method = options.method;
   const groupBy = options.groupBy;
-  if (!field || !method || (method === 'value' && !has(options, 'value'))) {
-    throw new TypeError('Invalid options');
+  if (!field) {
+    throw new TypeError('Invalid field!');
+  }
+  if (!method) {
+    throw new TypeError('Invalid method!');
+  }
+  if ((method === 'value' && !has(options, 'value'))) {
+    throw new TypeError('Invalid value: it is nil.');
   }
   const column = notNilValues(dataView.getColumn(field));
   const groups = partition(rows, groupBy);

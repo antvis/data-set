@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
   registerTransform
@@ -23,12 +22,13 @@ function transform(view, options) {
     geoView = view.dataSet.getView(geoView);
   }
   if (!geoView || geoView.dataType !== 'geo') {
-    throw new TypeError('Invalid geoView');
+    throw new TypeError('Invalid geoView: must be a DataView of GEO dataType!');
   }
   const as = options.as;
-  if (!as || !isArray(as)) {
-    throw new TypeError('Invalid as');
+  if (!Array.isArray(as) || as.length !== 2) {
+    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "cX", "cY" ])!');
   }
+
   const centroidX = as[0];
   const centroidY = as[1];
   view.rows.forEach(row => {

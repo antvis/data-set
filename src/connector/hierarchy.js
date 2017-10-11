@@ -20,7 +20,7 @@ function connector(data, options, dataView) {
   const children = options && options.children ? options.children : null;
 
   if (children && !isFunction(children)) {
-    throw new TypeError('Invalid option: children must be a function!');
+    throw new TypeError('Invalid children: must be a function!');
   }
 
   dataView.rows = dataView.root = hierarchy(data, children);
