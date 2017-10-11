@@ -1,9 +1,6 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
 const keys = require('lodash/keys');
-const map = require('lodash/map');
 // const pick = require('lodash/pick');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
@@ -25,7 +22,7 @@ const aggregates = {
     return data.length;
   },
   distinct(data, field) {
-    const values = uniq(map(data, row => row[field]));
+    const values = uniq(data.map(row => row[field]));
     return values.length;
   }
 };
@@ -41,9 +38,9 @@ const STATISTICS_METHODS = [
   'sumSimple',
   'variance'
 ];
-each(STATISTICS_METHODS, method => {
+STATISTICS_METHODS.forEach(method => {
   aggregates[method] = (data, field) => {
-    const values = map(data, row => row[field]);
+    const values = data.map(row => row[field]);
     return simpleStatistics[method](values);
   };
 });
@@ -56,7 +53,7 @@ function transform(dataView, options) {
   const fields = options.fields;
   let outputNames = options.as || [];
   let operations = options.operations;
-  if (!isArray(operations) || !operations.length) {
+  if (!Array.isArray(operations) || !operations.length) {
     operations = [ DEFAULT_OPERATION ];
     outputNames = operations;
   }
@@ -65,7 +62,7 @@ function transform(dataView, options) {
   forIn(groups, group => {
     // const result = pick(group[0], dims);
     const result = group[0];
-    each(operations, (operation, i) => {
+    operations.forEach((operation, i) => {
       const outputName = outputNames[i];
       const field = fields[i];
       result[outputName] = aggregates[operation](group, field);

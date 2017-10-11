@@ -1,3 +1,4 @@
+const isString = require('lodash/isString');
 const {
   dsvFormat,
   csvParse,
@@ -9,6 +10,9 @@ const {
 
 registerConnector('dsv', (str, options = {}) => {
   const delimiter = options.delimiter || ',';
+  if (!isString(delimiter)) {
+    throw new TypeError('Invalid option: delimiter must be a string!');
+  }
   return dsvFormat(delimiter).parse(str);
 });
 

@@ -1,8 +1,5 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const indexOf = require('lodash/indexOf');
-const map = require('lodash/map');
-const some = require('lodash/some');
+const forIn = require('lodash/forIn');
 const partition = require('../util/partition');
 const {
   registerTransform
@@ -16,9 +13,9 @@ const DEFAULT_OPTIONS = {
 
 function arrayDifference(arr1, arr2) {
   // arrayDifference([1, 1, 1, 2], [1, 2]) => [1, 1]
-  const shadow = map(arr1, item => item); // shadow copy
-  each(arr2, item => {
-    const index = indexOf(shadow, item);
+  const shadow = arr1.map(item => item); // shadow copy
+  arr2.forEach(item => {
+    const index = shadow.indexOf(item);
     if (index > -1) {
       shadow.splice(index, 1);
     }
@@ -34,7 +31,7 @@ function transform(dataView, options = {}) {
   const groups = partition(rows, groupBy, orderBy);
   let maxLength = 0;
   let referenceGroup = [];
-  each(groups, group => {
+  forIn(groups, group => {
     if (group.length > maxLength) {
       maxLength = group.length;
       referenceGroup = group;
@@ -42,8 +39,8 @@ function transform(dataView, options = {}) {
   });
   const referenceOrderByKeys = [];
   const referenceRowByOrderByKey = {};
-  each(referenceGroup, row => {
-    const key = map(orderBy, col => row[col]).join('-');
+  referenceGroup.forEach(row => {
+    const key = orderBy.map(col => row[col]).join('-');
     referenceOrderByKeys.push(key);
     referenceRowByOrderByKey[key] = row;
   });
@@ -51,20 +48,20 @@ function transform(dataView, options = {}) {
     const first = referenceGroup[0];
     const allOrderByKeys = [];
     const rowByOrderByKey = {};
-    each(rows, row => {
-      const key = map(orderBy, col => row[col]).join('-');
-      if (indexOf(allOrderByKeys, key) === -1) {
+    rows.forEach(row => {
+      const key = orderBy.map(col => row[col]).join('-');
+      if (allOrderByKeys.indexOf(key) === -1) {
         allOrderByKeys.push(key);
         rowByOrderByKey[key] = row;
       }
     });
     const _missingOrderByKeys = arrayDifference(allOrderByKeys, referenceOrderByKeys);
-    each(_missingOrderByKeys, key => {
+    _missingOrderByKeys.forEach(key => {
       const row = {};
-      each(groupBy, col => {
+      groupBy.forEach(col => {
         row[col] = first[col];
       });
-      each(orderBy, col => {
+      orderBy.forEach(col => {
         row[col] = rowByOrderByKey[key][col];
       });
       rows.push(row);
@@ -74,25 +71,25 @@ function transform(dataView, options = {}) {
     });
     maxLength = referenceGroup.length;
   }
-  each(groups, group => {
+  forIn(groups, group => {
     if (group !== referenceGroup && group.length < maxLength) {
       const first = group[0];
       // missing orderBy keys
       const orderByKeys = [];
-      each(group, row => {
-        orderByKeys.push(map(orderBy, col => row[col]).join('-'));
+      group.forEach(row => {
+        orderByKeys.push(orderBy.map(col => row[col]).join('-'));
       });
       const missingOrderByKeys = arrayDifference(referenceOrderByKeys, orderByKeys);
-      some(missingOrderByKeys, (key, i) => {
+      missingOrderByKeys.some((key, i) => {
         if (i >= (maxLength - group.length)) { // group length overflow
           return true;
         }
         const referenceRow = referenceRowByOrderByKey[key];
         const row = {};
-        each(groupBy, col => {
+        groupBy.forEach(col => {
           row[col] = first[col];
         });
-        each(orderBy, col => {
+        orderBy.forEach(col => {
           row[col] = referenceRow[col];
         });
         rows.push(row);

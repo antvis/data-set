@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-// const pick = require('lodash/pick');
-// const union = require('lodash/union');
 const {
   registerTransform
 } = require('../data-set');

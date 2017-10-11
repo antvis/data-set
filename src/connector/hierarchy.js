@@ -1,3 +1,4 @@
+const isFunction = require('lodash/isFunction');
 const {
   hierarchy
 } = require('d3-hierarchy');
@@ -17,6 +18,10 @@ const {
 function connector(data, options, dataView) {
   dataView.dataType = HIERARCHY;
   const children = options && options.children ? options.children : null;
+
+  if (children && !isFunction(children)) {
+    throw new TypeError('Invalid option: children must be a function!');
+  }
 
   dataView.rows = dataView.root = hierarchy(data, children);
   return data;

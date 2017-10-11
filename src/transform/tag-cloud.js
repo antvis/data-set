@@ -1,6 +1,4 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const map = require('lodash/map');
 const pick = require('lodash/pick');
 const {
   registerTransform
@@ -26,7 +24,7 @@ const DEFAULT_OPTIONS = {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
-  each([
+  [
     'font',
     'fontSize',
     'padding',
@@ -34,10 +32,10 @@ function transform(dataView, options) {
     'spiral',
     'text',
     'timeInterval'
-  ], key => {
+  ].forEach(key => {
     layout[key](options[key]);
   });
-  const words = map(dataView.rows, row => pick(row, options.fields));
+  const words = dataView.rows.map(row => pick(row, options.fields));
   layout.words(words);
   if (options.imageMask) {
     layout.createMask(options.imageMask);

@@ -1,17 +1,12 @@
 const EventEmitter = require('wolfy87-eventemitter');
 const assign = require('lodash/assign');
 const clone = require('lodash/clone');
-const each = require('lodash/each');
-const filter = require('lodash/filter');
 const find = require('lodash/find');
 const forIn = require('lodash/forIn');
-const indexOf = require('lodash/indexOf');
-const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
 const isObject = require('lodash/isObject');
 const isString = require('lodash/isString');
 const keys = require('lodash/keys');
-const map = require('lodash/map');
 const pick = require('lodash/pick');
 const cloneItems = require('./util/clone-items');
 
@@ -40,8 +35,8 @@ class View extends EventEmitter {
     if (!me.loose) {
       const { watchingStates } = me;
       dataSet.on('statechange', name => {
-        if (isArray(watchingStates)) {
-          if (indexOf(watchingStates, name) > -1) {
+        if (Array.isArray(watchingStates)) {
+          if (watchingStates.indexOf(name) > -1) {
             me._reExecute();
           }
         } else {
@@ -86,7 +81,7 @@ class View extends EventEmitter {
     if (!options) {
       if (source instanceof View || isString(source)) {
         me.origin = DataSet.getConnector('default')(source, me.dataSet);
-      } else if (isArray(source)) {
+      } else if (Array.isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = source;
       } else if (isObject(source) && source.type) {
@@ -120,7 +115,7 @@ class View extends EventEmitter {
   }
   _reExecuteTransforms() {
     const me = this;
-    each(me.transforms, options => {
+    me.transforms.forEach(options => {
       me._executeTransform(options);
     });
   }
@@ -136,7 +131,7 @@ class View extends EventEmitter {
     assign(this.rows[index], newRow);
   }
   findRows(query) {
-    return filter(this.rows, row => isMatch(row, query));
+    return this.rows.filter(row => isMatch(row, query));
   }
   findRow(query) {
     return find(this.rows, query);
@@ -155,10 +150,10 @@ class View extends EventEmitter {
   }
   getColumnIndex(columnName) {
     const columnNames = this.getColumnNames();
-    return indexOf(columnNames, columnName);
+    return columnNames.indexOf(columnName);
   }
   getColumn(columnName) {
-    return map(this.rows, row => row[columnName]);
+    return this.rows.map(row => row[columnName]);
   }
   getColumnData(columnName) {
     return this.getColumn(columnName);

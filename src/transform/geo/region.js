@@ -1,6 +1,4 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
   registerTransform
@@ -27,12 +25,12 @@ function transform(view, options) {
     throw new TypeError('Invalid geoView');
   }
   const as = options.as;
-  if (!isArray(as) || as.length !== 2) {
+  if (!Array.isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid as');
   }
   const lonField = as[0];
   const latField = as[1];
-  each(view.rows, row => {
+  view.rows.forEach(row => {
     const feature = geoView.geoFeatureByName(row[field]);
     if (feature) {
       if (geoView._projectedAs) {

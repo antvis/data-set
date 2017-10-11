@@ -5,7 +5,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const values = require('lodash/values');
-const isArray = require('lodash/isArray');
 const isFunction = require('lodash/isFunction');
 const {
   registerTransform
@@ -175,7 +174,7 @@ function transform(dv, options) {
   const nodeById = {};
   let nodes = dv.nodes;
   const edges = dv.edges;
-  if (!isArray(nodes) || nodes.length === 0) {
+  if (!Array.isArray(nodes) || nodes.length === 0) {
     nodes = _nodesFromEdges(edges, options, nodeById);
   }
   nodes.forEach(node => {

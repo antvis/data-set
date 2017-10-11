@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const map = require('lodash/map');
 // const pick = require('lodash/pick');
 const {
   quantile
@@ -28,7 +26,7 @@ function transform(dataView, options) {
   }
   let pArray = options.p;
   const fraction = options.fraction;
-  if (!isArray(pArray) || pArray.length === 0) {
+  if (!Array.isArray(pArray) || pArray.length === 0) {
     pArray = pByFraction(fraction);
   }
   const rows = dataView.rows;
@@ -38,8 +36,8 @@ function transform(dataView, options) {
   forIn(groups, group => {
     // const resultRow = pick(group[0], groupBy);
     const resultRow = group[0];
-    const binningColumn = map(group, row => row[field]);
-    const quantiles = map(pArray, p => quantile(binningColumn, p));
+    const binningColumn = group.map(row => row[field]);
+    const quantiles = pArray.map(p => quantile(binningColumn, p));
     resultRow[options.as] = quantiles;
     result.push(resultRow);
   });

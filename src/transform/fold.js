@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
 const difference = require('lodash/difference');
-const each = require('lodash/each');
-const isArray = require('lodash/isArray');
 const pick = require('lodash/pick');
 const {
   registerTransform
@@ -18,7 +16,7 @@ registerTransform('fold', (dataView, options) => {
   const columns = dataView.getColumnNames();
   options = assign({}, DEFAULT_OPTIONS, options);
   let fields = options.fields;
-  if (!isArray(fields)) {
+  if (!Array.isArray(fields)) {
     throw new TypeError('Invalid option `fields`: expected an array.');
   }
   if (fields.length === 0) {
@@ -32,8 +30,8 @@ registerTransform('fold', (dataView, options) => {
     retains = difference(columns, fields);
   }
   const resultRows = [];
-  each(dataView.rows, row => {
-    each(fields, field => {
+  dataView.rows.forEach(row => {
+    fields.forEach(field => {
       const resultRow = pick(row, retains);
       resultRow[key] = field;
       resultRow[value] = row[field];

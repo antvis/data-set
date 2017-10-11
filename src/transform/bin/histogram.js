@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
 const pick = require('lodash/pick');
 const partition = require('../../util/partition');
@@ -47,7 +46,7 @@ function transform(dataView, options) {
   forIn(groups, group => {
     const bins = {};
     const column = group.map(row => row[field]);
-    each(column, value => {
+    column.forEach(value => {
       const [ x0, x1 ] = nearestBin(value, binWidth, offset);
       const binKey = `${x0}-${x1}`;
       bins[binKey] = bins[binKey] || {

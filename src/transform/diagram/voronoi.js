@@ -1,9 +1,5 @@
 const assign = require('lodash/assign');
 const d3Voronoi = require('d3-voronoi');
-const each = require('lodash/each');
-const filter = require('lodash/filter');
-const map = require('lodash/map');
-const isArray = require('lodash/isArray');
 const {
   registerTransform
 } = require('../../data-set');
@@ -19,21 +15,21 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!isArray(as) || as.length !== 2) {
+  if (!Array.isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid option: as');
   }
   const xField = as[0];
   const yField = as[1];
 
   const fields = options.fields;
-  if (!isArray(fields) && fields.length !== 2) {
+  if (!Array.isArray(fields) && fields.length !== 2) {
     throw new TypeError('Invalid options');
   }
   const x = fields[0];
   const y = fields[1];
 
   const rows = dataView.rows;
-  const data = map(rows, row => [ row[x], row[y] ]);
+  const data = rows.map(row => [ row[x], row[y] ]);
   const voronoi = d3Voronoi.voronoi();
   if (options.extend) {
     voronoi.extent(options.extend);
@@ -42,10 +38,10 @@ function transform(dataView, options) {
     voronoi.size(options.size);
   }
   const polygons = voronoi(data).polygons();
-  each(rows, (row, i) => {
-    const polygon = filter(polygons[i], point => !!point); // some points are null
-    row[xField] = map(polygon, point => point[0]);
-    row[yField] = map(polygon, point => point[1]);
+  rows.forEach((row, i) => {
+    const polygon = polygons[i].filter(point => !!point); // some points are null
+    row[xField] = polygon.map(point => point[0]);
+    row[yField] = polygon.map(point => point[1]);
   });
 }
 

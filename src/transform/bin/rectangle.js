@@ -1,7 +1,5 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const map = require('lodash/map');
 const {
   registerTransform
 } = require('../../data-set');
@@ -24,6 +22,9 @@ function nearestBin(value, scale, offset) {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const [ fieldX, fieldY ] = options.fields;
+  if (!fieldX || !fieldY) {
+    throw new TypeError('Invalid option: fields');
+  }
   const rangeFieldX = dataView.range(fieldX);
   const rangeFieldY = dataView.range(fieldY);
   const widthX = rangeFieldX[1] - rangeFieldX[0];
@@ -36,10 +37,10 @@ function transform(dataView, options) {
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
-  const points = map(dataView.rows, row => [ row[fieldX], row[fieldY] ]);
+  const points = dataView.rows.map(row => [ row[fieldX], row[fieldY] ]);
   const bins = {};
   const [ offsetX, offsetY ] = options.offset;
-  each(points, point => {
+  points.forEach(point => {
     const [ x0, x1 ] = nearestBin(point[0], binWidth[0], offsetX);
     const [ y0, y1 ] = nearestBin(point[1], binWidth[1], offsetY);
     const binKey = `${x0}-${x1}-${y0}-${y1}`;

@@ -1,8 +1,5 @@
 const assign = require('lodash/assign');
 const d3Hierarchy = require('d3-hierarchy');
-const each = require('lodash/each');
-const indexOf = require('lodash/indexOf');
-const isArray = require('lodash/isArray');
 const {
   HIERARCHY,
   registerTransform
@@ -32,7 +29,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!isArray(as) || as.length !== 2) {
+  if (!Array.isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid option: as');
   }
 
@@ -64,8 +61,8 @@ function transform(dataView, options) {
   root.each(node => {
     node[x] = [ node.x0, node.x1, node.x1, node.x0 ];
     node[y] = [ node.y1, node.y1, node.y0, node.y0 ];
-    each([ 'x0', 'x1', 'y0', 'y1' ], prop => {
-      if (indexOf(as, prop) === -1) {
+    [ 'x0', 'x1', 'y0', 'y1' ].forEach(prop => {
+      if (as.indexOf(prop) === -1) {
         delete node[prop];
       }
     });

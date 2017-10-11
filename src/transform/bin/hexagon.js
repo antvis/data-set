@@ -1,8 +1,5 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const map = require('lodash/map');
 const {
   registerTransform
 } = require('../../data-set');
@@ -34,7 +31,7 @@ function generateBins(points, binWidth = [ 1, 1 ], offset = [ 0, 0 ]) { // proce
   const bins = {};
   const [ binWidthX, binWidthY ] = binWidth;
   const [ offsetX, offsetY ] = offset;
-  each(points, point => {
+  points.forEach(point => {
     const [ x, y ] = point;
     // step3.1: nearest two centers
     const [ xRounded, xRoundedScaled ] = nearestBinsCenters(x, binWidthX, offsetX);
@@ -67,7 +64,7 @@ function transform(dataView, options) {
   // step1: get binWidth, etc.
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = options.fields;
-  if (!isArray(fields) || fields.length !== 2) {
+  if (!Array.isArray(fields) || fields.length !== 2) {
     throw new TypeError('Invalid option: fields');
   }
   const [ fieldX, fieldY ] = fields;
@@ -99,7 +96,7 @@ function transform(dataView, options) {
   const [ offsetX, offsetY ] = options.offset;
   const yScale = 3 * binWidth[0] / (SQRT3 * binWidth[1]);
   // const yScale = binWidth[0] / (SQRT3 * binWidth[1]);
-  const points = map(dataView.rows, row => [ row[fieldX], yScale * row[fieldY] ]);
+  const points = dataView.rows.map(row => [ row[fieldX], yScale * row[fieldY] ]);
   // step3: binning
   const bins = generateBins(points, [ binWidth[0], yScale * binWidth[1] ], [ offsetX, yScale * offsetY ]);
   // step4: restore scale (for Y)
@@ -123,11 +120,11 @@ function transform(dataView, options) {
     const row = {};
     row[asCount] = count;
     if (options.sizeByCount) {
-      row[asX] = map(hexagonPoints, p => x + (bin.count / maxCount) * p[0]);
-      row[asY] = map(hexagonPoints, p => (y + (bin.count / maxCount) * p[1]) / yScale);
+      row[asX] = hexagonPoints.map(p => x + (bin.count / maxCount) * p[0]);
+      row[asY] = hexagonPoints.map(p => (y + (bin.count / maxCount) * p[1]) / yScale);
     } else {
-      row[asX] = map(hexagonPoints, p => x + p[0]);
-      row[asY] = map(hexagonPoints, p => (y + p[1]) / yScale);
+      row[asX] = hexagonPoints.map(p => x + p[0]);
+      row[asY] = hexagonPoints.map(p => (y + p[1]) / yScale);
     }
     result.push(row);
   });

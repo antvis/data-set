@@ -22,7 +22,7 @@ describe('View.source(): hierarchy', () => {
   it('default', () => {
     expect(() => {
       dv.source(flare, {
-        type: 'geo'
+        type: 'hierarchy'
       });
     }).to.not.throw();
   });

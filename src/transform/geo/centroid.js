@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
@@ -32,7 +31,7 @@ function transform(view, options) {
   }
   const centroidX = as[0];
   const centroidY = as[1];
-  each(view.rows, row => {
+  view.rows.forEach(row => {
     const feature = geoView.geoFeatureByName(row[field]);
     if (feature) {
       if (geoView._projectedAs) {

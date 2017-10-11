@@ -1,6 +1,5 @@
 /* eslint-disable no-cond-assign, no-loop-func */
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const View = require('../view');
 
 assign(View.prototype, {
@@ -18,7 +17,7 @@ assign(View.prototype, {
     while (node = nodes.pop()) {
       const children = node.children;
       if (children) {
-        each(children, child => {
+        children.forEach(child => {
           links.push({
             source: node,
             target: child

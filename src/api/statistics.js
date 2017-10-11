@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const map = require('lodash/map');
 const {
   max,
   mean,
@@ -39,7 +38,7 @@ assign(View.prototype, {
   },
   quantiles(column, pArr) {
     const columnArr = this.getColumn(column);
-    return map(pArr, p => quantile(columnArr, p));
+    return pArr.map(p => quantile(columnArr, p));
   },
   quantilesByFraction(column, fraction) {
     return this.quantiles(column, pByFraction(fraction));
