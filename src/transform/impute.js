@@ -3,6 +3,7 @@ const forIn = require('lodash/forIn');
 const has = require('lodash/has');
 const isFunction = require('lodash/isFunction');
 const isNil = require('lodash/isNil');
+const isString = require('lodash/isString');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
 const {
@@ -58,8 +59,10 @@ function transform(dataView, options = {}) {
       if (isNil(row[field])) {
         if (isFunction(method)) {
           row[field] = method(row, fieldValues, options.value, group);
-        } else {
+        } else if (isString(method)) {
           row[field] = imputations[method](row, fieldValues, options.value);
+        } else {
+          throw new TypeError(`Invalid method: must be a function or one of ${STATISTICS_METHODS.join(', ')}`);
         }
       }
     });

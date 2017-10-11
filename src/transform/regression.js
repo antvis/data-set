@@ -32,7 +32,7 @@ function transform(dataView, options) {
   const [ xField, yField ] = fields;
   const method = options.method;
   if (REGRESSION_METHODS.indexOf(method) === -1) {
-    throw new TypeError(`invalid method: ${method} must be one of ${REGRESSION_METHODS.join(',')}`);
+    throw new TypeError(`invalid method: ${method} must be one of ${REGRESSION_METHODS.join(', ')}`);
   }
   const points = dataView.rows.map(row => [ row[xField], row[yField] ]);
   const regressionResult = regression[method](points, options);
