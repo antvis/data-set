@@ -33,7 +33,7 @@ function transform(dataView, options) {
   let field;
   try {
     field = getField(options);
-  } catch(e) {
+  } catch (e) {
     console.warn(e);
   }
   if (field) {

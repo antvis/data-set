@@ -13,7 +13,7 @@ module.exports = {
       console.warn(INVALID_FIELD_ERR_MSG);
       return field[0];
     }
-    console.warn(`${INVALID_FIELD_ERR_MSG} will try to get fields instead.`)
+    console.warn(`${INVALID_FIELD_ERR_MSG} will try to get fields instead.`);
     if (isString(fields)) {
       return fields;
     }
@@ -32,12 +32,12 @@ module.exports = {
     }
     if (isString(fields)) {
       console.warn(INVALID_FIELDS_ERR_MSG);
-      return [fields];
+      return [ fields ];
     }
-    console.warn(`${INVALID_FIELDS_ERR_MSG} will try to get field instead.`)
+    console.warn(`${INVALID_FIELDS_ERR_MSG} will try to get field instead.`);
     if (isString(field)) {
       console.warn(INVALID_FIELDS_ERR_MSG);
-      return [field];
+      return [ field ];
     }
     if (Array.isArray(field) && field.length) {
       console.warn(INVALID_FIELDS_ERR_MSG);

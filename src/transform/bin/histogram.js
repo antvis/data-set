@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const isString = require('lodash/isString');
 const forIn = require('lodash/forIn');
 const pick = require('lodash/pick');
 const partition = require('../../util/partition');
