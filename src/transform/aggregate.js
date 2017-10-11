@@ -1,7 +1,7 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const keys = require('lodash/keys');
-// const pick = require('lodash/pick');
+const isString = require('lodash/isString');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
@@ -50,13 +50,41 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const rows = dataView.rows;
   const dims = options.groupBy;
-  const fields = options.fields;
+  let fields = options.fields;
+  if (isString((fields))) {
+    fields = [ fields ];
+  }
+  if (!Array.isArray(fields)) {
+    if (isString(options.field)) {
+      fields = [ options.field ];
+    } else if (Array.isArray(options.field)) {
+      fields = options.field;
+    }
+  }
+  if (!Array.isArray(fields)) {
+    throw new TypeError('Invalid fields: it must be an array with one or more strings!');
+  }
   let outputNames = options.as || [];
+  if (isString(outputNames)) {
+    outputNames = [ outputNames ];
+  }
   let operations = options.operations;
+  if (isString(operations)) {
+    operations = [ operations ];
+  }
+  const DEFAULT_OPERATIONS = [ DEFAULT_OPERATION ];
   if (!Array.isArray(operations) || !operations.length) {
     console.warn('operations is not defined, will use [ "count" ] directly.');
-    operations = [ DEFAULT_OPERATION ];
+    operations = DEFAULT_OPERATIONS;
     outputNames = operations;
+  }
+  if (!(operations.length === 1 && operations[0] === DEFAULT_OPERATION)) {
+    if (operations.length !== fields.length) {
+      throw new TypeError('Invalid operations: it\'s length must be the same as fields!');
+    }
+    if (outputNames.length !== fields.length) {
+      throw new TypeError('Invalid as: it\'s length must be the same as fields!');
+    }
   }
   const groups = partition(rows, dims);
   const results = [];

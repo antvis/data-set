@@ -59,7 +59,7 @@ function transform(dataView, options) {
     });
     const [ asX, asCount ] = options.as;
     if (!asX || !asCount) {
-      throw new TypeError('Invalid as: it must be an array with two elements (e.g. [ "x", "count" ])!');
+      throw new TypeError('Invalid as: it must be an array with 2 elements (e.g. [ "x", "count" ])!');
     }
 
     const meta = pick(group[0], groupBy);

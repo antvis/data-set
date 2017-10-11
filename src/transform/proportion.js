@@ -18,12 +18,19 @@ function transform(dataView, options = {}) {
   const field = options.field;
   const dimension = options.dimension;
   const groupBy = options.groupBy;
-  const as = options.as;
+  let as = options.as;
   if (!isString(field)) {
     throw new TypeError('Invalid field: must be a string!');
   }
   if (!isString(dimension)) {
     throw new TypeError('Invalid dimension: must be a string!');
+  }
+  if (Array.isArray(as)) {
+    console.warn('Invalid as: must be a string, will use the first element of the array specified.');
+    as = as[0];
+  }
+  if (!isString(as)) {
+    throw new TypeError('Invalid as: must be a string!');
   }
   const rows = dataView.rows;
   const result = [];

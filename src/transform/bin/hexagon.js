@@ -65,7 +65,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = options.fields;
   if (!Array.isArray(fields) || fields.length !== 2) {
-    throw new TypeError('Invalid fields: it must be an array with two elements!');
+    throw new TypeError('Invalid fields: it must be an array with 2 strings!');
   }
   const [ fieldX, fieldY ] = fields;
   const rangeFieldX = dataView.range(fieldX);

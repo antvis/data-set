@@ -25,6 +25,10 @@ function transform(dataView, options) {
   if (!isString(field)) {
     throw new TypeError('Invalid field: it must be a string!');
   }
+  const as = options.as;
+  if (!isString(as)) {
+    throw new TypeError('Invalid as: it must be a string (e.g. "_bin")!');
+  }
   let pArray = options.p;
   const fraction = options.fraction;
   if (!Array.isArray(pArray) || pArray.length === 0) {
@@ -39,7 +43,7 @@ function transform(dataView, options) {
     const resultRow = group[0];
     const binningColumn = group.map(row => row[field]);
     const quantiles = pArray.map(p => quantile(binningColumn, p));
-    resultRow[options.as] = quantiles;
+    resultRow[as] = quantiles;
     result.push(resultRow);
   });
   dataView.rows = result;
