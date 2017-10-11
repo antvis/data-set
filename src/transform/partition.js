@@ -1,9 +1,9 @@
 const assign = require('lodash/assign');
 const values = require('lodash/values');
+const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
-const partition = require('../util/partition');
 
 const DEFAULT_OPTIONS = {
   groupBy: [], // optional

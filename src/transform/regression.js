@@ -4,6 +4,9 @@ const getSeriesValues = require('../util/get-series-values');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],
@@ -25,7 +28,7 @@ const REGRESSION_METHODS = [
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const fields = options.fields;
+  const fields = getFields(options);
   if (!Array.isArray(fields) || fields.length !== 2) {
     throw new TypeError('invalid fields: must be an array of 2 strings.');
   }

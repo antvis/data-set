@@ -3,6 +3,9 @@ const forIn = require('lodash/forIn');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getFields
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
@@ -21,9 +24,9 @@ function nearestBin(value, scale, offset) {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const [ fieldX, fieldY ] = options.fields;
+  const [ fieldX, fieldY ] = getFields(options);
   if (!fieldX || !fieldY) {
-    throw new TypeError('Invalid fields: must be an array with two string elements!');
+    throw new TypeError('Invalid fields: must be an array with 2 strings!');
   }
   const rangeFieldX = dataView.range(fieldX);
   const rangeFieldY = dataView.range(fieldY);
@@ -33,7 +36,7 @@ function transform(dataView, options) {
   if (binWidth.length !== 2) {
     const [ binsX, binsY ] = options.bins;
     if (binsX <= 0 || binsY <= 0) {
-      throw new TypeError('Invalid bins: must be an array with two positive numbers (e.g. [ 30, 30 ])!');
+      throw new TypeError('Invalid bins: must be an array with 2 positive numbers (e.g. [ 30, 30 ])!');
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
@@ -56,7 +59,7 @@ function transform(dataView, options) {
   const rows = [];
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
-    throw new TypeError('Invalid as: it must be an array with three elements (e.g. [ "x", "y", "count" ])!');
+    throw new TypeError('Invalid as: it must be an array with 3 strings (e.g. [ "x", "y", "count" ])!');
   }
   /* points
    * 3---2

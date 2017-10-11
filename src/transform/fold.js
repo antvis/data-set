@@ -4,6 +4,9 @@ const pick = require('lodash/pick');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   fields: [],
@@ -15,10 +18,7 @@ const DEFAULT_OPTIONS = {
 registerTransform('fold', (dataView, options) => {
   const columns = dataView.getColumnNames();
   options = assign({}, DEFAULT_OPTIONS, options);
-  let fields = options.fields;
-  if (!Array.isArray(fields)) {
-    throw new TypeError('Invalid fields: must be an array!');
-  }
+  let fields = getFields(options);
   if (fields.length === 0) {
     console.warn('warning: option fields is not specified, will fold all columns.');
     fields = columns;

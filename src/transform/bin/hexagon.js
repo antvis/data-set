@@ -3,6 +3,9 @@ const forIn = require('lodash/forIn');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getFields
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
@@ -63,7 +66,7 @@ function generateBins(points, binWidth = [ 1, 1 ], offset = [ 0, 0 ]) { // proce
 function transform(dataView, options) {
   // step1: get binWidth, etc.
   options = assign({}, DEFAULT_OPTIONS, options);
-  const fields = options.fields;
+  const fields = getFields(options);
   if (!Array.isArray(fields) || fields.length !== 2) {
     throw new TypeError('Invalid fields: it must be an array with 2 strings!');
   }

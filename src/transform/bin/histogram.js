@@ -6,6 +6,9 @@ const partition = require('../../util/partition');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'count' ],
@@ -24,10 +27,7 @@ function nearestBin(value, scale, offset) {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!isString(field)) {
-    throw new TypeError('Invalid field: it must be a string!');
-  }
+  const field = getField(options);
   const range = dataView.range(field);
   const width = range[1] - range[0];
   let binWidth = options.binWidth;

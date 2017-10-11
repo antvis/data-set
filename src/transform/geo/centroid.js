@@ -3,6 +3,9 @@ const isString = require('lodash/isString');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // field: 'name', // required
@@ -13,10 +16,7 @@ const DEFAULT_OPTIONS = {
 
 function transform(view, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid field');
-  }
+  const field = getField(options);
   let geoView = options.geoView || options.geoDataView; // alias
   if (isString(geoView)) {
     geoView = view.dataSet.getView(geoView);

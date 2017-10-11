@@ -9,6 +9,9 @@ const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getField
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // field: '', // required
@@ -36,12 +39,9 @@ imputations.value = (row, values, value) => value;
 function transform(dataView, options = {}) {
   const rows = dataView.rows;
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
+  const field = getField(options);
   const method = options.method;
   const groupBy = options.groupBy;
-  if (!field) {
-    throw new TypeError('Invalid field!');
-  }
   if (!method) {
     throw new TypeError('Invalid method!');
   }

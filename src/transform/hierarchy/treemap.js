@@ -4,6 +4,9 @@ const {
   HIERARCHY,
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   field: 'value',
@@ -33,8 +36,14 @@ function transform(dataView, options) {
     throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
 
-  if (options.field) {
-    root.sum(d => d[options.field]);
+  let field;
+  try {
+    field = getField(options);
+  } catch(e) {
+    console.warn(e);
+  }
+  if (field) {
+    root.sum(d => d[field]);
   }
 
   const treemapLayout = d3Hierarchy.treemap();

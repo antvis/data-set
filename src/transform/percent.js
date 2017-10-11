@@ -4,10 +4,13 @@ const isString = require('lodash/isString');
 const {
   sum
 } = require('simple-statistics');
+const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
-const partition = require('../util/partition');
+const {
+  getField
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // field: 'y', // required
@@ -18,13 +21,10 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options = {}) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
+  const field = getField(options);
   const dimension = options.dimension;
   const groupBy = options.groupBy;
   let as = options.as;
-  if (!isString(field)) {
-    throw new TypeError('Invalid field: must be a string!');
-  }
   if (!isString(dimension)) {
     throw new TypeError('Invalid dimension: must be a string!');
   }

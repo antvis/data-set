@@ -8,6 +8,9 @@ const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [],
@@ -50,17 +53,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const rows = dataView.rows;
   const dims = options.groupBy;
-  let fields = options.fields;
-  if (isString((fields))) {
-    fields = [ fields ];
-  }
-  if (!Array.isArray(fields)) {
-    if (isString(options.field)) {
-      fields = [ options.field ];
-    } else if (Array.isArray(options.field)) {
-      fields = options.field;
-    }
-  }
+  const fields = getFields(options);
   if (!Array.isArray(fields)) {
     throw new TypeError('Invalid fields: it must be an array with one or more strings!');
   }

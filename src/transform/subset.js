@@ -1,6 +1,9 @@
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 /*
  * options: {
@@ -14,6 +17,6 @@ const {
 registerTransform('subset', (dataView, options = {}) => {
   const startIndex = options.startRowIndex || 0;
   const endIndex = options.endRowIndex || dataView.rows.length - 1;
-  const columns = options.fields || dataView.getColumnNames();
+  const columns = getFields(options, dataView.getColumnNames());
   dataView.rows = dataView.getSubset(startIndex, endIndex, columns);
 });

@@ -3,6 +3,9 @@ const d3Voronoi = require('d3-voronoi');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getFields
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // fields: [ 'x', 'y' ] // field x and field y, required
@@ -21,7 +24,7 @@ function transform(dataView, options) {
   const xField = as[0];
   const yField = as[1];
 
-  const fields = options.fields;
+  const fields = getFields(options);
   if (!Array.isArray(fields) && fields.length !== 2) {
     throw new TypeError('Invalid fields: must be an array with two strings!');
   }

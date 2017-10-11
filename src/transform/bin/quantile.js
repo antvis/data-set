@@ -5,11 +5,14 @@ const isString = require('lodash/isString');
 const {
   quantile
 } = require('simple-statistics');
+const partition = require('../../util/partition');
+const pByFraction = require('../../util/p-by-fraction');
 const {
   registerTransform
 } = require('../../data-set');
-const partition = require('../../util/partition');
-const pByFraction = require('../../util/p-by-fraction');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: '_bin',
@@ -21,10 +24,7 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!isString(field)) {
-    throw new TypeError('Invalid field: it must be a string!');
-  }
+  const field = getField(options);
   const as = options.as;
   if (!isString(as)) {
     throw new TypeError('Invalid as: it must be a string (e.g. "_bin")!');
