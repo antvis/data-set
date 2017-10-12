@@ -1,4 +1,3 @@
-const filter = require('lodash/filter');
 const {
   registerTransform
 } = require('../data-set');
@@ -15,5 +14,5 @@ function defaultCallback(row) {
 }
 
 registerTransform('filter', (dataView, options = {}) => {
-  dataView.rows = filter(dataView.rows, options.callback || defaultCallback);
+  dataView.rows = dataView.rows.filter(options.callback || defaultCallback);
 });

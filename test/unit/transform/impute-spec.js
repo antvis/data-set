@@ -77,4 +77,18 @@ describe('View.transform(): impute', () => {
     expect(rows[7].y).to.equal(9);
     expect(rows[9].y).to.equal(9);
   });
+
+  it('groupBy & orderBy', () => {
+    dv.transform({
+      field: 'y',
+      groupBy: 'x',
+      orderBy: 'x',
+      method: 'max',
+      type: 'impute'
+    });
+    const rows = dv.rows;
+    expect(rows[3].y).to.equal(3);
+    expect(rows[7].y).to.equal(9);
+    expect(rows[9].y).to.equal(9);
+  });
 });

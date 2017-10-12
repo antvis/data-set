@@ -1,10 +1,11 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const map = require('lodash/map');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getFields
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
@@ -23,7 +24,10 @@ function nearestBin(value, scale, offset) {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const [ fieldX, fieldY ] = options.fields;
+  const [ fieldX, fieldY ] = getFields(options);
+  if (!fieldX || !fieldY) {
+    throw new TypeError('Invalid fields: must be an array with 2 strings!');
+  }
   const rangeFieldX = dataView.range(fieldX);
   const rangeFieldY = dataView.range(fieldY);
   const widthX = rangeFieldX[1] - rangeFieldX[0];
@@ -32,14 +36,14 @@ function transform(dataView, options) {
   if (binWidth.length !== 2) {
     const [ binsX, binsY ] = options.bins;
     if (binsX <= 0 || binsY <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: must be an array with 2 positive numbers (e.g. [ 30, 30 ])!');
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
-  const points = map(dataView.rows, row => [ row[fieldX], row[fieldY] ]);
+  const points = dataView.rows.map(row => [ row[fieldX], row[fieldY] ]);
   const bins = {};
   const [ offsetX, offsetY ] = options.offset;
-  each(points, point => {
+  points.forEach(point => {
     const [ x0, x1 ] = nearestBin(point[0], binWidth[0], offsetX);
     const [ y0, y1 ] = nearestBin(point[1], binWidth[1], offsetY);
     const binKey = `${x0}-${x1}-${y0}-${y1}`;
@@ -55,7 +59,7 @@ function transform(dataView, options) {
   const rows = [];
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with 3 strings (e.g. [ "x", "y", "count" ])!');
   }
   /* points
    * 3---2

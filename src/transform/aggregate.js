@@ -1,16 +1,16 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
 const keys = require('lodash/keys');
-const map = require('lodash/map');
-// const pick = require('lodash/pick');
+const isString = require('lodash/isString');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [],
@@ -25,7 +25,7 @@ const aggregates = {
     return data.length;
   },
   distinct(data, field) {
-    const values = uniq(map(data, row => row[field]));
+    const values = uniq(data.map(row => row[field]));
     return values.length;
   }
 };
@@ -41,9 +41,9 @@ const STATISTICS_METHODS = [
   'sumSimple',
   'variance'
 ];
-each(STATISTICS_METHODS, method => {
+STATISTICS_METHODS.forEach(method => {
   aggregates[method] = (data, field) => {
-    const values = map(data, row => row[field]);
+    const values = data.map(row => row[field]);
     return simpleStatistics[method](values);
   };
 });
@@ -53,19 +53,38 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const rows = dataView.rows;
   const dims = options.groupBy;
-  const fields = options.fields;
+  const fields = getFields(options);
+  if (!Array.isArray(fields)) {
+    throw new TypeError('Invalid fields: it must be an array with one or more strings!');
+  }
   let outputNames = options.as || [];
+  if (isString(outputNames)) {
+    outputNames = [ outputNames ];
+  }
   let operations = options.operations;
-  if (!isArray(operations) || !operations.length) {
-    operations = [ DEFAULT_OPERATION ];
+  if (isString(operations)) {
+    operations = [ operations ];
+  }
+  const DEFAULT_OPERATIONS = [ DEFAULT_OPERATION ];
+  if (!Array.isArray(operations) || !operations.length) {
+    console.warn('operations is not defined, will use [ "count" ] directly.');
+    operations = DEFAULT_OPERATIONS;
     outputNames = operations;
+  }
+  if (!(operations.length === 1 && operations[0] === DEFAULT_OPERATION)) {
+    if (operations.length !== fields.length) {
+      throw new TypeError('Invalid operations: it\'s length must be the same as fields!');
+    }
+    if (outputNames.length !== fields.length) {
+      throw new TypeError('Invalid as: it\'s length must be the same as fields!');
+    }
   }
   const groups = partition(rows, dims);
   const results = [];
   forIn(groups, group => {
     // const result = pick(group[0], dims);
     const result = group[0];
-    each(operations, (operation, i) => {
+    operations.forEach((operation, i) => {
       const outputName = outputNames[i];
       const field = fields[i];
       result[outputName] = aggregates[operation](group, field);

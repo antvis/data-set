@@ -1,11 +1,13 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-// const pick = require('lodash/pick');
-// const union = require('lodash/union');
+const isString = require('lodash/isString');
+const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
-const partition = require('../util/partition');
+const {
+  getField
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // field: 'y', // required
@@ -16,12 +18,19 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options = {}) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
+  const field = getField(options);
   const dimension = options.dimension;
   const groupBy = options.groupBy;
-  const as = options.as;
-  if (!field || !dimension) {
-    throw new TypeError('Invalid options');
+  let as = options.as;
+  if (!isString(dimension)) {
+    throw new TypeError('Invalid dimension: must be a string!');
+  }
+  if (Array.isArray(as)) {
+    console.warn('Invalid as: must be a string, will use the first element of the array specified.');
+    as = as[0];
+  }
+  if (!isString(as)) {
+    throw new TypeError('Invalid as: must be a string!');
   }
   const rows = dataView.rows;
   const result = [];

@@ -5,7 +5,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const values = require('lodash/values');
-const isArray = require('lodash/isArray');
 const isFunction = require('lodash/isFunction');
 const {
   registerTransform
@@ -79,17 +78,17 @@ function _sortNodes(nodes, options) {
 function _layoutNodes(nodes, options) {
   const len = nodes.length;
   if (!len) {
-    throw new TypeError('Invalid nodes: it\'s empty');
+    throw new TypeError('Invalid nodes: it\'s empty!');
   }
   if (options.weight) {
     const marginRatio = options.marginRatio;
     if (marginRatio < 0 || marginRatio >= 1) {
-      throw new TypeError('Invalid marginRatio: it must be in range [0, 1)');
+      throw new TypeError('Invalid marginRatio: it must be in range [0, 1)!');
     }
     const margin = marginRatio / (2 * len);
     const thickness = options.thickness;
     if (thickness <= 0 || thickness >= 1) {
-      throw new TypeError('Invalid thickness: it must be in range (0, 1)');
+      throw new TypeError('Invalid thickness: it must be in range (0, 1)!');
     }
     let totalValue = 0;
     nodes.forEach(node => {
@@ -175,7 +174,7 @@ function transform(dv, options) {
   const nodeById = {};
   let nodes = dv.nodes;
   const edges = dv.edges;
-  if (!isArray(nodes) || nodes.length === 0) {
+  if (!Array.isArray(nodes) || nodes.length === 0) {
     nodes = _nodesFromEdges(edges, options, nodeById);
   }
   nodes.forEach(node => {

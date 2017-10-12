@@ -1,11 +1,11 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const map = require('lodash/map');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getFields
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y', 'count' ],
@@ -34,7 +34,7 @@ function generateBins(points, binWidth = [ 1, 1 ], offset = [ 0, 0 ]) { // proce
   const bins = {};
   const [ binWidthX, binWidthY ] = binWidth;
   const [ offsetX, offsetY ] = offset;
-  each(points, point => {
+  points.forEach(point => {
     const [ x, y ] = point;
     // step3.1: nearest two centers
     const [ xRounded, xRoundedScaled ] = nearestBinsCenters(x, binWidthX, offsetX);
@@ -66,9 +66,9 @@ function generateBins(points, binWidth = [ 1, 1 ], offset = [ 0, 0 ]) { // proce
 function transform(dataView, options) {
   // step1: get binWidth, etc.
   options = assign({}, DEFAULT_OPTIONS, options);
-  const fields = options.fields;
-  if (!isArray(fields) || fields.length !== 2) {
-    throw new TypeError('Invalid option: fields');
+  const fields = getFields(options);
+  if (!Array.isArray(fields) || fields.length !== 2) {
+    throw new TypeError('Invalid fields: it must be an array with 2 strings!');
   }
   const [ fieldX, fieldY ] = fields;
   const rangeFieldX = dataView.range(fieldX);
@@ -79,7 +79,7 @@ function transform(dataView, options) {
   if (binWidth.length !== 2) {
     const [ binsX, binsY ] = options.bins;
     if (binsX <= 0 || binsY <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: must be an array with two positive numbers (e.g. [ 30, 30 ])!');
     }
     binWidth = [ widthX / binsX, widthY / binsY ];
   }
@@ -99,13 +99,13 @@ function transform(dataView, options) {
   const [ offsetX, offsetY ] = options.offset;
   const yScale = 3 * binWidth[0] / (SQRT3 * binWidth[1]);
   // const yScale = binWidth[0] / (SQRT3 * binWidth[1]);
-  const points = map(dataView.rows, row => [ row[fieldX], yScale * row[fieldY] ]);
+  const points = dataView.rows.map(row => [ row[fieldX], yScale * row[fieldY] ]);
   // step3: binning
   const bins = generateBins(points, [ binWidth[0], yScale * binWidth[1] ], [ offsetX, yScale * offsetY ]);
   // step4: restore scale (for Y)
   const [ asX, asY, asCount ] = options.as;
   if (!asX || !asY || !asCount) {
-    throw new TypeError('Invalid option: as');
+    throw new TypeError('Invalid as: it must be an array with three elements (e.g. [ "x", "y", "count" ])!');
   }
   const radius = binWidth[0] / SQRT3;
   const hexagonPoints = ANGLES.map(angle => [ Math.sin(angle) * radius, -Math.cos(angle) * radius ]);
@@ -123,11 +123,11 @@ function transform(dataView, options) {
     const row = {};
     row[asCount] = count;
     if (options.sizeByCount) {
-      row[asX] = map(hexagonPoints, p => x + (bin.count / maxCount) * p[0]);
-      row[asY] = map(hexagonPoints, p => (y + (bin.count / maxCount) * p[1]) / yScale);
+      row[asX] = hexagonPoints.map(p => x + (bin.count / maxCount) * p[0]);
+      row[asY] = hexagonPoints.map(p => (y + (bin.count / maxCount) * p[1]) / yScale);
     } else {
-      row[asX] = map(hexagonPoints, p => x + p[0]);
-      row[asY] = map(hexagonPoints, p => (y + p[1]) / yScale);
+      row[asX] = hexagonPoints.map(p => x + p[0]);
+      row[asY] = hexagonPoints.map(p => (y + p[1]) / yScale);
     }
     result.push(row);
   });

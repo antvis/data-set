@@ -1,10 +1,11 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   // field: 'name', // required
@@ -15,24 +16,22 @@ const DEFAULT_OPTIONS = {
 
 function transform(view, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid field');
-  }
+  const field = getField(options);
   let geoView = options.geoView || options.geoDataView; // alias
   if (isString(geoView)) {
     geoView = view.dataSet.getView(geoView);
   }
   if (!geoView || geoView.dataType !== 'geo') {
-    throw new TypeError('Invalid geoView');
+    throw new TypeError('Invalid geoView: must be a DataView of GEO dataType!');
   }
   const as = options.as;
-  if (!as || !isArray(as)) {
-    throw new TypeError('Invalid as');
+  if (!Array.isArray(as) || as.length !== 2) {
+    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "cX", "cY" ])!');
   }
+
   const centroidX = as[0];
   const centroidY = as[1];
-  each(view.rows, row => {
+  view.rows.forEach(row => {
     const feature = geoView.geoFeatureByName(row[field]);
     if (feature) {
       if (geoView._projectedAs) {

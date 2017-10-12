@@ -1,4 +1,3 @@
-const map = require('lodash/map');
 const {
   geoGraticule
 } = require('d3-geo');
@@ -10,8 +9,9 @@ function connector(options, dataView) {
   dataView.dataType = 'geo-graticule';
   const data = geoGraticule().lines();
 
-  map(data, (row, index) => {
+  data.map((row, index) => {
     row.index = `${index}`;
+    return row;
   });
 
   dataView.rows = data;

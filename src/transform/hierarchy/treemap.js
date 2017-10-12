@@ -1,12 +1,12 @@
 const assign = require('lodash/assign');
 const d3Hierarchy = require('d3-hierarchy');
-const each = require('lodash/each');
-const indexOf = require('lodash/indexOf');
-const isArray = require('lodash/isArray');
 const {
   HIERARCHY,
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   field: 'value',
@@ -26,18 +26,24 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   if (dataView.dataType !== HIERARCHY) {
-    throw new TypeError('This transform is for Hierarchy data only');
+    throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
   const root = dataView.root;
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!isArray(as) || as.length !== 2) {
-    throw new TypeError('Invalid option: as');
+  if (!Array.isArray(as) || as.length !== 2) {
+    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
 
-  if (options.field) {
-    root.sum(d => d[options.field]);
+  let field;
+  try {
+    field = getField(options);
+  } catch (e) {
+    console.warn(e);
+  }
+  if (field) {
+    root.sum(d => d[field]);
   }
 
   const treemapLayout = d3Hierarchy.treemap();
@@ -64,8 +70,8 @@ function transform(dataView, options) {
   root.each(node => {
     node[x] = [ node.x0, node.x1, node.x1, node.x0 ];
     node[y] = [ node.y1, node.y1, node.y0, node.y0 ];
-    each([ 'x0', 'x1', 'y0', 'y1' ], prop => {
-      if (indexOf(as, prop) === -1) {
+    [ 'x0', 'x1', 'y0', 'y1' ].forEach(prop => {
+      if (as.indexOf(prop) === -1) {
         delete node[prop];
       }
     });

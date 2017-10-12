@@ -1,4 +1,3 @@
-const each = require('lodash/each');
 const getPointAtLength = require('point-at-length');
 const {
   geoPath
@@ -16,13 +15,13 @@ function GeoJSONConnector(data, options, dataView) {
   const features = cloneItems(data.features);
 
   // pre-process
-  each(features, feature => {
+  features.forEach(feature => {
     feature.name = feature.properties.name;
     feature.longitude = [];
     feature.latitude = [];
     const pathData = feature.pathData = geoPathGenerator(feature);
     const points = getPointAtLength(pathData);
-    each(points._path, point => {
+    points._path.forEach(point => {
       feature.longitude.push(point[1]);
       feature.latitude.push(point[2]);
     });

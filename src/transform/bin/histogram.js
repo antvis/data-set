@@ -1,11 +1,13 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
 const forIn = require('lodash/forIn');
 const pick = require('lodash/pick');
 const partition = require('../../util/partition');
 const {
   registerTransform
 } = require('../../data-set');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'count' ],
@@ -24,17 +26,14 @@ function nearestBin(value, scale, offset) {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid option: field');
-  }
+  const field = getField(options);
   const range = dataView.range(field);
   const width = range[1] - range[0];
   let binWidth = options.binWidth;
   if (!binWidth) {
     const bins = options.bins;
     if (bins <= 0) {
-      throw new TypeError('Invalid option: bins');
+      throw new TypeError('Invalid bins: it must be a positive number!');
     }
     binWidth = width / bins;
   }
@@ -47,7 +46,7 @@ function transform(dataView, options) {
   forIn(groups, group => {
     const bins = {};
     const column = group.map(row => row[field]);
-    each(column, value => {
+    column.forEach(value => {
       const [ x0, x1 ] = nearestBin(value, binWidth, offset);
       const binKey = `${x0}-${x1}`;
       bins[binKey] = bins[binKey] || {
@@ -59,7 +58,7 @@ function transform(dataView, options) {
     });
     const [ asX, asCount ] = options.as;
     if (!asX || !asCount) {
-      throw new TypeError('Invalid option: as');
+      throw new TypeError('Invalid as: it must be an array with 2 elements (e.g. [ "x", "count" ])!');
     }
 
     const meta = pick(group[0], groupBy);

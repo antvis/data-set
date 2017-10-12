@@ -1,8 +1,10 @@
 const pick = require('lodash/pick');
-const map = require('lodash/map');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 /*
  * options: {
@@ -12,6 +14,6 @@ const {
  */
 
 registerTransform('pick', (dataView, options = {}) => {
-  const columns = options.fields || dataView.getColumnNames();
-  dataView.rows = map(dataView.rows, row => pick(row, columns));
+  const columns = getFields(options, dataView.getColumnNames());
+  dataView.rows = dataView.rows.map(row => pick(row, columns));
 });

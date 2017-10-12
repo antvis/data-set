@@ -1,13 +1,12 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const map = require('lodash/map');
-const indexOf = require('lodash/indexOf');
-const isArray = require('lodash/isArray');
 const regression = require('regression');
 const getSeriesValues = require('../util/get-series-values');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],
@@ -29,25 +28,25 @@ const REGRESSION_METHODS = [
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const fields = options.fields;
-  if (!isArray(fields) || fields.length !== 2) {
-    throw new TypeError(`invalid fields: ${options.fields}`);
+  const fields = getFields(options);
+  if (!Array.isArray(fields) || fields.length !== 2) {
+    throw new TypeError('invalid fields: must be an array of 2 strings.');
   }
   const [ xField, yField ] = fields;
   const method = options.method;
-  if (indexOf(REGRESSION_METHODS, method) === -1) {
-    throw new TypeError(`invalid method: ${method}`);
+  if (REGRESSION_METHODS.indexOf(method) === -1) {
+    throw new TypeError(`invalid method: ${method} must be one of ${REGRESSION_METHODS.join(', ')}`);
   }
-  const points = map(dataView.rows, row => [ row[xField], row[yField] ]);
+  const points = dataView.rows.map(row => [ row[xField], row[yField] ]);
   const regressionResult = regression[method](points, options);
   let extent = options.extent;
-  if (!isArray(extent) || extent.length !== 2) {
+  if (!Array.isArray(extent) || extent.length !== 2) {
     extent = dataView.range(xField);
   }
   const valuesToPredict = getSeriesValues(extent, options.bandwidth);
   const result = [];
   const [ asX, asY ] = options.as;
-  each(valuesToPredict, value => {
+  valuesToPredict.forEach(value => {
     const row = {};
     const [ x, y ] = regressionResult.predict(value);
     row[asX] = x;

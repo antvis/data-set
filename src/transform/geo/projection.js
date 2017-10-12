@@ -1,8 +1,5 @@
 const assign = require('lodash/assign');
 const d3Geo = require('d3-geo');
-const each = require('lodash/each');
-const isArray = require('lodash/isArray');
-const filter = require('lodash/filter');
 const getPointAtLength = require('point-at-length');
 const {
   registerTransform
@@ -19,29 +16,29 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   if (dataView.dataType !== 'geo' && dataView.dataType !== 'geo-graticule') {
-    throw new TypeError('This transform is for Geo data only');
+    throw new TypeError('Invalid dataView: this transform is for Geo data only!');
   }
   options = assign({}, DEFAULT_OPTIONS, options);
   let projection = options.projection;
   if (!projection) {
-    throw new TypeError('Invalid projection');
+    throw new TypeError('Invalid projection!');
   }
   projection = getGeoProjection(projection);
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
-  if (!isArray(as) || as.length !== 4) {
-    throw new TypeError('Invalid option: as');
+  if (!Array.isArray(as) || as.length !== 4) {
+    throw new TypeError('Invalid as: it must be an array with 4 strings (e.g. [ "x", "y", "cX", "cY" ])!');
   }
   dataView._projectedAs = as;
   const [ lonField, latField, centroidX, centroidY ] = as;
-  each(dataView.rows, row => {
+  dataView.rows.forEach(row => {
     row[lonField] = [];
     row[latField] = [];
     const pathData = geoPathGenerator(row);
     if (pathData) {
       // TODO projection returns null
       const points = getPointAtLength(pathData);
-      each(points._path, point => {
+      points._path.forEach(point => {
         row[lonField].push(point[1]);
         row[latField].push(point[2]);
       });
@@ -50,7 +47,7 @@ function transform(dataView, options) {
       row[centroidY] = centroid[1];
     }
   });
-  dataView.rows = filter(dataView.rows, row => row[lonField].length !== 0);
+  dataView.rows = dataView.rows.filter(row => row[lonField].length !== 0);
 }
 
 registerTransform('geo.projection', transform);

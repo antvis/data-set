@@ -1,16 +1,18 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const map = require('lodash/map');
+const isString = require('lodash/isString');
 // const pick = require('lodash/pick');
 const {
   quantile
 } = require('simple-statistics');
+const partition = require('../../util/partition');
+const pByFraction = require('../../util/p-by-fraction');
 const {
   registerTransform
 } = require('../../data-set');
-const partition = require('../../util/partition');
-const pByFraction = require('../../util/p-by-fraction');
+const {
+  getField
+} = require('../../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   as: '_bin',
@@ -22,13 +24,14 @@ const DEFAULT_OPTIONS = {
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const field = options.field;
-  if (!field) {
-    throw new TypeError('Invalid option: field');
+  const field = getField(options);
+  const as = options.as;
+  if (!isString(as)) {
+    throw new TypeError('Invalid as: it must be a string (e.g. "_bin")!');
   }
   let pArray = options.p;
   const fraction = options.fraction;
-  if (!isArray(pArray) || pArray.length === 0) {
+  if (!Array.isArray(pArray) || pArray.length === 0) {
     pArray = pByFraction(fraction);
   }
   const rows = dataView.rows;
@@ -38,9 +41,9 @@ function transform(dataView, options) {
   forIn(groups, group => {
     // const resultRow = pick(group[0], groupBy);
     const resultRow = group[0];
-    const binningColumn = map(group, row => row[field]);
-    const quantiles = map(pArray, p => quantile(binningColumn, p));
-    resultRow[options.as] = quantiles;
+    const binningColumn = group.map(row => row[field]);
+    const quantiles = pArray.map(p => quantile(binningColumn, p));
+    resultRow[as] = quantiles;
     result.push(resultRow);
   });
   dataView.rows = result;

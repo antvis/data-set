@@ -1,11 +1,12 @@
 const assign = require('lodash/assign');
-const each = require('lodash/each');
-const map = require('lodash/map');
-const pick = require('lodash/pick');
+const isString = require('lodash/isString');
 const {
   registerTransform
 } = require('../data-set');
 const tagCloud = require('../util/tag-cloud');
+const {
+  getFields
+} = require('../util/option-parser');
 
 const DEFAULT_OPTIONS = {
   fields: [ 'text', 'value' ], // fields to keep
@@ -13,12 +14,6 @@ const DEFAULT_OPTIONS = {
   padding: 1,
   size: [ 500, 500 ],
   spiral: 'archimedean', // 'archimedean' || 'rectangular' || {function}
-  fontSize(d) {
-    return d.value;
-  },
-  text(d) {
-    return d.text;
-  },
   timeInterval: Infinity // max execute time
   // imageMask: '', // instance of Image, must be loaded
 };
@@ -26,18 +21,26 @@ const DEFAULT_OPTIONS = {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
-  each([
+  [
     'font',
-    'fontSize',
     'padding',
     'size',
     'spiral',
-    'text',
     'timeInterval'
-  ], key => {
+  ].forEach(key => {
     layout[key](options[key]);
   });
-  const words = map(dataView.rows, row => pick(row, options.fields));
+  const fields = getFields(options);
+  const [ text, value ] = fields;
+  if (!isString(text) || !isString(value)) {
+    throw new TypeError('Invalid fields: must be an array with 2 strings (e.g. [ "text", "value" ])!');
+  }
+  const words = dataView.rows.map(row => {
+    const word = {};
+    word.text = row[text];
+    word.value = row[value];
+    return word;
+  });
   layout.words(words);
   if (options.imageMask) {
     layout.createMask(options.imageMask);

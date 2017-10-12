@@ -1,5 +1,4 @@
 const assign = require('lodash/assign');
-const some = require('lodash/some');
 const {
   geoArea,
   geoCentroid,
@@ -42,22 +41,24 @@ assign(View.prototype, {
   geoFeatureByName(name) {
     const rows = this.rows;
     let result;
-    some(rows, feature => {
+    rows.some(feature => {
       if (feature.name === name) {
         result = feature;
         return true;
       }
+      return false;
     });
     return result;
   },
   geoFeatureByPosition(position) {
     const rows = this.rows;
     let result;
-    some(rows, feature => {
+    rows.some(feature => {
       if (geoContains(feature, position)) {
         result = feature;
         return true;
       }
+      return false;
     });
     return result;
   },
