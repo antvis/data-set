@@ -4,7 +4,7 @@ const {
 } = require('chai');
 const kernel = require('../../../src/util/kernel');
 
-describe.only('util: kernel functions', () => {
+describe('util: kernel functions', () => {
   const u0 = 0;
   const u1 = 1;
   const u1_2 = 1 / 2;
