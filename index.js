@@ -53,5 +53,8 @@ require('./src/transform/hierarchy/treemap');
 require('./src/transform/hierarchy/partition');
 // tag cloud
 require('./src/transform/tag-cloud');
+// kernel smoothing
+require('./src/transform/kernel-smooth/density');
+require('./src/transform/kernel-smooth/regression');
 
 module.exports = require('./src/data-set');
