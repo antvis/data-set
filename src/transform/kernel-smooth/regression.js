@@ -20,15 +20,18 @@ const {
 const {
   getFields
 } = require('../../util/option-parser');
+const {
+  silverman
+} = require('../../util/bandwidth');
 
 const isArray = Array.isArray;
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],
   // fields: [ 'x', 'y' ], // required, one or two fields
-  method: 'gaussian', // kernel method: should be one of _.keys(kernel)
+  method: 'gaussian' // kernel method: should be one of _.keys(kernel)
   // extent: [], // extent to execute regression function, default: [ min(x), max(x) ]
-  bandwidth: 0.5 // bandWidth to execute kernel function
+  // bandwidth: 0.5 // bandWidth to execute kernel function
 };
 
 const KERNEL_METHODS = keys(kernel);
@@ -74,17 +77,19 @@ function transform(dv, options) {
   if (!isFunction(method)) {
     throw new TypeError('invalid method: kernel method must be a function!');
   }
-  const bandwidth = options.bandwidth;
-  if (!isNumber(bandwidth) || bandwidth <= 0) {
-    throw new TypeError('invalid bandwidth: must be a positive number!');
-  }
+
   const [ xField, yField ] = fields;
+  const xs = dv.getColumn(xField);
+
   let extent = options.extent;
   if (!isArray(extent)) {
     extent = dv.range(xField);
   }
+  let bandwidth = options.bandwidth;
+  if (!isNumber(bandwidth) || bandwidth <= 0) {
+    bandwidth = silverman(xs);
+  }
   const seriesValues = getSeriesValues(extent, bandwidth);
-  const xs = dv.getColumn(xField);
   const xCount = xs.length;
   const weightFunc = weight.bind(null, method, bandwidth);
   let kernelSmoother;

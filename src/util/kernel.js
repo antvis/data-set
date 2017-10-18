@@ -21,7 +21,8 @@ module.exports = {
     return (Math.abs(u) < 1) ? 0.75 * (1 - u * u) : 0;
   },
   gaussian(u) {
-    return 1 / Math.sqrt(2 * Math.PI) * Math.exp(-0.5 * u * u);
+    // return 1 / Math.sqrt(2 * Math.PI) * Math.exp(-0.5 * u * u);
+    return 0.3989422804 * Math.exp(-0.5 * u * u);
   },
   quartic(u) {
     if (Math.abs(u) < 1) {

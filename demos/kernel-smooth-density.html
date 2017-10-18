@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>kernel smooth transform: density</title>
+</head>
+<body>
+<div id="canvas"></div>
+<!--<script src="./assets/g2.min.js"></script>-->
+<script src="./assets/g2.js"></script>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/diamond.json', data => {
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+
+    const dv = new DataSet.View().source(data);
+    dv.transform({
+      type: 'kernel-smooth.density',
+      fields: [ 'carat', 'price' ],
+      as: [ 'carat', 'price', 'density' ]
+    });
+
+    chart.source(data);
+    chart.point()
+      .position('carat*price');
+
+    const view = chart.view();
+    view.source(dv);
+    view.heatmap()
+      .position('carat*price')
+      .color('density', 'blue-cyan-lime-yellow-red');
+
+    chart.render();
+  });
+</script>
+</body>
+</html>
