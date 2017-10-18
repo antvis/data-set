@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>kernel smooth transform: regression for one field</title>
+</head>
+<body>
+<div id="canvas"></div>
+<!--<script src="./assets/g2.min.js"></script>-->
+<script src="./assets/g2.js"></script>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/diamond.json', data => {
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+
+    chart.scale({
+      x: {
+        sync: true
+      },
+      y: {
+        sync: true
+      }
+    });
+    chart.axis('x', {
+      title: {
+        offset: 50,
+        text: 'depth'
+      }
+    });
+    chart.axis('y', {
+      title: {
+        offset: 50,
+        text: '概率密度分布'
+      }
+    });
+
+    const KERNEL_METHODS = [
+      'boxcar',
+      'cosine',
+      'epanechnikov',
+      'gaussian',
+      'quartic',
+      'triangular',
+      'tricube',
+      'triweight',
+      'uniform'
+    ];
+
+    KERNEL_METHODS.forEach((method, i) => {
+      const dv = new DataSet.View();
+      dv.source(data);
+      dv.transform({
+        type: 'kernel-smooth.regression',
+        method,
+        field: 'depth'
+      });
+
+      const view = chart.view();
+      view.source(dv);
+      view.line().position('x*y').color(G2.Global.colors_16[i]);
+    });
+
+    chart.render();
+  });
+</script>
+</body>
+</html>
