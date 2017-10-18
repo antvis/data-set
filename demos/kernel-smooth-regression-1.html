@@ -20,6 +20,8 @@
 
     chart.scale({
       x: {
+        min: 50,
+        max: 70,
         sync: true
       },
       y: {
@@ -57,7 +59,8 @@
       dv.transform({
         type: 'kernel-smooth.regression',
         method,
-        field: 'depth'
+        field: 'depth',
+        extent: [ 50, 70 ]
       });
 
       const view = chart.view();

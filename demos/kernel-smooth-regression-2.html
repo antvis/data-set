@@ -33,6 +33,8 @@
     chart.source(data);
     chart.scale({
       carat: {
+        min: 0,
+        max: 4,
         sync: true
       },
       price: {
@@ -61,7 +63,8 @@
         type: 'kernel-smooth.regression',
         method,
         fields: [ 'carat', 'price' ],
-        as: [ 'carat', 'price' ]
+        as: [ 'carat', 'price' ],
+        extent: [ 0, 4 ]
       });
 
       const view = chart.view();
