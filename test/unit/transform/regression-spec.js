@@ -38,7 +38,7 @@ describe('View.transform(): regression', () => {
       type: 'regression',
       fields: [ 'a', 'b' ]
     });
-    expect(dv.rows.length).to.equal(10);
+    expect(dv.rows.length).to.equal(6);
   });
 
   each(REGRESSION_METHODS, method => {
@@ -47,7 +47,7 @@ describe('View.transform(): regression', () => {
         type: 'regression',
         fields: [ 'a', 'b' ]
       });
-      expect(dv.rows.length).to.equal(10);
+      expect(dv.rows.length).to.equal(6);
     });
   });
 });

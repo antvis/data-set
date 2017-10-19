@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const isNumber = require('lodash/isNumber');
 const regression = require('regression');
 const getSeriesValues = require('../util/get-series-values');
 const {
@@ -7,13 +8,16 @@ const {
 const {
   getFields
 } = require('../util/option-parser');
+const {
+  silverman
+} = require('../util/bandwidth');
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],
   // fields: [ 'x', 'y' ], // required two fields
   method: 'linear', // regression method: linear, exponential, logarithmic, power, polynomial
   // extent: [], // extent to execute regression function, default: [ min(x), max(x) ]
-  bandwidth: 1, // bandWidth to execute regression function
+  // bandwidth: 1, // bandWidth to execute regression function
   order: 2, // order of the polynomial curve
   precision: 2 // the number of significant figures the output is rounded to
 };
@@ -43,7 +47,11 @@ function transform(dataView, options) {
   if (!Array.isArray(extent) || extent.length !== 2) {
     extent = dataView.range(xField);
   }
-  const valuesToPredict = getSeriesValues(extent, options.bandwidth);
+  let bandwidth = options.bandwidth;
+  if (!isNumber(bandwidth) || bandwidth <= 0) {
+    bandwidth = silverman(dataView.getColumn(xField));
+  }
+  const valuesToPredict = getSeriesValues(extent, bandwidth);
   const result = [];
   const [ asX, asY ] = options.as;
   valuesToPredict.forEach(value => {
