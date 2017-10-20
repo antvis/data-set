@@ -100,6 +100,7 @@ function transform(dv, options) {
       const weights = xs.map(x_i => weightFunc(x, x_i));
       const num = sum(weights);
       const denom = xCount * bandwidth;
+      if (!num || !denom) return 0;
       return num / denom;
     });
   } else {
@@ -109,6 +110,7 @@ function transform(dv, options) {
       const weights = xs.map(x_i => weightFunc(x, x_i));
       const num = sum(weights.map((w, i) => w * ys[i]));
       const denom = sum(weights);
+      if (!num || !denom) return 0;
       return num / denom;
     });
   }
