@@ -24,7 +24,7 @@ const ALIGN_METHOD = {
 };
 
 const DEFAULT_OPTIONS = {
-  id: node => node.id,
+  // nodeId: node => node.index,
   value: node => node.value,
   source: edge => edge.source,
   target: edge => edge.target,
@@ -46,6 +46,9 @@ function transform(dv, options) {
     .nodeWidth(options.nodeWidth)
     .nodePadding(options.nodePadding)
     .extent([[ 0, 0 ], [ 1, 1 ]]);
+  if (isFunction(options.nodeId)) {
+    sankeyProcessor.nodeId(options.nodeId);
+  }
   if (nodeAlign) {
     sankeyProcessor.nodeAlign(nodeAlign);
   }

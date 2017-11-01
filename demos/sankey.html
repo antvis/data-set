@@ -17,14 +17,35 @@
 <script src="../build/data-set.js"></script>
 <script>
   $.getJSON('../test/fixtures/energy.json', data => {
-    // sankey diagram layout
+    const edges = data.links;
+    const graph = {
+      nodes: [],
+      edges
+    };
+    const nodeById = {};
+    function addNode(id) {
+      if (!nodeById[id]) {
+        const node = {
+          id,
+          name: id
+        };
+        nodeById[id] = node;
+        graph.nodes.push(node);
+      }
+    }
+    edges.forEach(function(edge) {
+      addNode(edge.source);
+      addNode(edge.target);
+    });
     const ds = new DataSet();
-    const dv = ds.createView().source(data, {
-      type: 'graph',
-      edges: d => d.links
+    const dv = ds.createView().source(graph, {
+    // const dv = ds.createView().source(data, {
+      // edges: data => data.links,
+      type: 'graph'
     });
     dv.transform({
-      type: 'diagram.sankey'
+      type: 'diagram.sankey',
+      nodeId: node => node.id
       // nodeAlign: 'sankeyCenter', // sankeyRight / sankeyCenter
     });
     const chart = new G2.Chart({
