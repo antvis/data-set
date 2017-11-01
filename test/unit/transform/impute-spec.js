@@ -17,6 +17,7 @@ describe('View.transform(): impute', () => {
     { x: 1, y: 7 },
     { x: 1 },
     { x: 1, y: 9 },
+    { x: 2, y: null },
     { x: 2 }
   ];
   // const length = data.length;
@@ -50,7 +51,7 @@ describe('View.transform(): impute', () => {
     const rows = dv.rows;
     expect(rows[3].y).to.equal(10);
     expect(rows[7].y).to.equal(10);
-    expect(rows[9].y).to.equal(10);
+    expect(rows[9].y).to.equal(null);
   });
 
   it('max', () => {
@@ -63,7 +64,7 @@ describe('View.transform(): impute', () => {
     const rows = dv.rows;
     expect(rows[3].y).to.equal(3);
     expect(rows[7].y).to.equal(9);
-    expect(rows[9].y).to.equal(9);
+    expect(rows[9].y).to.equal(null);
   });
 
   it('not grouping', () => {
@@ -75,7 +76,7 @@ describe('View.transform(): impute', () => {
     const rows = dv.rows;
     expect(rows[3].y).to.equal(9);
     expect(rows[7].y).to.equal(9);
-    expect(rows[9].y).to.equal(9);
+    expect(rows[9].y).to.equal(null);
   });
 
   it('groupBy & orderBy', () => {
@@ -89,6 +90,6 @@ describe('View.transform(): impute', () => {
     const rows = dv.rows;
     expect(rows[3].y).to.equal(3);
     expect(rows[7].y).to.equal(9);
-    expect(rows[9].y).to.equal(9);
+    expect(rows[9].y).to.equal(null);
   });
 });
