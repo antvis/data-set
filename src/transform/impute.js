@@ -2,7 +2,7 @@ const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
 const has = require('lodash/has');
 const isFunction = require('lodash/isFunction');
-const isNil = require('lodash/isNil');
+const isUndefined = require('lodash/isUndefined');
 const isString = require('lodash/isString');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
@@ -20,8 +20,8 @@ const DEFAULT_OPTIONS = {
   groupBy: []
 };
 
-function notNilValues(values) {
-  return values.filter(value => !isNil(value));
+function notUndefinedValues(values) {
+  return values.filter(value => !isUndefined(value));
 }
 
 const STATISTICS_METHODS = [
@@ -48,15 +48,15 @@ function transform(dataView, options = {}) {
   if ((method === 'value' && !has(options, 'value'))) {
     throw new TypeError('Invalid value: it is nil.');
   }
-  const column = notNilValues(dataView.getColumn(field));
+  const column = notUndefinedValues(dataView.getColumn(field));
   const groups = partition(rows, groupBy);
   forIn(groups, group => {
-    let fieldValues = notNilValues(group.map(row => row[field]));
+    let fieldValues = notUndefinedValues(group.map(row => row[field]));
     if (fieldValues.length === 0) {
       fieldValues = column;
     }
     group.forEach(row => {
-      if (isNil(row[field])) {
+      if (isUndefined(row[field])) {
         if (isFunction(method)) {
           row[field] = method(row, fieldValues, options.value, group);
         } else if (isString(method)) {
