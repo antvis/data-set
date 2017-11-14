@@ -1,56 +1,43 @@
 const assign = require('lodash/assign');
-const {
-  max,
-  mean,
-  median,
-  min,
-  mode,
-  quantile,
-  standardDeviation,
-  sum,
-  variance
-} = require('simple-statistics');
+const flattenDeep = require('lodash/flattenDeep');
+const isArray = require('lodash/isArray');
+const simpleStatistics = require('simple-statistics');
 const View = require('../view');
 const pByFraction = require('../util/p-by-fraction');
+const {
+  STATISTICS_METHODS
+} = require('../constants');
+
+function getColumnValues(me, column) {
+  let values = me.getColumn(column);
+  if (isArray(values) && isArray(values[0])) {
+    values = flattenDeep(values);
+  }
+  return values;
+}
+
+// statistics
+STATISTICS_METHODS.forEach(method => {
+  View.prototype[method] = function(column) {
+    return simpleStatistics[method](getColumnValues(this, column));
+  };
+});
+
+const {
+  quantile
+} = simpleStatistics;
 
 assign(View.prototype, {
-  // statistics
-  max(column) {
-    return max(this.getColumn(column));
-  },
-  mean(column) {
-    return mean(this.getColumn(column));
-  },
-  average(column) { // alias
-    return this.mean(column);
-  },
-  median(column) {
-    return median(this.getColumn(column));
-  },
-  min(column) {
-    return min(this.getColumn(column));
-  },
-  mode(column) {
-    return mode(this.getColumn(column));
-  },
+  average: View.prototype.mean,
   quantile(column, p) {
-    return quantile(this.getColumn(column), p);
+    return quantile(getColumnValues(this, column), p);
   },
   quantiles(column, pArr) {
-    const columnArr = this.getColumn(column);
+    const columnArr = getColumnValues(this, column);
     return pArr.map(p => quantile(columnArr, p));
   },
   quantilesByFraction(column, fraction) {
     return this.quantiles(column, pByFraction(fraction));
-  },
-  standardDeviation(column) {
-    return standardDeviation(this.getColumn(column));
-  },
-  sum(column) {
-    return sum(this.getColumn(column));
-  },
-  variance(column) {
-    return variance(this.getColumn(column));
   },
   range(column) {
     const me = this;

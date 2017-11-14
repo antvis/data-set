@@ -101,3 +101,24 @@ describe('View.transform(): aggregate: performance of partition', () => {
     expect((t3 - t1) < 1000).to.equal(true);
   });
 });
+
+describe('View.transform(): aggregate: fields of array', () => {
+  const data = [];
+  for (let i = 1; i <= 10; i++) {
+    // 1~10
+    data.push({
+      a: [ i, i + 10 ]
+    });
+  }
+  const dv = new DataSet.View().source(data);
+  dv.transform({
+    type: 'aggregate',
+    fields: [ 'a', 'a' ],
+    operations: [ 'max', 'min' ],
+    as: [ 'max', 'min' ]
+  });
+  it('counting fields of arrays', () => {
+    expect(dv.rows[0].max).to.equal(20);
+    expect(dv.rows[0].min).to.equal(1);
+  });
+});

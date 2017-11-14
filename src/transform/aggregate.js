@@ -1,13 +1,18 @@
 const assign = require('lodash/assign');
+const flattenDeep = require('lodash/flattenDeep');
 const forIn = require('lodash/forIn');
-const keys = require('lodash/keys');
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
+const keys = require('lodash/keys');
 const uniq = require('lodash/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
+const {
+  STATISTICS_METHODS
+} = require('../constants');
 const {
   getFields
 } = require('../util/option-parser');
@@ -29,21 +34,12 @@ const aggregates = {
     return values.length;
   }
 };
-const STATISTICS_METHODS = [
-  'max',
-  'mean', // alias: average
-  'median',
-  'min',
-  'mode',
-  'product',
-  'standardDeviation',
-  'sum',
-  'sumSimple',
-  'variance'
-];
 STATISTICS_METHODS.forEach(method => {
   aggregates[method] = (data, field) => {
-    const values = data.map(row => row[field]);
+    let values = data.map(row => row[field]);
+    if (isArray(values) && isArray(values[0])) {
+      values = flattenDeep(values);
+    }
     return simpleStatistics[method](values);
   };
 });
