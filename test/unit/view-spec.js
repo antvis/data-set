@@ -112,4 +112,14 @@ describe('View', () => {
       });
     expect(dv.rows[0].loose).to.equal(true);
   });
+
+  it('source', done => {
+    const dv = new View();
+    dv.source(populationChina);
+    dv.on('change', () => {
+      expect(!!dv.rows.length).to.equal(true);
+      done();
+    });
+    dv.source(populationChina);
+  });
 });

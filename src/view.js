@@ -70,7 +70,7 @@ class View extends EventEmitter {
   }
 
   // connectors
-  source(source, options) {
+  _prepareSource(source, options) {
     const me = this;
     const DataSet = View.DataSet;
     // warning me.origin is protected
@@ -94,9 +94,17 @@ class View extends EventEmitter {
       options = me._preparseOptions(options);
       me.origin = DataSet.getConnector(options.type)(source, options, me);
     }
-    if (!me.rows || me.rows.length !== me.origin.length) { // allow connectors to access 'rows'
+    return me;
+  }
+
+  source(source, options) {
+    const me = this;
+    me._prepareSource(source, options);
+    if (!me.rows || !me.rows.length) {
       me.rows = cloneItems(me.origin);
     }
+    me._reExecuteTransforms();
+    me.trigger('change');
     return me;
   }
 
@@ -180,7 +188,7 @@ class View extends EventEmitter {
       source,
       options
     } = me._source;
-    me.source(source, options);
+    me._prepareSource(source, options);
     me._reExecuteTransforms();
     me.trigger('change');
   }

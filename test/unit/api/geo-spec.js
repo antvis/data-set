@@ -48,8 +48,8 @@ describe('View API: geo', () => {
   });
 
   it('geoFeatureByName(name)', () => {
-    expect(dv.geoFeatureByName(name0)).to.equal(feature0);
-    expect(dv.geoFeatureByName(name1)).to.equal(feature1);
+    expect(dv.geoFeatureByName(name0)).to.eql(feature0);
+    expect(dv.geoFeatureByName(name1)).to.eql(feature1);
   });
 
   it('geoFeatureByPosition(position)', () => {
