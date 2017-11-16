@@ -94,13 +94,13 @@ class View extends EventEmitter {
       options = me._preparseOptions(options);
       me.origin = DataSet.getConnector(options.type)(source, options, me);
     }
+    me.rows = cloneItems(me.origin);
     return me;
   }
 
   source(source, options) {
     const me = this;
     me._prepareSource(source, options);
-    me.rows = cloneItems(me.origin);
     me._reExecuteTransforms();
     me.trigger('change');
     return me;
