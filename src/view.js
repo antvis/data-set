@@ -100,9 +100,7 @@ class View extends EventEmitter {
   source(source, options) {
     const me = this;
     me._prepareSource(source, options);
-    if (!me.rows || !me.rows.length) {
-      me.rows = cloneItems(me.origin);
-    }
+    me.rows = cloneItems(me.origin);
     me._reExecuteTransforms();
     me.trigger('change');
     return me;

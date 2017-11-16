@@ -30,8 +30,8 @@ function GeoJSONConnector(data, options, dataView) {
     feature.centroidY = centroid[1];
   });
 
-  dataView.rows = features;
-  return data.features;
+  // dataView.origin = features;
+  return features;
 }
 
 registerConnector('geo', GeoJSONConnector);
