@@ -5,9 +5,13 @@
   "main": "build/data-set.js",
   "browser": "build/data-set.js",
   "module": "index.js",
+  "homepage": "https://github.com/antvis/data-set",
   "repository": {
     "type": "git",
-    "url": "git@gitlab.alibaba-inc.com:datavis/data-set.git"
+    "url": "git@github.com:antvis/data-set.git"
+  },
+  "bugs": {
+    "url": "https://github.com/antvis/data-set/issues"
   },
   "keywords": [
     "antv",
@@ -40,7 +44,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "ci": "tnpm run lint && tnpm run test",
+    "ci": "npm run lint && npm run test",
     "compress": "uglifyjs --compress --mangle --output dist/data-set.min.js -- build/data-set.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-viewer": "torch-coverage",
