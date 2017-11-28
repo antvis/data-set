@@ -65,5 +65,5 @@ dist
 temp
 .DS_Store
 .idea
-demos/assets/g2.js
-demos/assets/g2.js.map
+demos/assets/screenshots
+

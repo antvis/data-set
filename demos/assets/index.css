@@ -1,0 +1,30 @@
+body {
+  /*overflow: hidden;*/
+}
+::-webkit-scrollbar {
+  display: none;
+}
+
+.filter {
+  padding: 1em;
+}
+.demo-thumbnails {
+  padding: 1em;
+}
+.demo-thumbnail {
+  margin-bottom: 1em;
+}
+.thumbnail-container {
+  overflow: hidden;
+  max-height: 202px;
+}
+iframe {
+  border: none;
+}
+.scaled-frame {
+  margin: 0 auto;
+  width: 800px;
+  height: 450px;
+  -webkit-transform: scale(0.45);
+  -webkit-transform-origin: 0 0;
+}
