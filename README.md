@@ -18,7 +18,7 @@ Data set with state management.
 import DataSet from '@antv/data-set';
 
 const ds = new DataSet({
-  state: { // 指定初始化状态量
+  state: { // initialize state
     foo: 'bar'
   }
 });
