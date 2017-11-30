@@ -14,7 +14,6 @@ const extname = path.extname;
 const basename = path.basename;
 const join = path.join;
 const fs = require('fs');
-const stat = fs.stat;
 const statSync = fs.statSync;
 const lstatSync = fs.lstatSync;
 const readdirSync = fs.readdirSync;
@@ -22,7 +21,6 @@ const readFileSync = fs.readFileSync;
 const mkdirSync = fs.mkdirSync;
 const nunjucks = require('nunjucks');
 const renderString = nunjucks.renderString;
-const exec = require('child_process').exec;
 const pkg = require('../package.json');
 
 function isFile(source) {
@@ -55,10 +53,10 @@ function startService(port) {
       const pathname = parseurl(req).pathname;
       if (pathname === '/demos/index.html') {
         const demoFiles = getFiles(__dirname)
-          .filter(function(filename) {
+          .filter(filename => {
             return extname(filename) === '.html';
           })
-          .map(function(filename) {
+          .map(filename => {
             const bn = basename(filename, '.html');
             const file = {
               screenshot: `/demos/assets/screenshots/${bn}.png`,
@@ -73,23 +71,7 @@ function startService(port) {
           demoFiles
         }));
       } else {
-        if (extname(pathname) === '.png') {
-          debug(pathname);
-          const fullpath = join(process.cwd(), `.${pathname}`);
-          const bn = basename(pathname, '.png');
-          stat(fullpath, err => {
-            if (err) {
-              const child = exec(`node ./bin/screenshot.js --port ${port} --name ${bn}`);
-              child.on('close', () => {
-                next();
-              });
-            } else {
-              next();
-            }
-          });
-        } else {
-          next();
-        }
+        next();
       }
     } else {
       next();
@@ -99,11 +81,13 @@ function startService(port) {
   http.createServer(server).listen(port);
 
   const url = `http://127.0.0.1:${port}/demos/index.html`;
-  console.log(`server started, demos available! ${url}`);
+  debug(`server started, demos available! ${url}`);
 
   if (commander.web) {
+    debug('running on web!');
     open(url);
   } else {
+    debug('running on electron!');
     const app = require('electron').app;
     const BrowserWindow = require('electron').BrowserWindow;
     const watch = require('@lite-js/torch/lib/watch');
@@ -112,7 +96,6 @@ function startService(port) {
     );
 
     let win;
-
     app.once('ready', () => {
       win = new BrowserWindow(assign({
         // transparent: true
@@ -120,19 +103,15 @@ function startService(port) {
           nodeIntegration: false
         }
       }, windowBoundsConfig.get('demos')));
-
       win.loadURL(url);
-
       win.openDevTools();
 
       win.on('close', () => {
         windowBoundsConfig.set('demos', win.getBounds());
       });
-
       win.on('closed', () => {
         win = null;
       });
-
       watch([
         'demos/**/*.*',
         'src/**/*.*'
@@ -140,7 +119,6 @@ function startService(port) {
         win.webContents.reloadIgnoringCache();
       });
     });
-
     app.on('window-all-closed', () => {
       app.quit();
     });

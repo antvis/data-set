@@ -1,7 +1,18 @@
-
+#!/usr/bin/env node
 const debug = require('debug')('app:screenshot');
+const MAX_POOL_SIZE = require('os').cpus().length;
+const connect = require('connect');
+const getPort = require('get-port');
+const http = require('http');
+const serveStatic = require('serve-static');
+const shelljs = require('shelljs');
+const mkdir = shelljs.mkdir;
+const ls = shelljs.ls;
+const queue = require('d3-queue').queue;
 const path = require('path');
 const join = path.join;
+const extname = path.extname;
+const basename = path.basename;
 const commander = require('commander');
 const Nightmare = require('nightmare');
 const pkg = require('../package.json');
@@ -12,29 +23,54 @@ commander
   .option('-n, --name <name>', 'specify the name for demos')
   .parse(process.argv);
 
-const DELAY = 3000;
-const port = commander.port;
-const name = commander.name;
+// assets
+const src = join(process.cwd(), './demos');
+const dest = join(process.cwd(), './demos/assets/screenshots');
+mkdir('-p', dest);
 
-const t0 = Date.now();
-const nightmare = Nightmare({
-  gotoTimeout: 600000,
-  show: false
-});
-const url = `http://127.0.0.1:${port}/demos/${name}.html`;
-const target = join(process.cwd(), `./demos/assets/screenshots/${name}.png`);
-nightmare.viewport(800, 450) // 16 x 9
-  .goto(url)
-  .wait(DELAY)
-  .screenshot(target, () => {
-    debug(name + ' took ' + (Date.now() - t0) + ' to take a screenshot.');
-    process.exit(0);
-  })
-  .end()
-  .catch(e => {
-    debug(url);
-    debug(target);
-    debug(name + ' failed to take a screenshot: ' + e);
-    process.exit(1);
+const app = connect();
+app.use('/', serveStatic(dest));
+
+const DELAY = 6000;
+
+getPort().then(port => {
+  http.createServer(app).listen(port);
+  const url = 'http://127.0.0.1:' + port;
+  debug('server is ready on port ' + port + '! url: ' + url);
+
+  const q = queue(MAX_POOL_SIZE > 2 ? MAX_POOL_SIZE - 1 : MAX_POOL_SIZE);
+  const files = ls(src).filter(filename => (extname(filename) === '.html'));
+  files.forEach(filename => {
+    const name = basename(filename);
+    q.defer(callback => {
+      const t0 = Date.now();
+      const nightmare = Nightmare({
+        gotoTimeout: 600000,
+        show: false
+      });
+      const url = `http://127.0.0.1:${port}/demos/${name}.html`;
+      const target = join(process.cwd(), `./demos/assets/screenshot/${name}.png`);
+      nightmare.viewport(800, 450) // 16 x 9
+        .goto(url)
+        .wait(DELAY)
+        .screenshot(target, () => {
+          debug(name + ' took ' + (Date.now() - t0) + ' to take a screenshot.');
+          callback(null);
+        })
+        .end()
+        .catch(e => {
+          debug(url);
+          debug(target);
+          debug(name + ' failed to take a screenshot: ' + e);
+        });
+    });
   });
-
+  q.awaitAll(error => {
+    if (error) {
+      debug(error);
+      process.exit(1);
+    }
+    debug('screenshots are all captured!');
+    process.exit();
+  });
+});
