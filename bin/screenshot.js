@@ -29,7 +29,7 @@ const dest = join(process.cwd(), './demos/assets/screenshots');
 mkdir('-p', dest);
 
 const app = connect();
-app.use('/', serveStatic(dest));
+app.use('/', serveStatic(process.cwd()));
 
 const DELAY = 6000;
 
@@ -41,7 +41,7 @@ getPort().then(port => {
   const q = queue(MAX_POOL_SIZE > 2 ? MAX_POOL_SIZE - 1 : MAX_POOL_SIZE);
   const files = ls(src).filter(filename => (extname(filename) === '.html'));
   files.forEach(filename => {
-    const name = basename(filename);
+    const name = basename(filename, '.html');
     q.defer(callback => {
       const t0 = Date.now();
       const nightmare = Nightmare({
@@ -49,7 +49,7 @@ getPort().then(port => {
         show: false
       });
       const url = `http://127.0.0.1:${port}/demos/${name}.html`;
-      const target = join(process.cwd(), `./demos/assets/screenshot/${name}.png`);
+      const target = join(dest, `./${name}.png`);
       nightmare.viewport(800, 450) // 16 x 9
         .goto(url)
         .wait(DELAY)

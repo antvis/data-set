@@ -29,3 +29,7 @@ assign(View.prototype, {
     return links;
   }
 });
+
+assign(View.prototype, {
+  getAllEdges: View.prototype.getAllLinks
+});

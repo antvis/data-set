@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 const debug = require('debug')('app:demos');
 const commander = require('commander');
 const connect = require('connect');
