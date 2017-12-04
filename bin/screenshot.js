@@ -42,6 +42,10 @@ getPort().then(port => {
   const files = ls(src).filter(filename => (extname(filename) === '.html'));
   files.forEach(filename => {
     const name = basename(filename, '.html');
+    if (commander.name && filename.indexOf(commander.name) === -1) {
+      debug(`>>>>>>>>> skipping because filename not matched: ${name}`);
+      return;
+    }
     q.defer(callback => {
       const t0 = Date.now();
       const nightmare = Nightmare({
