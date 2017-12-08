@@ -10,97 +10,123 @@
 </head>
 
 <body>
-  <div id="canvas"></div>
-  <script src="./assets/jquery-3.2.1.min.js"></script>
-  <script src="./assets/lodash-4.17.4.min.js"></script>
-  <script src="./assets/g2.min.js"></script>
-  <script src="../build/data-set.js"></script>
-  <script>
-    function getTextAttrs(cfg) {
-      return _.assign({}, {
-        fillOpacity: cfg.opacity,
-        fontSize: cfg.size,
-        rotate: cfg.origin._origin.rotate,
-        text: cfg.origin._origin.text,
-        textAlign: 'center',
-        fontFamily: cfg.origin._origin.font,
-        fill: cfg.color,
-        textBaseline: 'Alphabetic'
-      }, cfg.style);
-    }
-    // 给point注册一个词云的shape
-    G2.Shape.registerShape('point', 'cloud', {
-      drawShape(cfg, container) {
-        const attrs = getTextAttrs(cfg);
-        return container.addShape('text', {
-          attrs: _.assign(attrs, {
-            x: cfg.x,
-            y: cfg.y
-          })
-        });
-      }
-    });
-//    const imageMask = new Image();
-//    imageMask.crossOrigin = '';
-//    imageMask.src = 'https://zos.alipayobjects.com/rmsportal/EEFqYWuloqIHRnh.jpg';
-//    imageMask.onload = () => {
-    $.getJSON('../test/fixtures/g2pv.json', data => {
-      const ds = new DataSet();
-      const dv = ds.createView('g2pv').source(data);
-      dv.transform({
-        type: 'tag-cloud',
-        fields: [ 'site', 'pv' ],
-        font: 'Impact',
-//          imageMask,
-        size: [ window.innerWidth, window.innerHeight ],
-        padding: 1,
-        text(d) {
-          const site = d.site;
-          let index = site.indexOf('.');
-          let text = site;
-          if (index > 0 && index < site.length) {
-            text = site.substr(0, index);
-              // 当字符串是'www'时获取下一个
-            if (text === 'www') {
-              text = site.substr(index + 1);
-              index = text.indexOf('.');
-              text = text.substr(0, index);
-            }
-              // 当字符串是数字时获取整个网址
-            if (/^[0-9]*$/g.test(text)) {
-              text = site;
-            }
-          }
-          return text;
-        },
-        fontSize(d) {
-          const max = dv.max('pv');
-          const min = dv.min('pv');
-          return ((d.pv - min) / (max - min)) * (80 - 14) + 14;
-        }
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/lodash-4.17.4.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  function getTextAttrs(cfg) {
+    return _.assign({}, {
+      fillOpacity: cfg.opacity,
+      fontSize: cfg.origin._origin.size,
+      rotate: cfg.origin._origin.rotate,
+      text: cfg.origin._origin.text,
+      textAlign: 'center',
+      fontFamily: cfg.origin._origin.font,
+      fill: cfg.color,
+      textBaseline: 'Alphabetic'
+    }, cfg.style);
+  }
+
+  // 给point注册一个词云的shape
+  G2.Shape.registerShape('point', 'cloud', {
+    drawShape(cfg, container) {
+      const attrs = getTextAttrs(cfg);
+      return container.addShape('text', {
+        attrs: _.assign(attrs, {
+          x: cfg.x,
+          y: cfg.y
+        })
       });
+    }
+  });
+  const imageMask = new Image();
+  imageMask.crossOrigin = '';
+//  imageMask.src = 'https://zos.alipayobjects.com/rmsportal/EEFqYWuloqIHRnh.jpg';
+  imageMask.src = './assets/alice-mask.png';
+//  imageMask.src = './assets/love-mask.png';
+  imageMask.onload = () => {
+    $.get('./data/love-the-world.txt', data => {
+      const lines = _.map(_.filter(data.split('\n'), line => {
+        return _.trim(line);
+      }), line => {
+        const parts = line.split(/\s/);
+        return {
+          value: parseInt(_.trim(parts[0]), 10),
+          text: parts[1]
+        };
+      });
+      const dv = new DataSet.View().source(lines);
+      const max = dv.max('value');
+      dv
+        .transform({
+          type: 'tag-cloud',
+          fields: [ 'text', 'value' ],
+          font: 'Impact',
+          imageMask,
+          size: [ window.innerWidth, window.innerHeight ],
+          padding: 1,
+          rotate() {
+            return ~~(Math.random() * 2) * 90;
+          },
+          text(d) {
+            const site = d.site;
+            let index = site.indexOf('.');
+            let text = site;
+            if (index > 0 && index < site.length) {
+              text = site.substr(0, index);
+              // 当字符串是'www'时获取下一个
+              if (text === 'www') {
+                text = site.substr(index + 1);
+                index = text.indexOf('.');
+                text = text.substr(0, index);
+              }
+              // 当字符串是数字时获取整个网址
+              if (/^[0-9]*$/g.test(text)) {
+                text = site;
+              }
+            }
+            return text;
+          },
+          fontSize(d) {
+            return d.value / max * 20 + 8;
+          }
+        })
+        .transform({
+          type: 'map',
+          callback(row) {
+            row._x = [ row.x0, row.x1, row.x1, row.x0 ];
+            row._y = [ row.y0, row.y0, row.y1, row.y1 ];
+            return row;
+          }
+        });
+      const [ width, height ] = dv._tagCloud.size();
       const chart = new G2.Chart({
         container: 'canvas',
-        forceFit: true,
-        height: window.innerHeight
+        width,
+        height,
+        padding: 0
       });
-      chart.source(dv);
+      chart.source(dv, {
+        x: { nice: false },
+        y: { nice: false }
+      });
       chart.legend(false);
       chart.axis(false);
       chart.tooltip({
         title: false
       });
       chart.coord().reflect();
+
       chart.point()
-          .position('x*y')
-          .color('text')
-          .size('size', size => size)
-          .shape('cloud');
-      chart.tooltip('site*pv');
+        .position('x*y')
+        .color('text')
+        .shape('cloud');
       chart.render();
     });
-//    };
-  </script>
+  };
+</script>
 </body>
 
 </html>

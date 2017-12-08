@@ -5,9 +5,9 @@
 // Algorithm due to Jonathan Feinberg, http://static.mrfeinberg.com/bv_ch03.pdf
 /* eslint-disable no-return-assign, no-cond-assign */
 
-const cloudRadians = Math.PI / 180;
-const cw = 1 << 11 >> 5;
-const ch = 1 << 11;
+const cloudRadians = Math.PI / 180,
+  cw = 1 << 11 >> 5,
+  ch = 1 << 11;
 
 function cloudText(d) {
   return d.text;
@@ -22,11 +22,11 @@ function cloudFontNormal() {
 }
 
 function cloudFontSize(d) {
-  return Math.sqrt(d.value);
+  return d.value;
 }
 
 function cloudRotate() {
-  return (~~(Math.random() * 6) - 3) * 30;
+  return ~~(Math.random() * 2) * 90;
 }
 
 function cloudPadding() {
@@ -37,13 +37,13 @@ function cloudPadding() {
 // Load in batches for speed.
 function cloudSprite(contextAndRatio, d, data, di) {
   if (d.sprite) return;
-  const c = contextAndRatio.context;
-  const ratio = contextAndRatio.ratio;
+  const c = contextAndRatio.context,
+    ratio = contextAndRatio.ratio;
 
   c.clearRect(0, 0, (cw << 5) / ratio, ch / ratio);
-  let x = 0;
-  let y = 0;
-  let maxh = 0;
+  let x = 0,
+    y = 0,
+    maxh = 0;
   const n = data.length;
   --di;
   while (++di < n) {
@@ -53,12 +53,12 @@ function cloudSprite(contextAndRatio, d, data, di) {
     let w = c.measureText(d.text + 'm').width * ratio,
       h = d.size << 1;
     if (d.rotate) {
-      const sr = Math.sin(d.rotate * cloudRadians);
-      const cr = Math.cos(d.rotate * cloudRadians);
-      const wcr = w * cr;
-      const wsr = w * sr;
-      const hcr = h * cr;
-      const hsr = h * sr;
+      const sr = Math.sin(d.rotate * cloudRadians),
+        cr = Math.cos(d.rotate * cloudRadians),
+        wcr = w * cr,
+        wsr = w * sr,
+        hcr = h * cr,
+        hsr = h * sr;
       w = (Math.max(Math.abs(wcr + hsr), Math.abs(wcr - hsr)) + 0x1f) >> 5 << 5;
       h = ~~Math.max(Math.abs(wsr + hcr), Math.abs(wsr - hcr));
     } else {
@@ -90,13 +90,13 @@ function cloudSprite(contextAndRatio, d, data, di) {
     d.hasText = true;
     x += w;
   }
-  const pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data;
-  const sprite = [];
+  const pixels = c.getImageData(0, 0, (cw << 5) / ratio, ch / ratio).data,
+    sprite = [];
   while (--di >= 0) {
     d = data[di];
     if (!d.hasText) continue;
-    const w = d.width;
-    const w32 = w >> 5;
+    const w = d.width,
+      w32 = w >> 5;
     let h = d.y1 - d.y0;
     // Zero the buffer
     for (let i = 0; i < h * w32; i++) sprite[i] = 0;
@@ -107,8 +107,8 @@ function cloudSprite(contextAndRatio, d, data, di) {
       seenRow = -1;
     for (let j = 0; j < h; j++) {
       for (let i = 0; i < w; i++) {
-        const k = w32 * j + (i >> 5);
-        const m = pixels[((y + j) * (cw << 5) + (x + i)) << 2] ? 1 << (31 - (i % 32)) : 0;
+        const k = w32 * j + (i >> 5),
+          m = pixels[((y + j) * (cw << 5) + (x + i)) << 2] ? 1 << (31 - (i % 32)) : 0;
         sprite[k] |= m;
         seen |= m;
       }
@@ -128,19 +128,19 @@ function cloudSprite(contextAndRatio, d, data, di) {
 // Use mask-based collision detection.
 function cloudCollide(tag, board, sw) {
   sw >>= 5;
-  const sprite = tag.sprite;
-  const w = tag.width >> 5;
-  const lx = tag.x - (w << 4);
-  const sx = lx & 0x7f;
-  const msx = 32 - sx;
-  const h = tag.y1 - tag.y0;
-  let x = (tag.y + tag.y0) * sw + (lx >> 5);
-  let last;
+  const sprite = tag.sprite,
+    w = tag.width >> 5,
+    lx = tag.x - (w << 4),
+    sx = lx & 0x7f,
+    msx = 32 - sx,
+    h = tag.y1 - tag.y0;
+  let x = (tag.y + tag.y0) * sw + (lx >> 5),
+    last;
   for (let j = 0; j < h; j++) {
     last = 0;
     for (let i = 0; i <= w; i++) {
       if (((last << msx) | (i < w ? (last = sprite[j * w + i]) >>> sx : 0))
-          & board[x + i]) return true;
+        & board[x + i]) return true;
     }
     x += sw;
   }
@@ -148,8 +148,8 @@ function cloudCollide(tag, board, sw) {
 }
 
 function cloudBounds(bounds, d) {
-  const b0 = bounds[0];
-  const b1 = bounds[1];
+  const b0 = bounds[0],
+    b1 = bounds[1];
   if (d.x + d.x0 < b0.x) b0.x = d.x + d.x0;
   if (d.y + d.y0 < b0.y) b0.y = d.y + d.y0;
   if (d.x + d.x1 > b1.x) b1.x = d.x + d.x1;
@@ -168,10 +168,10 @@ function archimedeanSpiral(size) {
 }
 
 function rectangularSpiral(size) {
-  const dy = 4;
-  const dx = dy * size[0] / size[1];
-  let x = 0;
-  let y = 0;
+  const dy = 4,
+    dx = dy * size[0] / size[1];
+  let x = 0,
+    y = 0;
   return function(t) {
     const sign = t < 0 ? -1 : 1;
     // See triangular numbers: T_n = n * (n + 1) / 2.
@@ -206,70 +206,82 @@ const spirals = {
   rectangular: rectangularSpiral
 };
 
-const tagCloud = function() {
-  // TODO image mask
-
-  let size = [ 256, 256 ];
-  let text = cloudText;
-  let font = cloudFont;
-  let fontSize = cloudFontSize;
-  let fontStyle = cloudFontNormal;
-  let fontWeight = cloudFontNormal;
-  let rotate = cloudRotate;
-  let padding = cloudPadding;
-  let spiral = archimedeanSpiral;
-  let words = [];
-  let timeInterval = Infinity;
-  let random = Math.random;
+module.exports = function() {
+  let size = [ 256, 256 ],
+    text = cloudText,
+    font = cloudFont,
+    fontSize = cloudFontSize,
+    fontStyle = cloudFontNormal,
+    fontWeight = cloudFontNormal,
+    rotate = cloudRotate,
+    padding = cloudPadding,
+    spiral = archimedeanSpiral,
+    words = [],
+    timeInterval = Infinity,
+    random = Math.random,
+    canvas = cloudCanvas;
   const cloud = {};
-  let canvas = cloudCanvas;
 
   cloud.canvas = function(_) {
     return arguments.length ? (canvas = functor(_), cloud) : canvas;
   };
 
-  cloud.start = cloud.exec = cloud.execute = function() { // origin: cloud.start
-    const contextAndRatio = getContext(canvas());
-    const board = cloud.board || zeroArray((size[0] >> 5) * size[1]);
-    let bounds = null;
-    const n = words.length;
-    const tags = [];
-    const data = words.map(function(d, i) {
-      d.text = text.call(this, d, i);
-      d.font = font.call(this, d, i);
-      d.style = fontStyle.call(this, d, i);
-      d.weight = fontWeight.call(this, d, i);
-      d.rotate = rotate.call(this, d, i);
-      d.size = ~~fontSize.call(this, d, i);
-      d.padding = padding.call(this, d, i);
-      return d;
-    }).sort(function(a, b) { return b.size - a.size; });
-    let i = -1;
+  cloud.start = function() {
+    const [ width, height ] = size;
+    const contextAndRatio = getContext(canvas()),
+      board = cloud.board ? cloud.board : zeroArray((size[0] >> 5) * size[1]),
+      n = words.length,
+      tags = [],
+      data = words.map(function(d, i) {
+        d.text = text.call(this, d, i);
+        d.font = font.call(this, d, i);
+        d.style = fontStyle.call(this, d, i);
+        d.weight = fontWeight.call(this, d, i);
+        d.rotate = rotate.call(this, d, i);
+        d.size = ~~fontSize.call(this, d, i);
+        d.padding = padding.call(this, d, i);
+        return d;
+      }).sort(function(a, b) { return b.size - a.size; });
+    let i = -1,
+      bounds = !cloud.board ? null : [{
+        x: 0,
+        y: 0
+      }, {
+        x: width,
+        y: height
+      }];
 
     step();
 
-    cloud.tags = tags;
-    cloud.bounds = bounds;
-
-    return cloud;
-
     function step() {
       const start = Date.now();
-      while (Date.now() - start < timeInterval && ++i < n) {
+      while ((Date.now() - start) < timeInterval && ++i < n) {
         const d = data[i];
-        d.x = (size[0] * (random() + 0.5)) >> 1;
-        d.y = (size[1] * (random() + 0.5)) >> 1;
+        d.x = (width * (random() + 0.5)) >> 1;
+        d.y = (height * (random() + 0.5)) >> 1;
         cloudSprite(contextAndRatio, d, data, i);
         if (d.hasText && place(board, d, bounds)) {
           tags.push(d);
-          if (bounds) cloudBounds(bounds, d);
-          else bounds = [{ x: d.x + d.x0, y: d.y + d.y0 }, { x: d.x + d.x1, y: d.y + d.y1 }];
+          if (bounds) {
+            if (!cloud.hasImage) { // update bounds if image mask not set
+              cloudBounds(bounds, d);
+            }
+          } else {
+            bounds = [
+              { x: d.x + d.x0, y: d.y + d.y0 },
+              { x: d.x + d.x1, y: d.y + d.y1 }
+            ];
+          }
           // Temporary hack
           d.x -= size[0] >> 1;
           d.y -= size[1] >> 1;
         }
       }
+      cloud._tags = tags;
+      cloud._bounds = bounds;
     }
+
+    return cloud;
   };
 
   function getContext(canvas) {
@@ -281,21 +293,20 @@ const tagCloud = function() {
     const context = canvas.getContext('2d');
     context.fillStyle = context.strokeStyle = 'red';
     context.textAlign = 'center';
-
     return { context, ratio };
   }
 
   function place(board, tag, bounds) {
-    // const perimeter = [{ x: 0, y: 0 }, { x: size[0], y: size[1] }];
-    const startX = tag.x;
-    const startY = tag.y;
-    const maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]);
-    const s = spiral(size);
-    const dt = random() < 0.5 ? 1 : -1;
-    let t = -dt;
-    let dxdy;
-    let dx;
-    let dy;
+    // const perimeter = [{ x: 0, y: 0 }, { x: size[0], y: size[1] }],
+    const startX = tag.x,
+      startY = tag.y,
+      maxDelta = Math.sqrt(size[0] * size[0] + size[1] * size[1]),
+      s = spiral(size),
+      dt = random() < 0.5 ? 1 : -1;
+    let dxdy,
+      t = -dt,
+      dx,
+      dy;
 
     while (dxdy = s(t += dt)) {
       dx = ~~dxdy[0];
@@ -307,19 +318,19 @@ const tagCloud = function() {
       tag.y = startY + dy;
 
       if (tag.x + tag.x0 < 0 || tag.y + tag.y0 < 0 ||
-          tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1]) continue;
+        tag.x + tag.x1 > size[0] || tag.y + tag.y1 > size[1]) continue;
       // TODO only check for collisions within current bounds.
       if (!bounds || !cloudCollide(tag, board, size[0])) {
         if (!bounds || collideRects(tag, bounds)) {
-          const sprite = tag.sprite;
-          const w = tag.width >> 5;
-          const sw = size[0] >> 5;
-          const lx = tag.x - (w << 4);
-          const sx = lx & 0x7f;
-          const msx = 32 - sx;
-          const h = tag.y1 - tag.y0;
-          let x = (tag.y + tag.y0) * sw + (lx >> 5);
-          let last;
+          const sprite = tag.sprite,
+            w = tag.width >> 5,
+            sw = size[0] >> 5,
+            lx = tag.x - (w << 4),
+            sx = lx & 0x7f,
+            msx = 32 - sx,
+            h = tag.y1 - tag.y0;
+          let last,
+            x = (tag.y + tag.y0) * sw + (lx >> 5);
           for (let j = 0; j < h; j++) {
             last = 0;
             for (let i = 0; i <= w; i++) {
@@ -335,7 +346,7 @@ const tagCloud = function() {
     return false;
   }
 
-  cloud.createMask = function(img) {
+  cloud.createMask = img => {
     const can = document.createElement('canvas');
     const [ width, height ] = size;
     const w32 = width >> 5;
@@ -344,8 +355,7 @@ const tagCloud = function() {
     can.height = height;
     const cxt = can.getContext('2d');
     cxt.drawImage(img, 0, 0, img.width, img.height, 0, 0, width, height);
-    const imageData = cxt.getImageData(0, 0, can.width, can.height).data;
-    // 将图片的空白区域填充
+    const imageData = cxt.getImageData(0, 0, width, height).data;
     for (let j = 0; j < height; j++) {
       for (let i = 0; i < width; i++) {
         const k = w32 * j + (i >> 5);
@@ -409,5 +419,3 @@ const tagCloud = function() {
 
   return cloud;
 };
-
-module.exports = tagCloud;
