@@ -6,13 +6,13 @@ body {
 }
 
 .filter {
-  padding: 1em;
+  padding: 16px;
 }
 .demo-thumbnails {
-  padding: 1em;
+  padding: 16px;
 }
 .demo-thumbnail {
-  margin-bottom: 1em;
+  margin-bottom: 32px;
 }
 .thumbnail-container {
   overflow: hidden;
@@ -58,11 +58,10 @@ iframe {
   width: 400px;
   height: 100%;
   overflow: hidden;
-  padding: 0 1rem 1em 0;
+  padding: 0 16px 0 0;
   position: relative;
   right: 0;
   top: 0;
-  border-right: 0.1rem solid #e8e8e8;
   transform: translateZ(0);
   white-space: nowrap;
   will-change: scroll-position;
@@ -73,14 +72,17 @@ iframe {
   padding: .5em 0;
 }
 
-.code-panel, .code-editor, .code-editor .CodeMirror {
+.code-panel, .code-editor .CodeMirror {
   height: 100%;
+}
+
+.code-editor {
+  height: calc(100% - 40px);
 }
 
 #chart-panel {
   flex: 1;
-  overflow-x: hidden;
-  overflow-y: auto;
+  overflow: hidden;
   padding: 1rem;
   -webkit-transform: translateZ(0);
   transform: translateZ(0);
@@ -88,7 +90,6 @@ iframe {
   -webkit-overflow-scrolling: touch;
 }
 #resize-handler {
-  //background: #DEDEEB;
   border-right: 2px solid #DEDEEB;
   cursor: col-resize;
 }
