@@ -2,6 +2,7 @@ const webpack = require('webpack');
 const resolve = require('path').resolve;
 
 module.exports = {
+  devtool: 'cheap-source-map',
   entry: {
     'data-set': './index.js'
   },
@@ -25,12 +26,11 @@ module.exports = {
             ],
             presets: [
               [
-                'es2015', {
-                  loose: true
-                  // modules: false
+                'env', {
+                  loose: true,
+                  modules: false
                 }
-              ],
-              'stage-0'
+              ]
             ]
           }
         }
