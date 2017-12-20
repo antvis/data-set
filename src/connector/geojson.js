@@ -1,8 +1,8 @@
 const getPointAtLength = require('point-at-length');
+const cloneDeep = require('lodash/cloneDeep');
 const {
   geoPath
 } = require('d3-geo');
-const cloneItems = require('../util/clone-items');
 const {
   GEO,
   registerConnector
@@ -12,7 +12,7 @@ const geoPathGenerator = geoPath();
 
 function GeoJSONConnector(data, options, dataView) {
   dataView.dataType = GEO;
-  const features = cloneItems(data.features);
+  const features = cloneDeep(data.features);
 
   // pre-process
   features.forEach(feature => {
