@@ -92,15 +92,8 @@
           fontSize(d) {
             return d.value / max * 20 + 8;
           }
-        })
-        .transform({
-          type: 'map',
-          callback(row) {
-            row._x = [ row.x0, row.x1, row.x1, row.x0 ];
-            row._y = [ row.y0, row.y0, row.y1, row.y1 ];
-            return row;
-          }
         });
+
       const [ width, height ] = dv._tagCloud.size();
       const chart = new G2.Chart({
         container: 'canvas',
