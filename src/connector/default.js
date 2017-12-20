@@ -1,5 +1,5 @@
 const isString = require('lodash/isString');
-const cloneItems = require('../util/clone-items');
+const cloneDeep = require('lodash/cloneDeep');
 const {
   registerConnector
 } = require('../data-set');
@@ -11,5 +11,5 @@ registerConnector('default', (dataView, dataSet) => {
   if (!dataView) {
     throw new TypeError('Invalid dataView');
   }
-  return cloneItems(dataView.rows);
+  return cloneDeep(dataView.rows);
 });
