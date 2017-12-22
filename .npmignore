@@ -61,5 +61,11 @@ typings/
 .env
 
 # build
+bin
+demos
+src
 temp
+test
+webpack-dev.config.js
+webpack.config.js
 .DS_Store
