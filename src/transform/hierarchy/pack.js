@@ -12,7 +12,7 @@ const DEFAULT_OPTIONS = {
   field: 'value',
   size: [ 1, 1 ], // width, height
   padding: 0,
-  as: [ 'x', 'y' ]
+  as: [ 'x', 'y', 'r' ]
 };
 
 function transform(dataView, options) {
@@ -23,8 +23,8 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!Array.isArray(as) || as.length !== 2) {
-    throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
+  if (!Array.isArray(as) || as.length !== 3) {
+    throw new TypeError('Invalid as: it must be an array with 3 strings (e.g. [ "x", "y", "r" ])!');
   }
 
   let field;
@@ -48,9 +48,11 @@ function transform(dataView, options) {
 
   const x = as[0];
   const y = as[1];
+  const r = as[2];
   root.each(node => {
     node[x] = node.x;
     node[y] = node.y;
+    node[r] = node.r;
   });
 }
 
