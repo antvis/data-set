@@ -49,7 +49,15 @@ describe('View API: statistics', () => {
     for (let i = 1; i <= 10; i++) {
       // 1~10
       data.push({
-        a: [ i, i + 10, [ -i, i * i, [ -i * i, 1 / i ]]]
+        a: [
+          i,
+          i + 10,
+          [
+            -i,
+            i * i,
+            [ -i * i, 1 / i ]
+          ]
+        ]
       });
     }
     const dv = new DataSet.View().source(data);
