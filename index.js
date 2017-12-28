@@ -10,6 +10,7 @@ require('./src/connector/dsv');
 require('./src/connector/geo-graticule');
 require('./src/connector/geojson');
 require('./src/connector/graph');
+require('./src/connector/hexjson');
 require('./src/connector/hierarchy');
 require('./src/connector/topojson');
 
