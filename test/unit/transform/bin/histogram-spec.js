@@ -52,4 +52,13 @@ describe('View.transform(): bin.histogram', () => {
     expect(dv.rows[0]).to.eql({ x: [ 0, 10 ], count: 10 });
     expect(dv.rows[10]).to.eql({ x: [ 100, 110 ], count: 1 });
   });
+
+  it('empty', () => {
+    const emptyDv = ds.createView().source([]).transform({
+      type: 'bin.histogram',
+      field: 'a',
+      binWidth: 10
+    });
+    expect(emptyDv.rows.length).to.eql(0);
+  });
 });
