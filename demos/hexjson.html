@@ -19,7 +19,9 @@
 <script>
   $.getJSON('../test/fixtures/us-states.hex.json', data => {
     const dv = new DataSet.View().source(data, {
-      type: 'hex'
+      type: 'hex',
+      width: 100,
+      height: 100
     });
     const chart = new G2.Chart({
       container: 'canvas',
@@ -57,10 +59,17 @@
     mapView.source(dv);
     mapView.polygon()
       .position('x*y')
-      .color('n')
+      .color(G2.Global.colors[1])
       .style({
         stroke: 'white',
         lineWidth: 5
+      })
+      .label('n', {
+        offset: 0,
+        textStyle: {
+          fontSize: 18,
+          fontWeight: 500
+        }
       })
       .tooltip('n');
 
