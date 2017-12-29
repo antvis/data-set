@@ -1,6 +1,7 @@
 module.exports = {
   HIERARCHY: 'hierarchy',
   GEO: 'geo',
+  HEX: 'hex',
   GRAPH: 'graph',
   TABLE: 'table',
   GEO_GRATICULE: 'geo-graticule',

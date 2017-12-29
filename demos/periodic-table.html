@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Geo Projections</title>
+</head>
+
+<body>
+<div id="canvas"></div>
+<script src="./assets/lodash-4.17.4.min.js"></script>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/periodic-table.hex.json', data => {
+    const dv = new DataSet.View().source(data, {
+      type: 'hex'
+    });
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight,
+      padding: [ 20, 20, 200, 20 ]
+    });
+    chart.tooltip({
+      showTitle: false
+    });
+    chart.axis(false);
+
+    chart.source(dv);
+    chart.polygon()
+      .position('x*y')
+      .color('category')
+      .style({
+        stroke: 'white',
+        lineWidth: 3
+      })
+      .label('symbol', {
+        offset: 0,
+        textStyle: {
+          fontSize: 32,
+          fontWeight: 500
+        }
+      })
+      .tooltip('symbol*name*number*atomic_mass*category');
+
+    chart.render();
+  });
+</script>
+</body>
+</html>

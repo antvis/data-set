@@ -33,7 +33,7 @@ mkdir('-p', dest);
 const app = connect();
 app.use('/', serveStatic(process.cwd()));
 
-const DELAY = 6000;
+const DELAY = 10000;
 
 getPort().then(port => {
   http.createServer(app).listen(port);
