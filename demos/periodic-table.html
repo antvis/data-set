@@ -14,64 +14,39 @@
 <script src="./assets/lodash-4.17.4.min.js"></script>
 <script src="./assets/jquery-3.2.1.min.js"></script>
 <script src="./assets/g2.min.js"></script>
-<!--<script src="./assets/g2.js"></script>-->
 <script src="../build/data-set.js"></script>
 <script>
-  $.getJSON('../test/fixtures/us-states.hex.json', data => {
+  $.getJSON('../test/fixtures/periodic-table.hex.json', data => {
     const dv = new DataSet.View().source(data, {
-      type: 'hex',
-      width: 100,
-      height: 100
+      type: 'hex'
     });
     const chart = new G2.Chart({
       container: 'canvas',
       forceFit: true,
       height: window.innerHeight,
-      padding: 0
+      padding: [ 20, 20, 200, 20 ]
     });
-    chart.scale({
-      x: {
-        sync: true
-      },
-      y: {
-        sync: true
-      }
-    });
-    chart.coord().reflect();
     chart.tooltip({
       showTitle: false
     });
     chart.axis(false);
 
-    const bgView = chart.view();
-    bgView.source(dv._gridRows);
-    bgView.polygon()
+    chart.source(dv);
+    chart.polygon()
       .position('x*y')
-      .color('grey')
-      .opacity(0.5)
+      .color('category')
       .style({
         stroke: 'white',
-        lineWidth: 1
+        lineWidth: 3
       })
-      .tooltip('key');
-
-    const mapView = chart.view();
-    mapView.source(dv);
-    mapView.polygon()
-      .position('x*y')
-      .color(G2.Global.colors[1])
-      .style({
-        stroke: 'white',
-        lineWidth: 5
-      })
-      .label('n', {
+      .label('symbol', {
         offset: 0,
         textStyle: {
-          fontSize: 18,
+          fontSize: 32,
           fontWeight: 500
         }
       })
-      .tooltip('capital');
+      .tooltip('symbol*name*number*atomic_mass*category');
 
     chart.render();
   });
