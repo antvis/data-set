@@ -27,6 +27,9 @@ function nearestBin(value, scale, offset) {
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = getField(options);
+  if (dataView.rows.length === 0) {
+    return;
+  }
   const range = dataView.range(field);
   const width = range[1] - range[0];
   let binWidth = options.binWidth;
