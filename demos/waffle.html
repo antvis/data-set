@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Waffle Chart</title>
+</head>
+
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/lodash-4.17.4.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  const data = [
+    { name: 'Mortgage ($84,911)', value: 84911 },
+    { name: 'Auto and tuition loans ($14,414)', value: 14414 },
+    { name: 'Home equity loans ($10,062)', value: 10062 },
+    { name: 'Credit Cards ($8,565)', value: 8565 }
+  ];
+  const dv = new DataSet.View().source(data);
+  dv.transform({
+    scale: 0.001,
+    type: 'waffle'
+  });
+  const chart = new G2.Chart({
+    container: 'canvas',
+    width: 800,
+    height: 110,
+    padding: [ 0, 300, 0, 0 ]
+  });
+  chart.source(dv);
+  chart.axis(false);
+  chart.legend('name', {
+    position: 'right'
+  });
+  chart.point()
+    .position('x*y')
+    .shape('square')
+    .size(8)
+    .color('name');
+  chart.render();
+</script>
+</body>
+
+</html>
