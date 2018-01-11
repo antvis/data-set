@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 // const pick = require('lodash/pick');
 const {
@@ -31,7 +32,7 @@ function transform(dataView, options) {
   }
   let pArray = options.p;
   const fraction = options.fraction;
-  if (!Array.isArray(pArray) || pArray.length === 0) {
+  if (!isArray(pArray) || pArray.length === 0) {
     pArray = pByFraction(fraction);
   }
   const rows = dataView.rows;

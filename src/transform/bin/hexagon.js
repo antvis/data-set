@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
 const {
   registerTransform
 } = require('../../data-set');
@@ -67,7 +68,7 @@ function transform(dataView, options) {
   // step1: get binWidth, etc.
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
-  if (!Array.isArray(fields) || fields.length !== 2) {
+  if (!isArray(fields) || fields.length !== 2) {
     throw new TypeError('Invalid fields: it must be an array with 2 strings!');
   }
   const [ fieldX, fieldY ] = fields;

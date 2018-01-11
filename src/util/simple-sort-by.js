@@ -1,3 +1,4 @@
+const isArray = require('lodash/isArray');
 const isFunction = require('lodash/isFunction');
 const isString = require('lodash/isString');
 
@@ -5,7 +6,7 @@ module.exports = (arr, keys = []) => {
   let comparer;
   if (isFunction(keys)) {
     comparer = keys;
-  } else if (Array.isArray(keys)) {
+  } else if (isArray(keys)) {
     comparer = (a, b) => {
       for (let i = 0; i < keys.length; i++) {
         const key = keys[i];

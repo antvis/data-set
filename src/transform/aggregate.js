@@ -50,7 +50,7 @@ function transform(dataView, options) {
   const rows = dataView.rows;
   const dims = options.groupBy;
   const fields = getFields(options);
-  if (!Array.isArray(fields)) {
+  if (!isArray(fields)) {
     throw new TypeError('Invalid fields: it must be an array with one or more strings!');
   }
   let outputNames = options.as || [];
@@ -62,7 +62,7 @@ function transform(dataView, options) {
     operations = [ operations ];
   }
   const DEFAULT_OPERATIONS = [ DEFAULT_OPERATION ];
-  if (!Array.isArray(operations) || !operations.length) {
+  if (!isArray(operations) || !operations.length) {
     console.warn('operations is not defined, will use [ "count" ] directly.');
     operations = DEFAULT_OPERATIONS;
     outputNames = operations;

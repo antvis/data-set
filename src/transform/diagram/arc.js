@@ -4,6 +4,7 @@
  */
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
 const values = require('lodash/values');
 const isFunction = require('lodash/isFunction');
 const {
@@ -174,7 +175,7 @@ function transform(dv, options) {
   const nodeById = {};
   let nodes = dv.nodes;
   const edges = dv.edges;
-  if (!Array.isArray(nodes) || nodes.length === 0) {
+  if (!isArray(nodes) || nodes.length === 0) {
     nodes = _nodesFromEdges(edges, options, nodeById);
   }
   nodes.forEach(node => {

@@ -1,3 +1,4 @@
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 
 const INVALID_FIELD_ERR_MSG = 'Invalid field: it must be a string!';
@@ -9,7 +10,7 @@ module.exports = {
     if (isString(field)) {
       return field;
     }
-    if (Array.isArray(field)) {
+    if (isArray(field)) {
       console.warn(INVALID_FIELD_ERR_MSG);
       return field[0];
     }
@@ -17,7 +18,7 @@ module.exports = {
     if (isString(fields)) {
       return fields;
     }
-    if (Array.isArray(fields) && fields.length) {
+    if (isArray(fields) && fields.length) {
       return fields[0];
     }
     if (defaultField) {
@@ -27,7 +28,7 @@ module.exports = {
   },
   getFields(options, defaultFields) {
     const { field, fields } = options;
-    if (Array.isArray(fields)) {
+    if (isArray(fields)) {
       return fields;
     }
     if (isString(fields)) {
@@ -39,7 +40,7 @@ module.exports = {
       console.warn(INVALID_FIELDS_ERR_MSG);
       return [ field ];
     }
-    if (Array.isArray(field) && field.length) {
+    if (isArray(field) && field.length) {
       console.warn(INVALID_FIELDS_ERR_MSG);
       return field;
     }

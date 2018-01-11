@@ -1,3 +1,4 @@
+const isArray = require('lodash/isArray');
 const reverse = require('lodash/reverse');
 const sortBy = require('lodash/sortBy');
 const {
@@ -19,7 +20,7 @@ const VALID_ORDERS = [ 'ASC', 'DESC' ];
 
 function transform(dataView, options = {}) {
   const fields = getFields(options, [ dataView.getColumnName(0) ]);
-  if (!Array.isArray(fields)) {
+  if (!isArray(fields)) {
     throw new TypeError('Invalid fields: must be an array with strings!');
   }
   dataView.rows = sortBy(dataView.rows, fields);
