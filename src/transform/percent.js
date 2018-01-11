@@ -40,6 +40,9 @@ function transform(dataView, options = {}) {
   const groups = partition(rows, groupBy);
   forIn(groups, group => {
     const totalSum = sum(group.map(row => row[field]));
+    if (totalSum === 0) {
+      console.warn(`Invalid data: total sum of field ${field} is 0!`);
+    }
     const innerGroups = partition(group, [ dimension ]);
     forIn(innerGroups, innerGroup => {
       const innerSum = sum(innerGroup.map(row => row[field]));
@@ -49,7 +52,11 @@ function transform(dataView, options = {}) {
       const dimensionValue = resultRow[dimension];
       resultRow[field] = innerSum;
       resultRow[dimension] = dimensionValue;
-      resultRow[as] = innerSum / totalSum;
+      if (totalSum === 0) {
+        resultRow[as] = 0;
+      } else {
+        resultRow[as] = innerSum / totalSum;
+      }
       result.push(resultRow);
     });
   });
