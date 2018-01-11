@@ -24,16 +24,20 @@
   ];
   const dv = new DataSet.View().source(data);
   dv.transform({
-    scale: 0.001,
+    scale: 1 / 392,
+    rows: 7,
     type: 'waffle'
   });
   const chart = new G2.Chart({
     container: 'canvas',
-    width: 800,
-    height: 110,
-    padding: [ 0, 300, 0, 0 ]
+    width: 1100,
+    height: 140,
+    padding: [ 0, 240, 0, 20 ]
   });
   chart.source(dv);
+  chart.scale('x', {
+    nice: false
+  });
   chart.axis(false);
   chart.legend('name', {
     position: 'right'
