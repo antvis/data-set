@@ -48,11 +48,12 @@ function transform(dataView, options) {
   // getting suitable scale and width step
   forIn(groups, group => {
     const totalValue = sum(map(group, row => row[valueField]));
+    let cols = Math.ceil(totalValue * scale / rows);
     if (totalValue * scale > maxCount) {
       scale = maxCount / totalValue;
-      const cols = Math.ceil(totalValue * scale / rows);
-      wStep = width / cols;
+      cols = Math.ceil(totalValue * scale / rows);
     }
+    wStep = width / cols;
   });
 
   // distributing values into grid
