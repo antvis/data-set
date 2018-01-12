@@ -45,13 +45,18 @@
 
   const chart = new G2.Chart({
     container: 'canvas',
-    width: 1100,
+    forceFit: true,
     height: 450,
-    padding: [ 0, 20, 80, 20 ]
+    padding: [ 20, 80, 80, 50 ]
   });
   chart.source(dv);
-  chart.scale('x', {
-    nice: false
+  chart.scale({
+    x: {
+      nice: false
+    },
+    y: {
+      nice: false
+    }
   });
   chart.axis(false);
   chart.legend('name', {
@@ -62,6 +67,30 @@
     .shape('square')
     .size(4)
     .color('name');
+
+  const guideDv = new DataSet.View().source(dv)
+    .transform({
+      type: 'aggregate',
+      fields: [ 'y' ],
+      operations: [ 'median' ],
+      as: [ 'medianY' ],
+      groupBy: 'State'
+    });
+  guideDv.rows.forEach(row => {
+    chart.guide().text({
+      top: true,
+      position: [ 0, row.medianY ],
+      content: row.State,
+      offsetX: -10,
+      style: {
+        fill: '#666', // 文本颜色
+        fontSize: 24, // 文本大小
+        fontWeight: 'bold', // 文本粗细
+        textAlign: 'right'
+      }
+    });
+  });
+
   chart.render();
 </script>
 </body>
