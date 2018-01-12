@@ -30,6 +30,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   const [ nameField, valueField ] = fields;
+  const [ asX, asY ] = options.as;
   const groupBy = options.groupBy;
   const groups = partition(dataView.rows, groupBy);
   const groupKeys = keys(groups);
@@ -70,8 +71,8 @@ function transform(dataView, options) {
           currentCol++;
         }
         const resultRow = pick(row, [ nameField, valueField ].concat(groupBy));
-        resultRow.x = currentCol * wStep + wStep / 2;
-        resultRow.y = currentRow * hStep + hStep / 2 + heightRange[0];
+        resultRow[asX] = currentCol * wStep + wStep / 2;
+        resultRow[asY] = currentRow * hStep + hStep / 2 + heightRange[0];
         currentRow++;
         result.push(resultRow);
       }
