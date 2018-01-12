@@ -38,20 +38,27 @@ function transform(dataView, options) {
   const groupCount = groupKeys.length;
   const partHeight = height / groupCount;
   const rows = options.rows;
+  const gapRatio = options.gapRatio;
   const result = [];
   let scale = options.scale;
   let currentGroupIndex = 0;
+  let wStep = 0;
 
+  // getting suitable scale and width step
   forIn(groups, group => {
-    const heightRange = [ currentGroupIndex * partHeight, (currentGroupIndex + 1) * partHeight ];
-    const h = heightRange[1] - heightRange[0];
-    const hStep = h / rows;
     const totalValue = sum(map(group, row => row[valueField]));
     if (totalValue * scale > maxCount) {
       scale = maxCount / totalValue;
+      const cols = Math.ceil(totalValue * scale / rows);
+      wStep = width / cols;
     }
-    const cols = Math.ceil(totalValue * scale / rows);
-    const wStep = width / cols;
+  });
+
+  // distributing values into grid
+  forIn(groups, group => {
+    const heightRange = [ currentGroupIndex * partHeight, (currentGroupIndex + 1) * partHeight ];
+    const h = heightRange[1] - heightRange[0];
+    const hStep = h * (1 - gapRatio) / rows;
     let currentCol = 0;
     let currentRow = 0;
     each(group, row => {
