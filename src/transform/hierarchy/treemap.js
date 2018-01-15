@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const d3Hierarchy = require('d3-hierarchy');
+const isArray = require('lodash/isArray');
 const {
   HIERARCHY,
   registerTransform
@@ -32,7 +33,7 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!Array.isArray(as) || as.length !== 2) {
+  if (!isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
 

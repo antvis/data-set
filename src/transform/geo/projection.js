@@ -1,6 +1,7 @@
 const assign = require('lodash/assign');
 const d3Geo = require('d3-geo');
 const getPointAtLength = require('point-at-length');
+const isArray = require('lodash/isArray');
 const {
   registerTransform
 } = require('../../data-set');
@@ -26,7 +27,7 @@ function transform(dataView, options) {
   projection = getGeoProjection(projection);
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
-  if (!Array.isArray(as) || as.length !== 4) {
+  if (!isArray(as) || as.length !== 4) {
     throw new TypeError('Invalid as: it must be an array with 4 strings (e.g. [ "x", "y", "cX", "cY" ])!');
   }
   dataView._projectedAs = as;

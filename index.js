@@ -57,6 +57,8 @@ require('./src/transform/hierarchy/tree');
 require('./src/transform/hierarchy/treemap');
 // tag cloud
 require('./src/transform/tag-cloud');
+// waffle
+require('./src/transform/waffle');
 // kernel smoothing
 require('./src/transform/kernel-smooth/density');
 require('./src/transform/kernel-smooth/regression');

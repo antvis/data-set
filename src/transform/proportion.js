@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const partition = require('../util/partition');
 const {
@@ -25,7 +26,7 @@ function transform(dataView, options = {}) {
   if (!isString(dimension)) {
     throw new TypeError('Invalid dimension: must be a string!');
   }
-  if (Array.isArray(as)) {
+  if (isArray(as)) {
     console.warn('Invalid as: must be a string, will use the first element of the array specified.');
     as = as[0];
   }

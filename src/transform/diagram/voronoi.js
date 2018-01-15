@@ -1,5 +1,6 @@
 const assign = require('lodash/assign');
 const d3Voronoi = require('d3-voronoi');
+const isArray = require('lodash/isArray');
 const {
   registerTransform
 } = require('../../data-set');
@@ -18,14 +19,14 @@ function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
 
   const as = options.as;
-  if (!Array.isArray(as) || as.length !== 2) {
+  if (!isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid as: must be an array with two strings!');
   }
   const xField = as[0];
   const yField = as[1];
 
   const fields = getFields(options);
-  if (!Array.isArray(fields) && fields.length !== 2) {
+  if (!isArray(fields) && fields.length !== 2) {
     throw new TypeError('Invalid fields: must be an array with two strings!');
   }
   const x = fields[0];

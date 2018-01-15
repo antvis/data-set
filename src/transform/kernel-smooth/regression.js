@@ -2,6 +2,7 @@
  * @reference: https://github.com/Planeshifter/kernel-smooth/blob/master/lib/index.js
  */
 const assign = require('lodash/assign');
+const isArray = require('lodash/isArray');
 const isFunction = require('lodash/isFunction');
 const isNil = require('lodash/isNil');
 const isNumber = require('lodash/isNumber');
@@ -23,8 +24,6 @@ const {
 const {
   silverman
 } = require('../../util/bandwidth');
-
-const isArray = Array.isArray;
 
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],

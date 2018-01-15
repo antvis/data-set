@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const isArray = require('lodash/isArray');
 const isNumber = require('lodash/isNumber');
 const regression = require('regression');
 const getSeriesValues = require('../util/get-series-values');
@@ -33,7 +34,7 @@ const REGRESSION_METHODS = [
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
-  if (!Array.isArray(fields) || fields.length !== 2) {
+  if (!isArray(fields) || fields.length !== 2) {
     throw new TypeError('invalid fields: must be an array of 2 strings.');
   }
   const [ xField, yField ] = fields;
@@ -44,7 +45,7 @@ function transform(dataView, options) {
   const points = dataView.rows.map(row => [ row[xField], row[yField] ]);
   const regressionResult = regression[method](points, options);
   let extent = options.extent;
-  if (!Array.isArray(extent) || extent.length !== 2) {
+  if (!isArray(extent) || extent.length !== 2) {
     extent = dataView.range(xField);
   }
   let bandwidth = options.bandwidth;

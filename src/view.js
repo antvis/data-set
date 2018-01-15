@@ -4,6 +4,7 @@ const clone = require('lodash/clone');
 const cloneDeep = require('lodash/cloneDeep');
 const find = require('lodash/find');
 const forIn = require('lodash/forIn');
+const isArray = require('lodash/isArray');
 const isMatch = require('lodash/isMatch');
 const isObject = require('lodash/isObject');
 const isString = require('lodash/isString');
@@ -35,7 +36,7 @@ class View extends EventEmitter {
     if (!me.loose) {
       const { watchingStates } = me;
       dataSet.on('statechange', name => {
-        if (Array.isArray(watchingStates)) {
+        if (isArray(watchingStates)) {
           if (watchingStates.indexOf(name) > -1) {
             me._reExecute();
           }
@@ -81,7 +82,7 @@ class View extends EventEmitter {
     if (!options) {
       if (source instanceof View || isString(source)) {
         me.origin = DataSet.getConnector('default')(source, me.dataSet);
-      } else if (Array.isArray(source)) {
+      } else if (isArray(source)) {
         // TODO branch: if source is like ['dataview1', 'dataview2']
         me.origin = source;
       } else if (isObject(source) && source.type) {

@@ -1,4 +1,5 @@
 const assign = require('lodash/assign');
+const isArray = require('lodash/isArray');
 const isString = require('lodash/isString');
 const {
   registerTransform
@@ -25,7 +26,7 @@ function transform(view, options) {
     throw new TypeError('Invalid geoView: must be a DataView of GEO dataType!');
   }
   const as = options.as;
-  if (!Array.isArray(as) || as.length !== 2) {
+  if (!isArray(as) || as.length !== 2) {
     throw new TypeError('Invalid as: it must be an array with 2 strings (e.g. [ "x", "y" ])!');
   }
   const lonField = as[0];
