@@ -48,7 +48,7 @@
     container: 'canvas',
     forceFit: true,
     height: 450,
-    padding: [ 20, 80, 80, 50 ]
+    padding: [ 20, 20, 80, 50 ]
   });
   chart.source(dv);
   chart.scale({
@@ -66,7 +66,7 @@
   chart.point()
     .position('x*y')
     .shape('square')
-    .size(4)
+    .size('_hStep*_wStep', (hStep, wStep) => Math.min((450 - 350) * hStep, (window.innerWidth - 350) * wStep), 1)
     .color('name');
 
   const guideDv = new DataSet.View().source(dv)

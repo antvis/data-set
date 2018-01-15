@@ -74,6 +74,8 @@ function transform(dataView, options) {
         const resultRow = pick(row, [ nameField, valueField ].concat(groupBy));
         resultRow[asX] = currentCol * wStep + wStep / 2;
         resultRow[asY] = currentRow * hStep + hStep / 2 + heightRange[0];
+        resultRow._wStep = wStep;
+        resultRow._hStep = hStep;
         currentRow++;
         result.push(resultRow);
       }
