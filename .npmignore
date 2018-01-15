@@ -63,7 +63,6 @@ typings/
 # build
 bin
 demos
-src
 temp
 test
 webpack-dev.config.js
