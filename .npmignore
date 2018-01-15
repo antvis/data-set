@@ -61,7 +61,6 @@ typings/
 .env
 
 # build
-bin
 demos
 temp
 test
