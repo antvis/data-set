@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Tree</title>
+  <link rel="stylesheet" href="./assets/common.css">
+</head>
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.js"></script>
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/flare.json', data => {
+    const dv = new DataSet.View().source(data, {
+      type: 'hierarchy',
+      pureData: true
+    });
+    dv.transform({
+      type: 'hierarchy.indented', // this layout algorithm needs to use pure data
+      direction: 'H'
+    });
+
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight,
+      padding: [ 60, 0, 20, 20 ]
+    });
+    chart.coord().reflect('y');
+    chart.axis(false);
+    chart.legend(false);
+    // chart.coord('polar');
+
+    const edgeView = chart.view();
+    edgeView.source(dv.getAllLinks().map(link => ({
+      x: [ link.source.x, link.target.x ],
+      y: [ link.source.y, link.target.y ],
+      source: link.source.id,
+      target: link.target.id
+    })));
+    edgeView.edge()
+      .position('x*y')
+      .shape('vhv') // vhv
+      .color('grey')
+      .opacity(0.5)
+      .tooltip('source*target');
+
+    const nodeView = chart.view();
+    nodeView.source(dv.getAllNodes().map(node => ({
+      hasChildren: !!(node.children && node.children.length),
+      name: node.data.name,
+      value: node.value,
+      depth: node.depth,
+      side: node.side || 'root',
+      x: node.x,
+      y: node.y
+    })));
+    nodeView.point()
+      .position('x*y')
+      .color('hasChildren')
+      .label('name', {
+        offset: 0,
+        textStyle: (text, item) => {
+          let textAlign;
+          if (item.point.side === 'left') {
+            textAlign = item.point.hasChildren ? 'left' : 'right';
+          } else {
+            textAlign = item.point.hasChildren ? 'right' : 'left';
+          }
+          return {
+            fill: 'grey',
+            fontSize: 9,
+            textAlign
+          };
+        }
+      });
+
+    chart.render();
+  });
+</script>
+</body>
+</html>

@@ -51,6 +51,9 @@ require('./src/transform/diagram/sankey');
 require('./src/transform/diagram/voronoi');
 // hierarchy
 require('./src/transform/hierarchy/cluster');
+require('./src/transform/hierarchy/compact-box');
+require('./src/transform/hierarchy/dendrogram');
+require('./src/transform/hierarchy/indented');
 require('./src/transform/hierarchy/pack');
 require('./src/transform/hierarchy/partition');
 require('./src/transform/hierarchy/tree');
