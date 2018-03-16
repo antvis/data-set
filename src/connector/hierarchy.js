@@ -23,7 +23,11 @@ function connector(data, options, dataView) {
     throw new TypeError('Invalid children: must be a function!');
   }
 
-  dataView.rows = dataView.root = hierarchy(data, children);
+  if (!options.pureData) {
+    dataView.rows = dataView.root = hierarchy(data, children);
+  } else {
+    dataView.rows = dataView.root = data;
+  }
   return data;
 }
 
