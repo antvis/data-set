@@ -35,6 +35,9 @@
           "error"
         ]
       }
+    ],
+    "linebreak-style": [
+      0
     ]
   }
 }
