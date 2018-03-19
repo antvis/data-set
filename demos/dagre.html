@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Sankey Diagram</title>
+</head>
+
+<body>
+<div id="canvas"></div>
+<script src="./assets/jquery-3.2.1.min.js"></script>
+<script src="./assets/g2.min.js"></script>
+<!--<script src="./assets/g2.js"></script>-->
+<script src="../build/data-set.js"></script>
+<script>
+  $.getJSON('../test/fixtures/energy.json', data => {
+    const edges = data.links;
+    const graph = {
+      nodes: [],
+      edges
+    };
+    const nodeById = {};
+    function addNode(id) {
+      if (!nodeById[id]) {
+        const node = {
+          id,
+          name: id
+        };
+        nodeById[id] = node;
+        graph.nodes.push(node);
+      }
+    }
+    edges.forEach(function(edge) {
+      addNode(edge.source);
+      addNode(edge.target);
+    });
+    const ds = new DataSet();
+    const dv = ds.createView().source(graph, {
+    // const dv = ds.createView().source(data, {
+      // edges: data => data.links,
+      type: 'graph'
+    });
+    dv.transform({
+      type: 'diagram.dagre',
+      nodeId: node => node.id
+    });
+    const chart = new G2.Chart({
+      container: 'canvas',
+      forceFit: true,
+      height: window.innerHeight
+    });
+    chart.legend(false);
+    chart.tooltip({
+      showTitle: false
+    });
+
+    chart.scale({
+      x: { sync: true },
+      y: { sync: true }
+    });
+
+    // edge view
+    const edgeView = chart.view();
+    edgeView.source(dv.edges);
+    edgeView.axis(false);
+    edgeView.edge()
+      .position('x*y')
+      .color('#bbb')
+      .opacity(0.6);
+
+    // node view
+    const nodeView = chart.view();
+    nodeView.axis(false);
+    nodeView.source(dv.nodes);
+    nodeView.polygon()
+      .position('x*y')
+      .color('name')
+      // .label('name', {
+      //   labelEmit: true,
+      //   textStyle: {
+      //     fill: 'black'
+      //   }
+      // })
+      .style({
+        stroke: '#ccc'
+      });
+    chart.render();
+  });
+</script>
+</body>
+
+</html>
+
