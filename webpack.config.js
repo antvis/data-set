@@ -4,7 +4,7 @@ const resolve = require('path').resolve;
 module.exports = {
   devtool: 'cheap-source-map',
   entry: {
-    'data-set': './index.js'
+    'data-set': './src/index.js'
   },
   output: {
     filename: '[name].js',
