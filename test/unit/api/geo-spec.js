@@ -2,7 +2,7 @@ const {
   expect
 } = require('chai');
 const d3GeoProjection = require('d3-geo-projection');
-const DataSet = require('../../../index');
+const DataSet = require('../../../src/index');
 const geoWorld = require('../../fixtures/countries-geo.json');
 
 describe('View API: geo', () => {

@@ -1,10 +1,10 @@
 {
   "name": "@antv/data-set",
-  "version": "0.8.6",
+  "version": "0.8.7",
   "description": "data set with state management",
   "main": "build/data-set.js",
   "browser": "build/data-set.js",
-  "module": "index.js",
+  "module": "src/index.js",
   "homepage": "https://github.com/antvis/data-set",
   "repository": {
     "type": "git",
@@ -22,6 +22,7 @@
   "license": "MIT",
   "devDependencies": {
     "@lite-js/torch": "~0.2.6",
+    "babel-cli": "~6.26.0",
     "babel-core": "~6.26.0",
     "babel-eslint": "~8.0.3",
     "babel-loader": "~7.1.2",
@@ -51,6 +52,7 @@
   },
   "scripts": {
     "build": "webpack",
+    "build-lib": "babel src --out-dir lib",
     "ci": "npm run lint && npm run test",
     "compress": "uglifyjs -c -m -o dist/data-set.min.js -- build/data-set.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
@@ -63,7 +65,7 @@
     "lint": "eslint --ext .html,.js ./",
     "lint-fix": "eslint --ext .html,.js --fix ./",
     "mkdir-dist": "node ./bin/mkdir-dist.js",
-    "prepublishOnly": "npm run dist",
+    "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "node ./bin/screenshot.js",
     "test": "torch --renderer --recursive ./test/unit",
     "test-live": "torch --interactive --watch --recursive ./test/unit",

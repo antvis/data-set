@@ -25,7 +25,7 @@ describe('util: partition(rows, groupBy, orderBy)', () => {
     expect(groups._1.length).to.equal(1);
   });
 
-  it.skip('performance', () => {
+  it('performance', done => {
     // FIXME: remove `.skip` to execute performance test
     const top2000 = require('../../fixtures/top2000.json');
     const top2000Cloned1 = cloneDeep(top2000);
@@ -40,5 +40,6 @@ describe('util: partition(rows, groupBy, orderBy)', () => {
     expect((t3 - t2) < (t2 - t1)).to.equal(true);
     expect((t3 - t2) < (t1 - t0)).to.equal(true);
     // console.log(t3 - t2, t2 - t1, t1 - t0);
+    done();
   });
 });

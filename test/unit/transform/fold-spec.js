@@ -10,7 +10,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../index');
+} = require('../../../src/index');
 
 describe('View.transform(): fold', () => {
   const data = [ // token from vega-dataFlow

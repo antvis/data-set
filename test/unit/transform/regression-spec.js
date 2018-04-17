@@ -8,7 +8,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../index');
+} = require('../../../src/index');
 const {
   REGRESSION_METHODS
 } = require('../../../src/transform/regression');

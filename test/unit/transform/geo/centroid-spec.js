@@ -7,7 +7,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../../index');
+} = require('../../../../src/index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
 describe('View.transform(): geo.centroid', () => {

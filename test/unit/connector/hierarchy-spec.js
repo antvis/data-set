@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getConnector
-} = require('../../../index');
+} = require('../../../src/index');
 const flare = require('../../fixtures/flare.json');
 
 describe('View.source(): hierarchy', () => {

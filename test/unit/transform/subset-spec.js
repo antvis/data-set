@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../index');
+} = require('../../../src/index');
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('View.transform(): subset', () => {

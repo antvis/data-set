@@ -7,7 +7,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../../index');
+} = require('../../../../src/index');
 
 describe('View.transform(): bin.quantile', () => {
   const data = [

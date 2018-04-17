@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getConnector
-} = require('../../../index');
+} = require('../../../src/index');
 const geoWorld = require('../../fixtures/countries-geo.json');
 
 describe('View.source(): geojson', () => {

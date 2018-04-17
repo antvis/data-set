@@ -12,7 +12,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../index');
+} = require('../../../src/index');
 const {
   VALID_AGGREGATES
 } = require('../../../src/transform/aggregate');

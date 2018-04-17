@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getConnector
-} = require('../../../index');
+} = require('../../../src/index');
 const {
   readFileSync
 } = require('../../support/util');

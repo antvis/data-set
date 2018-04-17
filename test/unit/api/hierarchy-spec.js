@@ -1,7 +1,7 @@
 const {
   expect
 } = require('chai');
-const DataSet = require('../../../index');
+const DataSet = require('../../../src/index');
 const flare = require('../../fixtures/flare.json');
 
 describe('View API: hierarchy', () => {
