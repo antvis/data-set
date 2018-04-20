@@ -1,6 +1,6 @@
 {
   "name": "@antv/data-set",
-  "version": "0.8.7-beta.1",
+  "version": "0.8.7",
   "description": "data set with state management",
   "main": "build/data-set.js",
   "browser": "build/data-set.js",
@@ -28,6 +28,7 @@
     "babel-loader": "~7.1.2",
     "babel-plugin-transform-remove-strict-mode": "~0.0.2",
     "babel-preset-env": "~1.6.1",
+    "body-parser": "^1.18.2",
     "chai": "~4.1.2",
     "cheerio": "~1.0.0-rc.2",
     "commander": "~2.12.2",
@@ -39,7 +40,10 @@
     "eslint-config-airbnb": "~15.0.1",
     "eslint-config-egg": "~4.2.0",
     "eslint-plugin-html": "~3.1.1",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-react": "^7.7.0",
     "get-port": "~3.2.0",
+    "jszip": "^3.1.5",
     "nightmare": "~2.10.0",
     "nunjucks": "~3.0.1",
     "open": "~0.0.5",
@@ -53,6 +57,7 @@
   "scripts": {
     "build": "webpack",
     "build-lib": "babel src --out-dir lib",
+    "bundler": "electron ./bundler/app.js",
     "ci": "npm run lint && npm run test",
     "compress": "uglifyjs -c -m -o dist/data-set.min.js -- build/data-set.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
@@ -80,6 +85,7 @@
     "silent": false
   },
   "dependencies": {
+    "@antv/hierarchy": "~0.1.0-beta.2",
     "d3-array": "~1.2.0",
     "d3-composite-projections": "~1.2.0",
     "d3-dsv": "~1.0.5",
