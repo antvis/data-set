@@ -69,20 +69,22 @@ assign(View.prototype, {
     }
   },
   // projection
-  geoProject(feature, projection) {
-    projection = getGeoProjection(projection);
+  // export getGeoProjection for custom used.
+  getGeoProjection,
+  geoProject(feature, projection, exportRaw) {
+    projection = getGeoProjection(projection, exportRaw);
     return geoProject(feature, projection);
   },
-  geoProjectByName(name, projection) {
-    projection = getGeoProjection(projection);
+  geoProjectByName(name, projection, exportRaw) {
+    projection = getGeoProjection(projection, exportRaw);
     return geoProject(this.geoFeatureByName(name), projection);
   },
-  geoProjectPosition(position, projection) {
-    projection = getGeoProjection(projection);
+  geoProjectPosition(position, projection, exportRaw) {
+    projection = getGeoProjection(projection, exportRaw);
     return projection(position);
   },
-  geoProjectInvert(point/* [x, y] */, projection) {
-    projection = getGeoProjection(projection);
+  geoProjectInvert(point/* [x, y] */, projection, exportRaw) {
+    projection = getGeoProjection(projection, exportRaw);
     return projection.invert(point);
   }
 });
