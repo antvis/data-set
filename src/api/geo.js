@@ -69,6 +69,8 @@ assign(View.prototype, {
     }
   },
   // projection
+  // export getGeoProjection for custom used.
+  getGeoProjection,
   geoProject(feature, projection) {
     projection = getGeoProjection(projection);
     return geoProject(feature, projection);
