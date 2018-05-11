@@ -4,6 +4,12 @@ const d3Geo = require('d3-geo');
 const d3GeoProjection = require('d3-geo-projection');
 const d3CompositeProjection = require('d3-composite-projections');
 
+/*
+* getGeoProjection
+*
+* @param {string|function} projection  projection name or projection function
+* @param {boolean} [exportRaw = false] - whether return the raw projection or not
+* */
 module.exports = (projection, exportRaw) => {
   if (isFunction(projection)) {
     return exportRaw ? projection : projection();
