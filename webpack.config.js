@@ -1,5 +1,6 @@
 const webpack = require('webpack');
 const resolve = require('path').resolve;
+const pkg = require('./package.json');
 
 module.exports = {
   devtool: 'cheap-source-map',
@@ -20,18 +21,17 @@ module.exports = {
         use: {
           loader: 'babel-loader',
           options: {
-            babelrc: false,
-            plugins: [
-              'transform-remove-strict-mode'
-            ],
-            presets: [
-              [
-                'env', {
-                  loose: true,
-                  modules: false
-                }
-              ]
-            ]
+            babelrc: true
+          }
+        }
+      },
+      {
+        test: /data\-set\.js$/,
+        use: {
+          loader: 'string-replace-loader',
+          options: {
+            search: '____DATASET_VERSION____',
+            replace: pkg.version
           }
         }
       }

@@ -95,4 +95,6 @@ assign(DataSet.prototype, {
   view: DataSet.prototype.createView // alias
 });
 
+DataSet.version = '____DATASET_VERSION____';
+
 module.exports = DataSet;
