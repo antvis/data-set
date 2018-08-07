@@ -1,4 +1,4 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const {
   geoArea,
   geoCentroid,

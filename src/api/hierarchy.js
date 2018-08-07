@@ -1,5 +1,5 @@
 /* eslint-disable no-cond-assign, no-loop-func */
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const View = require('../view');
 
 assign(View.prototype, {

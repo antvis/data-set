@@ -86,7 +86,8 @@
     "silent": false
   },
   "dependencies": {
-    "@antv/hierarchy": "~0.1.0-beta.2",
+    "@antv/hierarchy": "~0.3.14",
+    "@antv/util": "~1.0.12",
     "d3-array": "~1.2.0",
     "d3-composite-projections": "~1.2.0",
     "d3-dsv": "~1.0.5",

@@ -1,7 +1,7 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const d3Geo = require('d3-geo');
 const getPointAtLength = require('point-at-length');
-const isArray = require('lodash/isArray');
+const isArray = require('@antv/util/lib/type/isArray');
 const {
   registerTransform
 } = require('../../data-set');

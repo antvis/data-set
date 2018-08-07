@@ -1,6 +1,6 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const d3Hierarchy = require('d3-hierarchy');
-const isArray = require('lodash/isArray');
+const isArray = require('@antv/util/lib/type/isArray');
 const {
   HIERARCHY,
   registerTransform

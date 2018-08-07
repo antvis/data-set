@@ -1,4 +1,4 @@
-const isString = require('lodash/isString');
+const isString = require('@antv/util/lib/type/isString');
 const {
   dsvFormat,
   csvParse,

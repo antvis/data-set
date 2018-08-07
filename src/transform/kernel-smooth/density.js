@@ -1,12 +1,12 @@
 /*
  * @reference: https://github.com/Planeshifter/kernel-smooth/blob/master/lib/index.js
  */
-const assign = require('lodash/assign');
-const isArray = require('lodash/isArray');
-const isFunction = require('lodash/isFunction');
-const isNumber = require('lodash/isNumber');
-const isString = require('lodash/isString');
-const keys = require('lodash/keys');
+const assign = require('@antv/util/lib/mix');
+const isArray = require('@antv/util/lib/type/isArray');
+const isFunction = require('@antv/util/lib/type/isFunction');
+const isNumber = require('@antv/util/lib/type/isNumber');
+const isString = require('@antv/util/lib/type/isString');
+const keys = require('lodash/keys'); // TODO upgrade @antv/util
 // const regression = require('regression');
 const getSeriesValues = require('../../util/get-series-values');
 // const enclideanDistance = require('../../util/euclidean-distance');

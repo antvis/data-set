@@ -1,6 +1,6 @@
-const isArray = require('lodash/isArray');
-const reverse = require('lodash/reverse');
-const sortBy = require('lodash/sortBy');
+const isArray = require('@antv/util/lib/type/isArray');
+const reverse = require('lodash/reverse'); // TODO upgrade util
+const sortBy = require('lodash/sortBy'); // TODO upgrade util
 const {
   registerTransform
 } = require('../data-set');

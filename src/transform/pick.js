@@ -1,4 +1,4 @@
-const pick = require('lodash/pick');
+const pick = require('@antv/util/lib/pick');
 const {
   registerTransform
 } = require('../data-set');

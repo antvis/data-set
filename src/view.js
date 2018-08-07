@@ -1,15 +1,15 @@
 const EventEmitter = require('wolfy87-eventemitter');
-const assign = require('lodash/assign');
-const clone = require('lodash/clone');
-const cloneDeep = require('lodash/cloneDeep');
-const find = require('lodash/find');
-const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const isMatch = require('lodash/isMatch');
-const isObject = require('lodash/isObject');
-const isString = require('lodash/isString');
-const keys = require('lodash/keys');
-const pick = require('lodash/pick');
+const assign = require('@antv/util/lib/mix');
+const clone = require('@antv/util/lib/clone');
+const cloneDeep = require('@antv/util/lib/clone');
+const find = require('lodash/find'); // TODO upgrade util
+const forIn = require('@antv/util/lib/each');
+const isArray = require('@antv/util/lib/type/isArray');
+const isMatch = require('lodash/isMatch'); // TODO upgrade util
+const isObject = require('@antv/util/lib/type/isObject');
+const isString = require('@antv/util/lib/type/isString');
+const keys = require('lodash/keys'); // TODO upgrade util
+const pick = require('@antv/util/lib/pick');
 
 class View extends EventEmitter {
   // constructor

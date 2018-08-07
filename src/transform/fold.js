@@ -1,6 +1,6 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const difference = require('lodash/difference');
-const pick = require('lodash/pick');
+const pick = require('@antv/util/lib/pick');
 const {
   registerTransform
 } = require('../data-set');

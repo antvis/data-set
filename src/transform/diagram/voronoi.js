@@ -1,6 +1,6 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const d3Voronoi = require('d3-voronoi');
-const isArray = require('lodash/isArray');
+const isArray = require('@antv/util/lib/type/isArray');
 const {
   registerTransform
 } = require('../../data-set');

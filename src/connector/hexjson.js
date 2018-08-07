@@ -1,5 +1,5 @@
-const assign = require('lodash/assign');
-const cloneDeep = require('lodash/cloneDeep');
+const assign = require('@antv/util/lib/mix');
+const cloneDeep = require('@antv/util/lib/clone');
 const {
   getGridForHexJSON,
   renderHexJSON

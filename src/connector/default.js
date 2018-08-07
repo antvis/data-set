@@ -1,5 +1,5 @@
-const isString = require('lodash/isString');
-const cloneDeep = require('lodash/cloneDeep');
+const isString = require('@antv/util/lib/type/isString');
+const cloneDeep = require('@antv/util/lib/clone'); // TODO upgrade util
 const {
   registerConnector
 } = require('../data-set');

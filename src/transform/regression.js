@@ -1,6 +1,6 @@
-const assign = require('lodash/assign');
-const isArray = require('lodash/isArray');
-const isNumber = require('lodash/isNumber');
+const assign = require('@antv/util/lib/mix');
+const isArray = require('@antv/util/lib/type/isArray');
+const isNumber = require('@antv/util/lib/type/isNumber');
 const regression = require('regression');
 const getSeriesValues = require('../util/get-series-values');
 const {

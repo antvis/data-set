@@ -1,5 +1,5 @@
-const assign = require('lodash/assign');
-const forIn = require('lodash/forIn');
+const assign = require('@antv/util/lib/mix');
+const forIn = require('@antv/util/lib/each');
 const {
   registerTransform
 } = require('../../data-set');

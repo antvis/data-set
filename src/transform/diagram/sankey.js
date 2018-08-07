@@ -2,9 +2,9 @@
  * for Sankey Diagram
  * graph data required (nodes, edges)
  */
-const assign = require('lodash/assign');
-const isString = require('lodash/isString');
-const isFunction = require('lodash/isFunction');
+const assign = require('@antv/util/lib/mix');
+const isString = require('@antv/util/lib/type/isString');
+const isFunction = require('@antv/util/lib/type/isFunction');
 const {
   sankey,
   sankeyLeft,

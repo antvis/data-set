@@ -1,9 +1,9 @@
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const each = require('lodash/each');
-const forIn = require('lodash/forIn');
-const keys = require('lodash/keys');
-const map = require('lodash/map');
-const pick = require('lodash/pick');
+const forIn = require('@antv/util/lib/each');
+const keys = require('lodash/keys'); // TODO upgrade util
+const map = require('@antv/util/lib/map');
+const pick = require('@antv/util/lib/pick');
 const {
   sum
 } = require('simple-statistics');

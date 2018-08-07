@@ -1,5 +1,5 @@
-const isArray = require('lodash/isArray');
-const isString = require('lodash/isString');
+const isArray = require('@antv/util/lib/type/isArray');
+const isString = require('@antv/util/lib/type/isString');
 
 const INVALID_FIELD_ERR_MSG = 'Invalid field: it must be a string!';
 const INVALID_FIELDS_ERR_MSG = 'Invalid fields: it must be an array!';

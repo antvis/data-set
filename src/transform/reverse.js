@@ -1,4 +1,4 @@
-const reverse = require('lodash/reverse');
+const reverse = require('lodash/reverse'); // TODO upgrade util
 const {
   registerTransform
 } = require('../data-set');
