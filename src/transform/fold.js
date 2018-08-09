@@ -1,5 +1,5 @@
 const assign = require('@antv/util/lib/mix');
-const difference = require('@antv/util/lib/array/difference'); // TODO upgrade util
+const difference = require('@antv/util/lib/array/difference');
 const pick = require('@antv/util/lib/pick');
 const {
   registerTransform

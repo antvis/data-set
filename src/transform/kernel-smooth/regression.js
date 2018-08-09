@@ -7,7 +7,7 @@ const isFunction = require('@antv/util/lib/type/isFunction');
 const isNil = require('@antv/util/lib/type/isNil');
 const isNumber = require('@antv/util/lib/type/isNumber');
 const isString = require('@antv/util/lib/type/isString');
-const keys = require('@antv/util/lib/object/keys'); // TODO upgrade util
+const keys = require('@antv/util/lib/object/keys');
 // const regression = require('regression');
 const {
   sum
