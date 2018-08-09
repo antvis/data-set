@@ -1,9 +1,9 @@
 const assign = require('@antv/util/lib/mix');
-const flattenDeep = require('lodash/flattenDeep'); // TODO upgrade
+const flattenDeep = require('@antv/util/lib/array/flattenDeep'); // TODO upgrade
 const forIn = require('@antv/util/lib/each');
 const isArray = require('@antv/util/lib/type/isArray');
 const isString = require('@antv/util/lib/type/isString');
-const keys = require('lodash/keys'); // TODO upgrade util
+const keys = require('@antv/util/lib/object/keys'); // TODO upgrade util
 const uniq = require('@antv/util/lib/array/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');

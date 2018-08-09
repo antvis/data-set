@@ -1,5 +1,5 @@
 const assign = require('@antv/util/lib/mix');
-const flattenDeep = require('lodash/flattenDeep'); // TODO upgrade util
+const flattenDeep = require('@antv/util/lib/array/flattenDeep'); // TODO upgrade util
 const isArray = require('@antv/util/lib/type/isArray');
 const simpleStatistics = require('simple-statistics');
 const View = require('../view');

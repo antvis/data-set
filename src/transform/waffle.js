@@ -1,7 +1,7 @@
 const assign = require('@antv/util/lib/mix');
-const each = require('lodash/each');
+const each = require('@antv/util/lib/each');
 const forIn = require('@antv/util/lib/each');
-const keys = require('lodash/keys'); // TODO upgrade util
+const keys = require('@antv/util/lib/object/keys'); // TODO upgrade util
 const map = require('@antv/util/lib/map');
 const pick = require('@antv/util/lib/pick');
 const {
