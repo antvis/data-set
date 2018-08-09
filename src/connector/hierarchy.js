@@ -1,4 +1,4 @@
-const isFunction = require('lodash/isFunction');
+const isFunction = require('@antv/util/lib/type/isFunction');
 const {
   hierarchy
 } = require('d3-hierarchy');

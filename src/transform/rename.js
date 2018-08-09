@@ -1,6 +1,6 @@
-const forIn = require('lodash/forIn');
-const isPlainObject = require('lodash/isPlainObject');
-const isString = require('lodash/isString');
+const forIn = require('@antv/util/lib/each');
+const isPlainObject = require('@antv/util/lib/type/isPlainObject');
+const isString = require('@antv/util/lib/type/isString');
 const {
   registerTransform
 } = require('../data-set');

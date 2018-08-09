@@ -1,5 +1,5 @@
-const assign = require('lodash/assign');
-const values = require('lodash/values');
+const assign = require('@antv/util/lib/mix');
+const values = require('@antv/util/lib/array/values');
 const partition = require('../util/partition');
 const View = require('../view');
 

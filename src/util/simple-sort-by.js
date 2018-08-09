@@ -1,6 +1,6 @@
-const isArray = require('lodash/isArray');
-const isFunction = require('lodash/isFunction');
-const isString = require('lodash/isString');
+const isArray = require('@antv/util/lib/type/isArray');
+const isFunction = require('@antv/util/lib/type/isFunction');
+const isString = require('@antv/util/lib/type/isString');
 
 module.exports = (arr, keys = []) => {
   let comparer;

@@ -1,10 +1,10 @@
-const assign = require('lodash/assign');
-const flattenDeep = require('lodash/flattenDeep');
-const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const isString = require('lodash/isString');
-const keys = require('lodash/keys');
-const uniq = require('lodash/uniq');
+const assign = require('@antv/util/lib/mix');
+const flattenDeep = require('@antv/util/lib/array/flattenDeep');
+const forIn = require('@antv/util/lib/each');
+const isArray = require('@antv/util/lib/type/isArray');
+const isString = require('@antv/util/lib/type/isString');
+const keys = require('@antv/util/lib/object/keys');
+const uniq = require('@antv/util/lib/array/uniq');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
 const {

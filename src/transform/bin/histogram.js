@@ -1,6 +1,6 @@
-const assign = require('lodash/assign');
-const forIn = require('lodash/forIn');
-const pick = require('lodash/pick');
+const assign = require('@antv/util/lib/mix');
+const forIn = require('@antv/util/lib/each');
+const pick = require('@antv/util/lib/pick');
 const partition = require('../../util/partition');
 const {
   registerTransform

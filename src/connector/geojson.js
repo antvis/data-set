@@ -1,5 +1,5 @@
 const getPointAtLength = require('point-at-length');
-const cloneDeep = require('lodash/cloneDeep');
+const cloneDeep = require('@antv/util/lib/clone');
 const {
   geoPath
 } = require('d3-geo');

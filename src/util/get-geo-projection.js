@@ -1,5 +1,5 @@
-const isFunction = require('lodash/isFunction');
-const isString = require('lodash/isString');
+const isFunction = require('@antv/util/lib/type/isFunction');
+const isString = require('@antv/util/lib/type/isString');
 const d3Geo = require('d3-geo');
 const d3GeoProjection = require('d3-geo-projection');
 const d3CompositeProjection = require('d3-composite-projections');

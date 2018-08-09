@@ -1,5 +1,5 @@
-const assign = require('lodash/assign');
-const isFunction = require('lodash/isFunction');
+const assign = require('@antv/util/lib/mix');
+const isFunction = require('@antv/util/lib/type/isFunction');
 const {
   GRAPH,
   registerConnector

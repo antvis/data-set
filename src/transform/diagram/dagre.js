@@ -2,7 +2,7 @@
  * for DAG
  * graph data required (nodes, edges)
  */
-const assign = require('lodash/assign');
+const assign = require('@antv/util/lib/mix');
 const dagre = require('dagre');
 const {
   registerTransform

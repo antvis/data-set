@@ -2,11 +2,11 @@
  * for Arc Diagram (edges without weight) / Chord Diagram (edges with source and target weight)
  * graph data required (nodes, edges)
  */
-const assign = require('lodash/assign');
-const forIn = require('lodash/forIn');
-const isArray = require('lodash/isArray');
-const values = require('lodash/values');
-const isFunction = require('lodash/isFunction');
+const assign = require('@antv/util/lib/mix');
+const forIn = require('@antv/util/lib/each');
+const isArray = require('@antv/util/lib/type/isArray');
+const values = require('@antv/util/lib/array/values');
+const isFunction = require('@antv/util/lib/type/isFunction');
 const {
   registerTransform
 } = require('../../data-set');

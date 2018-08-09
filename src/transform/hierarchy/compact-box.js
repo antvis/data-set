@@ -1,4 +1,4 @@
-const hierarchy = require('@antv/hierarchy');
+const hierarchy = require('@antv/hierarchy/lib');
 const {
   HIERARCHY,
   registerTransform

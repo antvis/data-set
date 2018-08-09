@@ -1,6 +1,5 @@
-const isArray = require('lodash/isArray');
-const reverse = require('lodash/reverse');
-const sortBy = require('lodash/sortBy');
+const isArray = require('@antv/util/lib/type/isArray');
+const sortBy = require('@antv/util/lib/array/sortBy');
 const {
   registerTransform
 } = require('../data-set');
@@ -28,7 +27,7 @@ function transform(dataView, options = {}) {
   if (order && VALID_ORDERS.indexOf(order) === -1) {
     throw new TypeError(`Invalid order: ${order} must be one of ${VALID_ORDERS.join(', ')}`);
   } else if (order === 'DESC') {
-    dataView.rows = reverse(dataView.rows);
+    dataView.rows.reverse();
   }
 }
 registerTransform('sort-by', transform);
