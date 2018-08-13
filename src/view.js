@@ -11,6 +11,18 @@ const isString = require('@antv/util/lib/type/isString');
 const keys = require('@antv/util/lib/object/keys');
 const pick = require('@antv/util/lib/pick');
 
+function cloneOptions(options) {
+  const result = {};
+  forIn(options, (value, key) => {
+    if (isObject(value) && value.isView) {
+      result[key] = value;
+    } else {
+      result[key] = clone(value);
+    }
+  });
+  return result;
+}
+
 class View extends EventEmitter {
   // constructor
   constructor(dataSet, options) {
@@ -58,7 +70,7 @@ class View extends EventEmitter {
 
   _preparseOptions(options) {
     const me = this;
-    const optionsCloned = clone(options);
+    const optionsCloned = cloneOptions(options);
     if (me.loose) {
       return optionsCloned;
     }

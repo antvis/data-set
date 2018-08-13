@@ -60,7 +60,7 @@
     "build": "webpack",
     "build-lib": "babel src --out-dir lib",
     "bundler": "electron ./bundler/app.js",
-    "ci": "npm run lint && npm run test",
+    "ci": "npm run lint && npm run test && npm run test-bugs",
     "compress": "uglifyjs -c -m -o dist/data-set.min.js -- build/data-set.js",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
     "coverage-generator": "torch --compile --coverage --renderer --recursive test/unit",
@@ -75,14 +75,17 @@
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "node ./bin/screenshot.js",
     "test": "torch --renderer --recursive ./test/unit",
+    "test-bugs": "torch --renderer --recursive ./test/bugs",
     "test-live": "torch --interactive --watch --recursive ./test/unit",
+    "test-bugs-live": "torch --interactive --watch --recursive ./test/bugs",
     "watch": "webpack --config webpack-dev.config.js",
     "win-dev": "node ./bin/win-dev.js"
   },
   "pre-commit": {
     "run": [
       "lint",
-      "test"
+      "test",
+      "test-bugs"
     ],
     "silent": false
   },
