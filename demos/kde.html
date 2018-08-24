@@ -22,11 +22,6 @@
       .transform({
         type: 'kde',
         // bandwidth: 0.3,
-        fields: [ 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ],
-        as: [ 'x' /* , 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength'*/ ]
-      })
-      .transform({
-        type: 'fold',
         fields: [ 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ]
       });
     const chart = new G2.Chart({

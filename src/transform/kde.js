@@ -24,7 +24,8 @@ const {
 } = require('simple-statistics');
 
 const DEFAULT_OPTIONS = {
-  as: [ 'x', 'y1', 'y2' ],
+  minY: 0.01,
+  as: [ 'key', 'x', 'y' ],
   // fields: [ 'y1', 'y2' ], // required, one or two fields
   extent: [], // extent to execute regression function, default: [ [ min(x), max(x) ], [ min(y), max(y) ] ]
   method: 'gaussian', // kernel method: should be one of keys(kernel)
@@ -40,12 +41,9 @@ function transform(dv, options) {
   if (!isArray(fields) || fields.length < 1) {
     throw new TypeError('invalid fields: must be an array of at least 1 strings!');
   }
-  let as = options.as;
-  if (isArray(as) && as.length === 1) {
-    as = as.concat(fields);
-  }
-  if (!isArray(as) || as.length < 2 || as.length < fields.length) {
-    throw new TypeError('invalid as: must be an array of at least 2 strings, and one more than fields!');
+  const as = options.as;
+  if (!isArray(as) || as.length !== 3) {
+    throw new TypeError('invalid as: must be an array of 3 strings!');
   }
   let method = options.method;
   if (isString(method)) {
@@ -81,16 +79,21 @@ function transform(dv, options) {
   const probalityDensityFunctionByField = {};
   each(fields, field => {
     probalityDensityFunctionByField[field] = kernelDensityEstimation(dv.getColumn(field), method, bw);
-  });
-  for (let i = 0; i < seriesValues.length; i++) {
     const row = {};
-    const x = seriesValues[i];
-    row[as[0]] = x;
-    each(fields, (field, j) => {
-      row[as[j + 1]] = probalityDensityFunctionByField[field](x);
+    const [ key, x, y ] = as;
+    row[key] = field;
+    row[x] = [];
+    row[y] = [];
+    each(seriesValues, xValue => {
+      const yValue = probalityDensityFunctionByField[field](xValue);
+      if (yValue >= options.minY) {
+        row[x].push(xValue);
+        row[y].push(yValue);
+      }
     });
+
     result.push(row);
-  }
+  });
 
   dv.rows = result;
 }

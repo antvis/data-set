@@ -34,11 +34,10 @@ describe('View.transform(): KDE', () => {
   it('value', () => {
     dv.transform({
       type: 'kde',
-      fields: [ 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ],
-      as: [ 'x' /* , 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength'*/ ]
+      fields: [ 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ]
     });
     const rows = dv.rows;
     expect(rows.length > 0).to.equal(true);
-    expect(keys(rows[0])).to.eql([ 'x', 'petalWidth', 'petalLength', 'sepalWidth', 'sepalLength' ]);
+    expect(keys(rows[0])).to.eql([ 'key', 'x', 'y' ]);
   });
 });
