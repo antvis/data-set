@@ -27,7 +27,7 @@ const DEFAULT_OPTIONS = {
   as: [ 'x', 'y1', 'y2' ],
   // fields: [ 'y1', 'y2' ], // required, one or two fields
   extent: [], // extent to execute regression function, default: [ [ min(x), max(x) ], [ min(y), max(y) ] ]
-  method: 'gaussian', // kernel method: should be one of _.keys(kernel)
+  method: 'gaussian', // kernel method: should be one of keys(kernel)
   bandwidth: 'nrd' // bandwidth method to execute kernel function // nrd, silverman or a fixed bandwidth value
 };
 

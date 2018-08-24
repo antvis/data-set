@@ -28,7 +28,7 @@ const {
 const DEFAULT_OPTIONS = {
   as: [ 'x', 'y' ],
   // fields: [ 'x', 'y' ], // required, one or two fields
-  method: 'gaussian' // kernel method: should be one of _.keys(kernel)
+  method: 'gaussian' // kernel method: should be one of keys(kernel)
   // extent: [], // extent to execute regression function, default: [ min(x), max(x) ]
   // bandwidth: 0.5 // bandWidth to execute kernel function
 };
