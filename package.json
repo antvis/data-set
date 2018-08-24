@@ -74,6 +74,7 @@
     "mkdir-dist": "node ./bin/mkdir-dist.js",
     "prepublishOnly": "npm run build-lib && npm run dist",
     "screenshot": "node ./bin/screenshot.js",
+    "start": "npm run dev",
     "test": "torch --renderer --recursive ./test/unit",
     "test-bugs": "torch --renderer --recursive ./test/bugs",
     "test-live": "torch --interactive --watch --recursive ./test/unit",
@@ -104,7 +105,7 @@
     "dagre": "~0.8.2",
     "point-at-length": "~1.0.2",
     "regression": "~2.0.0",
-    "simple-statistics": "~4.1.0",
+    "simple-statistics": "~6.1.0",
     "topojson-client": "~3.0.0",
     "wolfy87-eventemitter": "~5.1.0"
   }

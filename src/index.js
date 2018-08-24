@@ -36,6 +36,8 @@ require('./transform/impute');
 require('./transform/aggregate');
 // regression
 require('./transform/regression');
+// KDE
+require('./transform/kde');
 // binning
 require('./transform/bin/hexagon');
 require('./transform/bin/histogram');
