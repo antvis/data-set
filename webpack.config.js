@@ -16,6 +16,12 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /lodash/,
+        parser: {
+          amd: false
+        }
+      },
+      {
         test: /\.js$/,
         exclude: /(node_modules|bower_components)/,
         use: {
