@@ -47,8 +47,6 @@ aggregates.average = aggregates.mean;
 
 function transform(dataView, options) {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const rows = dataView.rows;
-  const dims = options.groupBy;
   const fields = getFields(options);
   if (!isArray(fields)) {
     throw new TypeError('Invalid fields: it must be an array with one or more strings!');
@@ -75,10 +73,9 @@ function transform(dataView, options) {
       throw new TypeError('Invalid as: it\'s length must be the same as fields!');
     }
   }
-  const groups = partition(rows, dims);
+  const groups = partition(dataView.rows, options.groupBy);
   const results = [];
   forIn(groups, group => {
-    // const result = pick(group[0], dims);
     const result = group[0];
     operations.forEach((operation, i) => {
       const outputName = outputNames[i];

@@ -3,16 +3,17 @@
  */
 const assign = require('@antv/util/lib/mix');
 const each = require('@antv/util/lib/each');
+const forIn = require('@antv/util/lib/each');
 const isArray = require('@antv/util/lib/type/isArray');
 const isFunction = require('@antv/util/lib/type/isFunction');
 const isNumber = require('@antv/util/lib/type/isNumber');
 const isString = require('@antv/util/lib/type/isString');
 const keys = require('@antv/util/lib/object/keys');
-// const regression = require('regression');
+const pick = require('@antv/util/lib/pick');
 const getSeriesValues = require('../util/get-series-values');
-// const enclideanDistance = require('../util/euclidean-distance');
 const kernel = require('../util/kernel');
 const bandwidth = require('../util/bandwidth');
+const partition = require('../util/partition');
 const {
   registerTransform
 } = require('../data-set');
@@ -24,12 +25,14 @@ const {
 } = require('simple-statistics');
 
 const DEFAULT_OPTIONS = {
-  minY: 0.01,
-  as: [ 'key', 'x', 'y' ],
-  // fields: [ 'y1', 'y2' ], // required, one or two fields
+  minSize: 0.01,
+  as: [ 'key', 'y', 'size' ],
+  // fields: [ 'y1', 'y2' ], // required, one or more fields
   extent: [], // extent to execute regression function, default: [ [ min(x), max(x) ], [ min(y), max(y) ] ]
   method: 'gaussian', // kernel method: should be one of keys(kernel)
-  bandwidth: 'nrd' // bandwidth method to execute kernel function // nrd, silverman or a fixed bandwidth value
+  bandwidth: 'nrd', // bandwidth method to execute kernel function // nrd, silverman or a fixed bandwidth value
+  step: 0,
+  groupBy: []
 };
 
 const KERNEL_METHODS = keys(kernel);
@@ -73,26 +76,29 @@ function transform(dv, options) {
   } else if (!isNumber(bw) || bw <= 0) {
     bw = bandwidth.nrd(dv.getColumn(fields[0]));
   }
-  const seriesValues = getSeriesValues(extent, bw);
+  const seriesValues = getSeriesValues(extent, options.step ? options.step : bw);
   const result = [];
 
-  const probalityDensityFunctionByField = {};
-  each(fields, field => {
-    probalityDensityFunctionByField[field] = kernelDensityEstimation(dv.getColumn(field), method, bw);
-    const row = {};
-    const [ key, x, y ] = as;
-    row[key] = field;
-    row[x] = [];
-    row[y] = [];
-    each(seriesValues, xValue => {
-      const yValue = probalityDensityFunctionByField[field](xValue);
-      if (yValue >= options.minY) {
-        row[x].push(xValue);
-        row[y].push(yValue);
-      }
+  const groupBy = options.groupBy;
+  const groups = partition(dv.rows, groupBy);
+  forIn(groups, group => {
+    const probalityDensityFunctionByField = {};
+    each(fields, field => {
+      const row = pick(group[0], groupBy);
+      probalityDensityFunctionByField[field] = kernelDensityEstimation(group.map(item => item[field]), method, bw);
+      const [ key, y, size ] = as;
+      row[key] = field;
+      row[y] = [];
+      row[size] = [];
+      each(seriesValues, yValue => {
+        const sizeValue = probalityDensityFunctionByField[field](yValue);
+        if (sizeValue >= options.minSize) {
+          row[y].push(yValue);
+          row[size].push(sizeValue);
+        }
+      });
+      result.push(row);
     });
-
-    result.push(row);
   });
 
   dv.rows = result;

@@ -37,11 +37,9 @@ STATISTICS_METHODS.forEach(method => {
 imputations.value = (row, values, value) => value;
 
 function transform(dataView, options = {}) {
-  const rows = dataView.rows;
   options = assign({}, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const method = options.method;
-  const groupBy = options.groupBy;
   if (!method) {
     throw new TypeError('Invalid method!');
   }
@@ -49,7 +47,7 @@ function transform(dataView, options = {}) {
     throw new TypeError('Invalid value: it is nil.');
   }
   const column = notUndefinedValues(dataView.getColumn(field));
-  const groups = partition(rows, groupBy);
+  const groups = partition(dataView.rows, options.groupBy);
   forIn(groups, group => {
     let fieldValues = notUndefinedValues(group.map(row => row[field]));
     if (fieldValues.length === 0) {
