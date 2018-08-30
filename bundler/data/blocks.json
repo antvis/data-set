@@ -145,6 +145,11 @@
     "description": "Regression transform, generating regression curve for two fields"
   },
   {
+    "name": "transform/kde",
+    "code": "require('./transform/kde');",
+    "description": "KDE transform, kernel density estimation, can be used to draw violin plot"
+  },
+  {
     "name": "transform/bin/hexagon",
     "code": "require('./transform/bin/hexagon');",
     "description": "Hexagon bin transform, hexagon binning for two fields"
