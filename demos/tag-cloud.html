@@ -64,7 +64,7 @@
           type: 'tag-cloud',
           fields: [ 'text', 'value' ],
           font: 'Impact',
-//          imageMask,
+          imageMask,
           size: [ window.innerWidth, window.innerHeight ],
           padding: 1,
           rotate() {
@@ -90,7 +90,8 @@
             return text;
           },
           fontSize(d) {
-            return d.value / max * 64 + 8;
+            // return d.value / max * 64 + 8;
+            return d.value / max * 32 + 8;
           }
         });
 

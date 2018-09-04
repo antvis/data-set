@@ -5,6 +5,7 @@ const cloneDeep = require('@antv/util/lib/clone');
 const find = require('@antv/util/lib/array/find');
 const forIn = require('@antv/util/lib/each');
 const isArray = require('@antv/util/lib/type/isArray');
+const isPlainObject = require('@antv/util/lib/type/isPlainObject');
 const isMatch = require('@antv/util/lib/object/isMatch');
 const isObject = require('@antv/util/lib/type/isObject');
 const isString = require('@antv/util/lib/type/isString');
@@ -16,8 +17,12 @@ function cloneOptions(options) {
   forIn(options, (value, key) => {
     if (isObject(value) && value.isView) {
       result[key] = value;
-    } else {
+    } else if (isArray(value)) {
+      result[key] = value.concat([]);
+    } else if (isPlainObject(value)) {
       result[key] = clone(value);
+    } else {
+      result[key] = value;
     }
   });
   return result;
