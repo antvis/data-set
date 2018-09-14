@@ -1,9 +1,9 @@
 const assign = require('@antv/util/lib/mix');
 const forIn = require('@antv/util/lib/each');
 const has = require('@antv/util/lib/object/has');
-const isFunction = require('@antv/util/lib/type/isFunction');
-const isUndefined = require('@antv/util/lib/type/isUndefined');
-const isString = require('@antv/util/lib/type/isString');
+const isFunction = require('@antv/util/lib/type/is-function');
+const isUndefined = require('@antv/util/lib/type/is-undefined');
+const isString = require('@antv/util/lib/type/is-string');
 const simpleStatistics = require('simple-statistics');
 const partition = require('../util/partition');
 const {

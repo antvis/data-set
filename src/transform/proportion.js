@@ -1,7 +1,7 @@
 const assign = require('@antv/util/lib/mix');
 const forIn = require('@antv/util/lib/each');
-const isArray = require('@antv/util/lib/type/isArray');
-const isString = require('@antv/util/lib/type/isString');
+const isArray = require('@antv/util/lib/type/is-array');
+const isString = require('@antv/util/lib/type/is-string');
 const partition = require('../util/partition');
 const {
   registerTransform

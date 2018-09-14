@@ -1,4 +1,4 @@
-const isFunction = require('@antv/util/lib/type/isFunction');
+const isFunction = require('@antv/util/lib/type/is-function');
 const {
   hierarchy
 } = require('d3-hierarchy');

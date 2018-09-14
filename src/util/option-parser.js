@@ -1,5 +1,5 @@
-const isArray = require('@antv/util/lib/type/isArray');
-const isString = require('@antv/util/lib/type/isString');
+const isArray = require('@antv/util/lib/type/is-array');
+const isString = require('@antv/util/lib/type/is-string');
 
 const INVALID_FIELD_ERR_MSG = 'Invalid field: it must be a string!';
 const INVALID_FIELDS_ERR_MSG = 'Invalid fields: it must be an array!';

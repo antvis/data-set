@@ -4,9 +4,9 @@
  */
 const assign = require('@antv/util/lib/mix');
 const forIn = require('@antv/util/lib/each');
-const isArray = require('@antv/util/lib/type/isArray');
-const values = require('@antv/util/lib/array/values');
-const isFunction = require('@antv/util/lib/type/isFunction');
+const isArray = require('@antv/util/lib/type/is-array');
+const values = require('@antv/util/lib/object/values');
+const isFunction = require('@antv/util/lib/type/is-function');
 const {
   registerTransform
 } = require('../../data-set');

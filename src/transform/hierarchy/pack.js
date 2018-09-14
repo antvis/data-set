@@ -1,6 +1,6 @@
 const assign = require('@antv/util/lib/mix');
 const d3Hierarchy = require('d3-hierarchy');
-const isArray = require('@antv/util/lib/type/isArray');
+const isArray = require('@antv/util/lib/type/is-array');
 const {
   HIERARCHY,
   registerTransform

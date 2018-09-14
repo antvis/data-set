@@ -1,4 +1,4 @@
-const isString = require('@antv/util/lib/type/isString');
+const isString = require('@antv/util/lib/type/is-string');
 const {
   dsvFormat,
   csvParse,

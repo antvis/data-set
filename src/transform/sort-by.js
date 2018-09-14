@@ -1,5 +1,5 @@
-const isArray = require('@antv/util/lib/type/isArray');
-const sortBy = require('@antv/util/lib/array/sortBy');
+const isArray = require('@antv/util/lib/type/is-array');
+const sortBy = require('@antv/util/lib/array/sort-by');
 const {
   registerTransform
 } = require('../data-set');

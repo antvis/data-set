@@ -4,11 +4,11 @@ const clone = require('@antv/util/lib/clone');
 const cloneDeep = require('@antv/util/lib/clone');
 const find = require('@antv/util/lib/array/find');
 const forIn = require('@antv/util/lib/each');
-const isArray = require('@antv/util/lib/type/isArray');
-const isPlainObject = require('@antv/util/lib/type/isPlainObject');
-const isMatch = require('@antv/util/lib/object/isMatch');
-const isObject = require('@antv/util/lib/type/isObject');
-const isString = require('@antv/util/lib/type/isString');
+const isArray = require('@antv/util/lib/type/is-array');
+const isPlainObject = require('@antv/util/lib/type/is-plain-object');
+const isMatch = require('@antv/util/lib/object/is-match');
+const isObject = require('@antv/util/lib/type/is-object');
+const isString = require('@antv/util/lib/type/is-string');
 const keys = require('@antv/util/lib/object/keys');
 const pick = require('@antv/util/lib/pick');
 

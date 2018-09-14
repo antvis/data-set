@@ -1,5 +1,5 @@
-const isFunction = require('@antv/util/lib/type/isFunction');
-const isString = require('@antv/util/lib/type/isString');
+const isFunction = require('@antv/util/lib/type/is-function');
+const isString = require('@antv/util/lib/type/is-string');
 const d3Geo = require('d3-geo');
 const d3GeoProjection = require('d3-geo-projection');
 const d3CompositeProjection = require('d3-composite-projections');

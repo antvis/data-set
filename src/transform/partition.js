@@ -1,5 +1,5 @@
 const assign = require('@antv/util/lib/mix');
-const values = require('@antv/util/lib/array/values');
+const values = require('@antv/util/lib/object/values');
 const partition = require('../util/partition');
 const {
   registerTransform

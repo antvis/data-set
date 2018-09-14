@@ -1,6 +1,6 @@
 const assign = require('@antv/util/lib/mix');
 const forIn = require('@antv/util/lib/each');
-const isArray = require('@antv/util/lib/type/isArray');
+const isArray = require('@antv/util/lib/type/is-array');
 const {
   registerTransform
 } = require('../../data-set');

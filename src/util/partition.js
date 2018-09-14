@@ -1,7 +1,7 @@
-const isArray = require('@antv/util/lib/type/isArray');
-const isFunction = require('@antv/util/lib/type/isFunction');
-const isString = require('@antv/util/lib/type/isString');
-const groupBy = require('@antv/util/lib/groupBy');
+const isArray = require('@antv/util/lib/type/is-array');
+const isFunction = require('@antv/util/lib/type/is-function');
+const isString = require('@antv/util/lib/type/is-string');
+const groupBy = require('@antv/util/lib/group-by');
 const simpleSortBy = require('./simple-sort-by');
 
 module.exports = (rows, group_by, order_by = []) => {

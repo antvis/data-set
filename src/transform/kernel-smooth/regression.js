@@ -2,11 +2,11 @@
  * @reference: https://github.com/Planeshifter/kernel-smooth/blob/master/lib/index.js
  */
 const assign = require('@antv/util/lib/mix');
-const isArray = require('@antv/util/lib/type/isArray');
-const isFunction = require('@antv/util/lib/type/isFunction');
-const isNil = require('@antv/util/lib/type/isNil');
-const isNumber = require('@antv/util/lib/type/isNumber');
-const isString = require('@antv/util/lib/type/isString');
+const isArray = require('@antv/util/lib/type/is-array');
+const isFunction = require('@antv/util/lib/type/is-function');
+const isNil = require('@antv/util/lib/type/is-nil');
+const isNumber = require('@antv/util/lib/type/is-number');
+const isString = require('@antv/util/lib/type/is-string');
 const keys = require('@antv/util/lib/object/keys');
 // const regression = require('regression');
 const {

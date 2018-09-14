@@ -1,6 +1,6 @@
 const forIn = require('@antv/util/lib/each');
-const isPlainObject = require('@antv/util/lib/type/isPlainObject');
-const isString = require('@antv/util/lib/type/isString');
+const isPlainObject = require('@antv/util/lib/type/is-plain-object');
+const isString = require('@antv/util/lib/type/is-string');
 const {
   registerTransform
 } = require('../data-set');

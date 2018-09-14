@@ -1,6 +1,6 @@
-const isArray = require('@antv/util/lib/type/isArray');
-const isFunction = require('@antv/util/lib/type/isFunction');
-const isString = require('@antv/util/lib/type/isString');
+const isArray = require('@antv/util/lib/type/is-array');
+const isFunction = require('@antv/util/lib/type/is-function');
+const isString = require('@antv/util/lib/type/is-string');
 
 module.exports = (arr, keys = []) => {
   let comparer;

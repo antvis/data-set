@@ -3,8 +3,8 @@
  * graph data required (nodes, edges)
  */
 const assign = require('@antv/util/lib/mix');
-const isString = require('@antv/util/lib/type/isString');
-const isFunction = require('@antv/util/lib/type/isFunction');
+const isString = require('@antv/util/lib/type/is-string');
+const isFunction = require('@antv/util/lib/type/is-function');
 const {
   sankey,
   sankeyLeft,

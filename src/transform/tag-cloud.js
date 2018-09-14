@@ -1,5 +1,5 @@
 const assign = require('@antv/util/lib/mix');
-const isString = require('@antv/util/lib/type/isString');
+const isString = require('@antv/util/lib/type/is-string');
 const {
   registerTransform
 } = require('../data-set');

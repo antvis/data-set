@@ -1,4 +1,4 @@
-const isString = require('@antv/util/lib/type/isString');
+const isString = require('@antv/util/lib/type/is-string');
 const cloneDeep = require('@antv/util/lib/clone');
 const {
   registerConnector

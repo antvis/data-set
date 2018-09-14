@@ -1,5 +1,5 @@
 const assign = require('@antv/util/lib/mix');
-const isFunction = require('@antv/util/lib/type/isFunction');
+const isFunction = require('@antv/util/lib/type/is-function');
 const {
   GRAPH,
   registerConnector
