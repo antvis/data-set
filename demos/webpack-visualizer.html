@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="geometry" content="interval">
+  <link rel="stylesheet" href="./assets/common.css">
+  <title>Webpack Visualizer</title>
+  <style>
+    html {
+      background-color: #f7eedf;
+    }
+    code {
+      font-family: monospace;
+      background-color:#ccc;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="controller" style="white-space:nowrap;">
+    <input type="file" name="file" id="stats-json" style="width: 200px;">
+    <select name="chunks" id="chunks" style="max-width: 200px;"></select>
+    <span id="breadcrumbs"></span>
+  </div>
+  <div id="canvas">
+    <h1>Webpack Visualizer</h1>
+    <p>Visualize your Webpack bundle</p>
+    <h2>Powered by G2</h2>
+    <p>
+      The original idea comes from
+      <a href="https://github.com/chrisbateman/webpack-visualizer">[chrisbateman/webpack-visualizer].</a>
+      Yet, instead of using D3.js, this one is implemented with G2
+      <a href="https://github.com/chrisbateman/webpack-visualizer">[antvis/g2]</a>
+    </p>
+    <h2>How do I get stats JSON from webpack?</h2>
+    <p><code>$ webpack --json &gt; stats.json</code></p>
+    <p>
+      <span>If you're customizing your stats output or using webpack-stats-plugin, be sure to set </span>
+      <code>chunkModules</code>
+      <span> to </span>
+      <code>true</code>
+      <span> (see </span>
+      <a href="https://github.com/FormidableLabs/webpack-stats-plugin/issues/18#issuecomment-268699997">here</a>
+      <span> for an example).</span>
+    </p>
+  </div>
+  <script src="./assets/jquery-3.2.1.min.js"></script>
+  <script src="./assets/g2.min.js"></script>
+  <script src="../build/data-set.js"></script>
+  <script>
+    function getFile(module, fileName, parentTree) {
+      const charIndex = fileName.indexOf('/');
+      if (charIndex !== -1) {
+        let folder = fileName.slice(0, charIndex);
+        if (folder === '~') {
+          folder = 'node_modules';
+        }
+
+        let childFolder = getChild(parentTree.children, folder);
+        if (!childFolder) {
+          childFolder = {
+            name: folder,
+            children: []
+          };
+          parentTree.children.push(childFolder);
+        }
+        getFile(module, fileName.slice(charIndex + 1), childFolder);
+      } else {
+        module.name = fileName;
+        parentTree.children.push(module);
+      }
+    }
+    function getChild(arr, name) {
+      for (let i = 0; i < arr.length; i++) {
+        if (arr[i].name === name) {
+          return arr[i];
+        }
+      }
+    }
+    function buildHierarchy(modules) {
+      let maxDepth = 1;
+      const root = {
+        children: [],
+        name: 'root',
+        isRoot: true
+      };
+      modules.forEach(function addToTree(module) {
+        // remove this module if either:
+        // - index is null
+        // - issued by extract-text-plugin
+        const extractInIdentifier = module.identifier.indexOf('extract-text-webpack-plugin') !== -1;
+        const extractInIssuer = module.issuer && module.issuer.indexOf('extract-text-webpack-plugin') !== -1;
+        if (extractInIdentifier || extractInIssuer || module.index === null) {
+          return;
+        }
+        const mod = {
+          id: module.id,
+          fullName: module.name,
+          size: module.size,
+          value: module.size,
+          reasons: module.reasons
+        };
+        const depth = mod.fullName.split('/').length - 1;
+        if (depth > maxDepth) {
+          maxDepth = depth;
+        }
+        let fileName = mod.fullName;
+        const beginning = mod.fullName.slice(0, 2);
+        if (beginning === './') {
+          fileName = fileName.slice(2);
+        }
+        getFile(mod, fileName, root);
+      });
+      root.maxDepth = maxDepth;
+      return root;
+    }
+
+    function humanFileSize(bytes, si) {
+      const thresh = si ? 1000 : 1024;
+      if (Math.abs(bytes) < thresh) {
+        return bytes + ' B';
+      }
+      const units = si ? [ 'kB', 'MB', 'GB', 'TB', 'PB', 'EB', 'ZB', 'YB' ] : [ 'KiB', 'MiB', 'GiB', 'TiB', 'PiB', 'EiB', 'ZiB', 'YiB' ];
+      let u = -1;
+      do {
+        bytes /= thresh;
+        ++u;
+      } while (Math.abs(bytes) >= thresh && u < units.length - 1);
+      return bytes.toFixed(1) + ' ' + units[u];
+    }
+
+    function getAncestorNames(node) {
+      const names = [];
+      let currentNode = node;
+      while (currentNode && currentNode.parent) {
+        names.unshift(currentNode.data.name);
+        currentNode = currentNode.parent;
+      }
+      return names;
+    }
+
+    const $statsJson = $('#stats-json');
+    const $chunks = $('#chunks');
+    const $canvas = $('#canvas');
+    let chunks;
+    let currentChunkIndex;
+
+    function drawGraph(tree) {
+      // clearing canvas
+      $canvas.html('');
+      // draw graph
+      // preparing data and layout
+      const dv = new DataSet.View().source(tree, {
+        type: 'hierarchy'
+      });
+      dv.transform({
+        type: 'hierarchy.partition'
+      });
+      // chart
+      const chart = new G2.Chart({
+        // renderer: 'svg',
+        container: 'canvas',
+        forceFit: true,
+        height: window.innerHeight - $('#controller').height() - 12,
+        padding: 0
+      });
+      chart.source(
+        dv.getAllNodes().map(node => {
+          const parent = node.parent;
+          const ancestors = getAncestorNames(node);
+          return {
+            node,
+            name: node.data.name,
+            parent: parent ? parent.data.name : '',
+            ancestors,
+            ancestorsPath: ancestors.join('/'),
+            value: node.value,
+            depth: node.depth,
+            x: node.x,
+            y: node.y,
+            hasChild: node.children && node.children.length,
+            isRoot: !!node.data.isRoot
+          };
+        }).filter(node => !node.isRoot),
+        {
+          x: { nice: false },
+          y: { nice: false }
+        });
+      chart.coord('polar', { innerRadius: 0.3 });
+      chart.tooltip(false);
+      chart.axis(false);
+      chart.legend(false);
+      chart.polygon()
+        .position('x*y')
+        .color('name*depth*hasChild*parent', (name, depth, hasChild, parent) => {
+          if (name.indexOf('@') > -1 || parent === 'node_modules') {
+            return 'rgb(89, 158, 89)';
+          }
+          if (!hasChild) {
+            return 'rgb(219, 113, 0)';
+          }
+          return 'rgb(72, 126, 164)';
+        })
+        .style({
+          stroke: 'white',
+          fillOpacity: 1,
+          lineWidth: 1
+        });
+      // guide
+      // text guide
+      chart.guide().html({
+        position: [ '50%', '50%' ],
+        html: `<div style="text-align:center;width:150px;height:100px;vertical-align:middle;">
+          <p id="name" style="font-size:14px;margin:0;color:grey;"></p>
+          <p id="percent" style="font-size:40px;margin:0;font-weight:bold;"></p>
+          <p id="size" style="font-size:14px;margin:0;color:grey;"></p>
+        </div>`
+      });
+      // interactive
+      const MODULE_PLACEHOLDER = 'All Modules';
+      chart.on('polygon:mouseenter', function(ev) {
+        const data = ev.data._origin;
+        const ancestorsPath = data.ancestorsPath;
+        $('#name').text(data.name);
+        $('#percent').text((data.value / chunks[currentChunkIndex].size * 100).toFixed(1) + '%');
+        $('#size').text(humanFileSize(data.value, true));
+        $('#breadcrumbs').text(ancestorsPath);
+        chart.eachShape((obj, shape) => {
+          const shapeOriginData = shape.get('origin')._origin;
+          if (
+            shapeOriginData.ancestorsPath.indexOf(ancestorsPath) === 0 &&
+            shapeOriginData.ancestors.indexOf(data.name) > -1
+          ) {
+            shape.attr({
+              fillOpacity: 1,
+              lineWidth: 0.2
+            });
+          } else {
+            shape.attr({
+              fillOpacity: 0.3
+            });
+          }
+        });
+        chart.get('canvas').draw();
+      });
+      chart.on('polygon:mouseleave', () => {
+        $('#name').text(MODULE_PLACEHOLDER);
+        $('#percent').text('');
+        $('#size').text('');
+        $('#breadcrumbs').text('');
+        chart.eachShape((obj, shape) => {
+          shape.attr({
+            fillOpacity: 1,
+            lineWidth: 1
+          });
+        });
+        chart.get('canvas').draw();
+      });
+      chart.render();
+      $('#name').text(MODULE_PLACEHOLDER);
+    }
+
+    $statsJson.on('change', event => {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        chunks = JSON.parse(ev.target.result).chunks;
+        $chunks.html(`${chunks.map((chunk, i) => {
+          const files = chunk.files;
+          return `<option value="${i}">${files[0]}(${humanFileSize(chunk.size, true)})</option>`;
+        })}`);
+        currentChunkIndex = 0;
+        drawGraph(buildHierarchy(chunks[currentChunkIndex].modules));
+      };
+      reader.readAsText(event.target.files[0]);
+    });
+
+    $chunks.on('change', () => {
+      currentChunkIndex = parseInt($chunks.val());
+      drawGraph(buildHierarchy(chunks[currentChunkIndex].modules));
+    });
+  </script>
+</body>
+
+</html>
