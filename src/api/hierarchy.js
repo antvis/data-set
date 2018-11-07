@@ -4,10 +4,18 @@ const View = require('../view');
 
 assign(View.prototype, {
   getAllNodes() {
+    const self = this;
     const nodes = [];
-    this.root.each(node => {
-      nodes.push(node);
-    });
+    const root = self.root;
+    if (root.each) { // d3-hierarchy
+      root.each(node => {
+        nodes.push(node);
+      });
+    } else if (root.eachNode) { // @antv/hierarchy
+      root.eachNode(node => {
+        nodes.push(node);
+      });
+    }
     return nodes;
   },
   getAllLinks() {

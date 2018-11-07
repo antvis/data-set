@@ -8,6 +8,9 @@ describe('View API: hierarchy', () => {
   const dv = new DataSet().createView('test').source(flare, {
     type: 'hierarchy'
   });
+  dv.transform({
+    type: 'hierarchy.indented'
+  });
 
   it('getAllNodes()', () => {
     expect(dv.getAllNodes().length).to.equal(252);
