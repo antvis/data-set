@@ -1,5 +1,6 @@
 
-module.exports = (extent, bandwidth = 1) => {
+module.exports = (extent, bw) => {
+  let bandwidth = bw || 1;
   const [ min, max ] = extent;
   const values = [];
   let tmp = min;
