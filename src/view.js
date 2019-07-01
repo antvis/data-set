@@ -131,6 +131,12 @@ class View extends EventEmitter {
     me._executeTransform(options);
     return me;
   }
+  removeTransform(type) {
+    const me = this;
+    me.transforms = me.transforms.filter(item => item.type !== type);
+    me._reExecute();
+    return me;
+  }
   _executeTransform(options) {
     const me = this;
     options = me._preparseOptions(options);

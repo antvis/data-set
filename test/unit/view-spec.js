@@ -122,4 +122,38 @@ describe('View', () => {
     });
     dv.source(populationChina);
   });
+
+  it('removeTransform', () => {
+    const dv = new View();
+    const data =
+`Expt,Run,Speed
+1,1,850
+1,2,740
+1,3,900
+1,4,1070`;
+    dv.source(data, {
+      type: 'csv'
+    }).transform({
+      type: 'filter',
+      callback(row) {
+        return row.Run !== '1';
+      }
+    });
+    expect(dv.transforms.length).to.equal(1);
+     // eslint-disable-next-line
+    expect(dv.rows).to.eql([
+      { Expt: '1', Run: '2', Speed: '740' },
+      { Expt: '1', Run: '3', Speed: '900' },
+      { Expt: '1', Run: '4', Speed: '1070' }
+    ]);
+    dv.removeTransform('filter'); // remove filter transform
+    expect(dv.transforms.length).to.equal(0);
+    // eslint-disable-next-line
+    expect(dv.rows).to.eql([
+      { Expt: '1', Run: '1', Speed: '850' },
+      { Expt: '1', Run: '2', Speed: '740' },
+      { Expt: '1', Run: '3', Speed: '900' },
+      { Expt: '1', Run: '4', Speed: '1070' }
+    ]);
+  });
 });
