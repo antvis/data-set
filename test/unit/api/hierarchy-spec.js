@@ -1,15 +1,13 @@
-const {
-  expect
-} = require('chai');
-const DataSet = require('../../../src/index');
+const { expect } = require('chai');
+const DataSet = require('../../../lib/index');
 const flare = require('../../fixtures/flare.json');
 
 describe('View API: hierarchy', () => {
   const dv = new DataSet().createView('test').source(flare, {
-    type: 'hierarchy'
+    type: 'hierarchy',
   });
   dv.transform({
-    type: 'hierarchy.indented'
+    type: 'hierarchy.indented',
   });
 
   it('getAllNodes()', () => {
@@ -18,5 +16,4 @@ describe('View API: hierarchy', () => {
   it('getAllLinks()', () => {
     expect(dv.getAllLinks().length).to.equal(251);
   });
-
 });

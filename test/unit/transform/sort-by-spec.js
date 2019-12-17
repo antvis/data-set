@@ -8,7 +8,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../src/index');
+} = require('../../../lib/index');
 const populationChina = require('../../fixtures/population-china.json');
 const data = populationChina.concat({
   year: '2001',

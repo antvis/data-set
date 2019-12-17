@@ -1,13 +1,11 @@
-const {
-  expect
-} = require('chai');
+const { expect } = require('chai');
 const d3GeoProjection = require('d3-geo-projection');
-const DataSet = require('../../../src/index');
+const DataSet = require('../../../lib/index');
 const geoWorld = require('../../fixtures/countries-geo.json');
 
 describe('View API: geo', () => {
   const dv = new DataSet().createView('test').source(geoWorld, {
-    type: 'geojson'
+    type: 'geojson',
   });
   const features = dv.rows;
   const feature0 = features[0];
@@ -24,15 +22,15 @@ describe('View API: geo', () => {
   });
 
   it('geoCentroid(feature)', () => {
-    expect(dv.geoCentroid(feature0)).to.eql([ 66.00365046020929, 33.840347839442174 ]);
-    expect(dv.geoCentroid(geoWorld)).to.eql([ 28.413918613244718, 44.84875775550983 ]);
+    expect(dv.geoCentroid(feature0)).to.eql([66.00365046020929, 33.840347839442174]);
+    expect(dv.geoCentroid(geoWorld)).to.eql([28.413918613244718, 44.84875775550983]);
   });
   it('geoCentroidByName(name)', () => {
-    expect(dv.geoCentroidByName(name0)).to.eql([ 66.00365046020929, 33.840347839442174 ]);
+    expect(dv.geoCentroidByName(name0)).to.eql([66.00365046020929, 33.840347839442174]);
   });
 
   it('geoDistance(p1, p2)', () => {
-    expect(dv.geoDistance([ 118 + 24 / 60, 33 + 57 / 60 ], [ 73 + 47 / 60, 40 + 38 / 60 ])).to.equal(0.6235846454638789);
+    expect(dv.geoDistance([118 + 24 / 60, 33 + 57 / 60], [73 + 47 / 60, 40 + 38 / 60])).to.equal(0.6235846454638789);
   });
 
   it('geoLength(feature)', () => {
@@ -67,12 +65,14 @@ describe('View API: geo', () => {
     expect(dv.geoProject(feature0, 'geoAiry')).to.eql(d3GeoProjection.geoProject(feature0, d3GeoProjection.geoAiry()));
   });
   it('geoProjectByName(name, projection)', () => {
-    expect(dv.geoProjectByName(name0, 'geoAiry')).to.eql(d3GeoProjection.geoProject(feature0, d3GeoProjection.geoAiry()));
+    expect(dv.geoProjectByName(name0, 'geoAiry')).to.eql(
+      d3GeoProjection.geoProject(feature0, d3GeoProjection.geoAiry())
+    );
   });
   it('geoProjectPosition(position, projection)', () => {
-    expect(dv.geoProjectPosition([ 0, 0 ], 'geoAiry')).to.eql(d3GeoProjection.geoAiry()([ 0, 0 ]));
+    expect(dv.geoProjectPosition([0, 0], 'geoAiry')).to.eql(d3GeoProjection.geoAiry()([0, 0]));
   });
   it('geoProjectInvert(point, projection)', () => {
-    expect(dv.geoProjectInvert([ 300, 300 ], 'geoAiry')).to.eql(d3GeoProjection.geoAiry().invert([ 300, 300 ]));
+    expect(dv.geoProjectInvert([300, 300], 'geoAiry')).to.eql(d3GeoProjection.geoAiry().invert([300, 300]));
   });
 });

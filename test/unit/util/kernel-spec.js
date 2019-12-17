@@ -1,8 +1,6 @@
 const _ = require('lodash');
-const {
-  expect
-} = require('chai');
-const kernel = require('../../../src/util/kernel');
+const { expect } = require('chai');
+const kernel = require('../../../lib/util/kernel').default;
 
 describe('util: kernel functions', () => {
   const u0 = 0;
@@ -20,7 +18,7 @@ describe('util: kernel functions', () => {
       'triangular',
       'tricube',
       'triweight',
-      'uniform'
+      'uniform',
     ]);
   });
 

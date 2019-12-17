@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getConnector
-} = require('../../../src/index');
+} = require('../../../lib/index');
 
 describe('View.source(): default', () => {
   const ds = new DataSet();

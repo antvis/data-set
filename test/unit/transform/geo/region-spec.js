@@ -7,7 +7,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../../src/index');
+} = require('../../../../lib/index');
 const geoWorld = require('../../../fixtures/countries-geo.json');
 
 describe('View.transform(): geo.region', () => {

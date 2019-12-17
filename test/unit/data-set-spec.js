@@ -1,11 +1,6 @@
-const {
-  forIn,
-  keys
-} = require('lodash');
-const {
-  expect
-} = require('chai');
-const DataSet = require('../../src/data-set');
+const { forIn, keys } = require('lodash');
+const { expect } = require('chai');
+const DataSet = require('../../lib/index');
 
 describe('DataSet', () => {
   it('Constructor', () => {
@@ -20,8 +15,8 @@ describe('DataSet', () => {
 
     const ds1 = new DataSet({
       state: {
-        foo: 'bar'
-      }
+        foo: 'bar',
+      },
     });
     expect(ds1.state.foo).to.equal('bar');
   });
@@ -32,7 +27,9 @@ describe('DataSet', () => {
     expect(keys(ds.views).length).to.equal(1);
     ds.createView();
     expect(keys(ds.views).length).to.equal(2);
-    expect(() => { ds.createView('test'); }).to.throw();
+    expect(() => {
+      ds.createView('test');
+    }).to.throw();
   });
 
   it('setView(name, view)', () => {
@@ -47,7 +44,7 @@ describe('DataSet', () => {
     const newState = {
       foo: 'bar',
       hello: 'world',
-      hey: 'jude'
+      hey: 'jude',
     };
     let count = 0;
     ds.on('statechange', () => {
@@ -68,9 +65,7 @@ describe('DataSet', () => {
     let emittedCount = 0;
     const ds = new DataSet();
     const dv = ds.createView({
-      watchingStates: [
-        'foo'
-      ]
+      watchingStates: ['foo'],
     });
     dv.on('change', () => {
       emittedCount++;

@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../../src/index');
+} = require('../../../../lib/index');
 const flare = require('../../../fixtures/flare.json');
 
 describe('View.transform(): hierarchy.treemap', () => {

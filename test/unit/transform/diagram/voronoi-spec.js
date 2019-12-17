@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../../src/index');
+} = require('../../../../lib/index');
 
 describe('View.transform(): diagram.voronoi', () => {
   const ds = new DataSet();

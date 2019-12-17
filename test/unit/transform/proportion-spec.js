@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../src/index');
+} = require('../../../lib/index');
 
 describe('View.transform(): proportion', () => {
   const ds = new DataSet();

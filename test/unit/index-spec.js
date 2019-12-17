@@ -1,7 +1,7 @@
 const {
   expect
 } = require('chai');
-const DataSet = require('../../src/index');
+const DataSet = require('../../lib/index');
 
 describe('index', () => {
   it('DataSet', () => {

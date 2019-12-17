@@ -8,10 +8,10 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../src/index');
+} = require('../../../lib/index');
 const {
   REGRESSION_METHODS
-} = require('../../../src/transform/regression');
+} = require('../../../lib/transform/regression');
 
 describe('View.transform(): regression', () => {
   const data = [];

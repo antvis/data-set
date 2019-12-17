@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../src/index');
+} = require('../../../lib/index');
 const iris = require('../../fixtures/iris-en.json');
 
 describe('View.transform(): KDE', () => {

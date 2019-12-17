@@ -1,8 +1,5 @@
-
-const {
-  expect
-} = require('chai');
-const DataSet = require('../../src/');
+const { expect } = require('chai');
+const DataSet = require('../../lib/');
 const ChinaGEO = require('../fixtures/china-geo.json');
 const Provinces = require('../fixtures/china-provinces.json');
 
@@ -11,7 +8,7 @@ describe('max call stack when cloning options', () => {
     expect(() => {
       const ds = new DataSet();
       const chinaMap = ds.createView('map').source(ChinaGEO, {
-        type: 'GeoJSON'
+        type: 'GeoJSON',
       });
 
       const dvData = ds.createView('data').source(Provinces);
@@ -19,7 +16,7 @@ describe('max call stack when cloning options', () => {
         type: 'geo.region',
         field: 'name',
         geoDataView: chinaMap,
-        as: [ 'longitude', 'lantitude' ]
+        as: ['longitude', 'lantitude'],
       });
     }).to.not.throw();
   });

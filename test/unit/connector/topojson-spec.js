@@ -4,7 +4,7 @@ const {
 const {
   DataSet,
   getConnector
-} = require('../../../src/index');
+} = require('../../../lib/index');
 const topoUS = require('../../fixtures/us-topo.json');
 
 describe('View.source(): topojson', () => {

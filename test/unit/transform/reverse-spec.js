@@ -7,7 +7,7 @@ const {
 const {
   DataSet,
   getTransform
-} = require('../../../src/index');
+} = require('../../../lib/index');
 const populationChina = require('../../fixtures/population-china.json');
 
 describe('View.transform(): reverse', () => {
