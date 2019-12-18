@@ -17,8 +17,8 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   // bandwidth: [], // bandWidth to execute kernel function
 };
 
-interface Options {
-  as: [string, string, string];
+export interface Options {
+  as?: [string, string, string];
   fields: [string, string];
   method:
     | 'cosine'
@@ -36,7 +36,7 @@ interface Options {
 
 const KERNEL_METHODS = keys(kernel);
 
-function transform(dv: View, options: Options) {
+function transform(dv: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length !== 2) {

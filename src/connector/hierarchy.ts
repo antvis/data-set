@@ -11,7 +11,12 @@ import { View } from '../view';
  * }
  */
 
-function connector(data, options, dataView: View) {
+export interface Options {
+  children(data: any): any[];
+  pureData?: boolean;
+}
+
+function connector(data: any, options: Options, dataView: View): any {
   dataView.dataType = DataSet.CONSTANTS.HIERARCHY;
   const children = options && options.children ? options.children : null;
 

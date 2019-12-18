@@ -25,7 +25,7 @@ const DEFAULT_OPTIONS = {
 const KERNEL_METHODS = keys(kernel);
 const BANDWIDTH_METHODS = keys(bandwidth);
 
-function transform(dv: View, options) {
+function transform(dv: View, options): void {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length < 1) {

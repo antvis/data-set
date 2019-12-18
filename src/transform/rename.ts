@@ -13,8 +13,8 @@ export interface Options {
   map?: Record<string, string>;
 }
 
-function transform(dataView: View, options?: Options) {
-  const map = (options && options.map) || {};
+function transform(dataView: View, options: Options): void {
+  const map = options.map || {};
   const cleanMap: Record<string, string> = {};
   if (isPlainObject(map)) {
     forIn(map, (value, key) => {
@@ -24,7 +24,7 @@ function transform(dataView: View, options?: Options) {
     });
   }
   dataView.rows.forEach((row) => {
-    forIn(map, (newKey, key) => {
+    forIn(cleanMap, (newKey, key) => {
       const temp = row[key];
       delete row[key];
       row[newKey] = temp;

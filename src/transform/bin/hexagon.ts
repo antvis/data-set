@@ -12,11 +12,11 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   // binWidth: [ 30, 30 ], // Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
 };
 
-interface Options {
-  as: [string, string, string];
-  bins: number[];
-  offset: number[];
-  sizeByCount: boolean;
+export interface Options {
+  as?: [string, string, string];
+  bins?: number[];
+  offset?: number[];
+  sizeByCount?: boolean;
   fields: [string, string];
   binWidth?: number[];
 }
@@ -25,11 +25,11 @@ const SQRT3 = Math.sqrt(3);
 const THIRD_PI = Math.PI / 3;
 const ANGLES = [0, THIRD_PI, 2 * THIRD_PI, 3 * THIRD_PI, 4 * THIRD_PI, 5 * THIRD_PI];
 
-function distance(x0: number, y0: number, x1: number, y1: number) {
+function distance(x0: number, y0: number, x1: number, y1: number): number {
   return Math.sqrt((x0 - x1) * (x0 - x1) + (y0 - y1) * (y0 - y1));
 }
 
-function nearestBinsCenters(value: number, scale: number, offset: number) {
+function nearestBinsCenters(value: number, scale: number, offset: number): [number, number] {
   const temp = value - offset;
   scale = scale / 2;
   const div = Math.floor(temp / scale);
@@ -38,7 +38,7 @@ function nearestBinsCenters(value: number, scale: number, offset: number) {
   return [rounded + offset, roundedScaled + offset];
 }
 
-function generateBins(points: [number, number][], binWidth = [1, 1], offset = [0, 0]) {
+function generateBins(points: [number, number][], binWidth = [1, 1], offset = [0, 0]): object {
   // processing aligned data
   const bins: any = {};
   const [binWidthX, binWidthY] = binWidth;
@@ -72,7 +72,7 @@ function generateBins(points: [number, number][], binWidth = [1, 1], offset = [0
   return bins;
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   // step1: get binWidth, etc.
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);

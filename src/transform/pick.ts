@@ -10,8 +10,8 @@ import { View } from '../view';
  * }
  */
 
-interface Options {
-  fields: string[];
+export interface Options {
+  fields?: string[];
 }
 
 DataSet.registerTransform('pick', (dataView: View, options: Options) => {

@@ -3,10 +3,15 @@ import { getGridForHexJSON, renderHexJSON } from 'd3-hexjson';
 import DataSet from '../data-set';
 import { View } from '../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Options = {
   width: 1,
   height: 1,
 };
+
+export interface Options {
+  width?: number;
+  height?: number;
+}
 
 function processRow(row) {
   row.cx = row.x;
@@ -20,9 +25,9 @@ function processRow(row) {
   return row;
 }
 
-function HexJSONConnector(data, options, dataView: View) {
+function HexJSONConnector(data: any[], options: Options, dataView: View): any {
   dataView.dataType = DataSet.CONSTANTS.HEX;
-  options = assign({}, DEFAULT_OPTIONS, options);
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
   const { width, height } = options;
   const HexJSON = deepMix([], data);
   dataView._HexJSON = HexJSON;

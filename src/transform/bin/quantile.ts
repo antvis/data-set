@@ -14,15 +14,15 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   // p: [0.5, 0.3], // array of p parameter
   // field: 'y', // required
 };
-interface Options {
-  as: string;
-  groupBy: string[];
-  fraction: number;
-  p: number[];
+export interface Options {
+  as?: string;
+  groupBy?: string[];
+  fraction?: number;
+  p?: number[];
   field: string;
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const as = options.as;

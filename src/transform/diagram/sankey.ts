@@ -24,7 +24,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   nodePadding: 0.02,
 };
 
-interface Options {
+export interface Options {
   nodeId?(node: any): any;
   value?(node: any): any;
   source?(edge: any): any;
@@ -34,7 +34,7 @@ interface Options {
   nodePadding?: number;
 }
 
-function transform(dv: View, options: Options) {
+function transform(dv: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   let nodeAlign = null;
   if (isString(options.nodeAlign)) {

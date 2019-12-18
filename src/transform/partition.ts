@@ -8,9 +8,9 @@ const DEFAULT_OPTIONS: Options = {
   orderBy: [],
 };
 
-interface Options {
-  groupBy: string | string[] | ((item: any) => string);
-  orderBy?: string | string[] | ((item: any) => number);
+export interface Options {
+  groupBy: string[];
+  orderBy?: string[];
 }
 
 DataSet.registerTransform('partition', (dataView: View, options: Options) => {
@@ -20,7 +20,7 @@ DataSet.registerTransform('partition', (dataView: View, options: Options) => {
   dataView.rows = partition(dataView.rows, options.groupBy, options.orderBy);
 });
 
-function group(dataView: View, options: Options) {
+function group(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   dataView.rows = values(partition(dataView.rows, options.groupBy, options.orderBy));
 }

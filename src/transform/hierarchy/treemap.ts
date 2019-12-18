@@ -2,8 +2,9 @@ import * as d3Hierarchy from 'd3-hierarchy';
 import { assign, isArray } from '@antv/util';
 import DataSet from '../../data-set';
 import { getField } from '../../util/option-parser';
+import { View } from '../../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Options = {
   field: 'value',
   tile: 'treemapSquarify', // treemapBinary, treemapDice, treemapSlice, treemapSliceDice, treemapSquarify, treemapResquarify
   size: [1, 1], // width, height
@@ -19,12 +20,34 @@ const DEFAULT_OPTIONS = {
   as: ['x', 'y'],
 };
 
-function transform(dataView, options) {
+export interface Options {
+  field: string;
+  tile?:
+    | 'treemapBinary'
+    | 'treemapDice'
+    | 'treemapSlice'
+    | 'treemapSliceDice'
+    | 'treemapSquarify'
+    | 'treemapResquarify';
+  size?: [number, number];
+  round?: boolean;
+  ratio?: number;
+  padding?: number;
+  paddingInner?: number;
+  paddingOuter?: number;
+  paddingTop?: number;
+  paddingRight?: number;
+  paddingBottom?: number;
+  paddingLeft?: number;
+  as: [string, string];
+}
+
+function transform(dataView: View, options: Options): void {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
   const root = dataView.root;
-  options = assign({}, DEFAULT_OPTIONS, options);
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
 
   const as = options.as;
   if (!isArray(as) || as.length !== 2) {

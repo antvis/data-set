@@ -8,11 +8,11 @@ import { View } from '../view';
  * }
  */
 
-interface Options {
+export interface Options {
   callback(a: any, b: any): number;
 }
 
-DataSet.registerTransform('sort', (dataView: View, options?: Options) => {
+DataSet.registerTransform('sort', (dataView: View, options: Options) => {
   const columnName = dataView.getColumnName(0);
-  dataView.rows.sort((options && options.callback) || ((a, b) => a[columnName] - b[columnName]));
+  dataView.rows.sort(options.callback || ((a, b) => a[columnName] - b[columnName]));
 });

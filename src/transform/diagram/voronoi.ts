@@ -5,15 +5,22 @@ const { registerTransform } = DataSet;
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Partial<Options> = {
   // fields: [ 'x', 'y' ] // field x and field y, required
   // extend: [[x0, y0], [x1, y1]], // optional
   // size: [width, height], // optional
   as: ['_x', '_y'],
 };
 
-function transform(dataView: View, options) {
-  options = assign({}, DEFAULT_OPTIONS, options);
+export interface Options {
+  fields: [string, string];
+  extend?: [[number, number], [number, number]];
+  size?: [number, number];
+  as?: [string, string];
+}
+
+function transform(dataView: View, options: Options): void {
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
 
   const as = options.as;
   if (!isArray(as) || as.length !== 2) {

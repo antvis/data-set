@@ -6,7 +6,7 @@ import { View } from '../view';
 
 const geoPathGenerator = geoPath();
 
-function GeoJSONConnector(data: any, _options: undefined, dataView: View) {
+function GeoJSONConnector(data: any, _options: undefined, dataView: View): any {
   dataView.dataType = DataSet.CONSTANTS.GEO;
   const features: any[] = deepMix([], data.features);
 

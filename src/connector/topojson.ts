@@ -5,7 +5,11 @@ import DataSet from '../data-set';
 import { View } from '../view';
 import { Topology } from 'topojson-specification';
 
-function TopoJSONConnector(data: Topology, options: { object: string }, dataView: View) {
+export interface Options {
+  object: string;
+}
+
+function TopoJSONConnector(data: Topology, options: Options, dataView: View): any {
   const object = options.object;
   if (!isString(object)) {
     throw new TypeError('Invalid object: must be a string!');

@@ -4,7 +4,7 @@ import DataSet from '../../data-set';
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Options = {
   field: 'value',
   size: [1, 1], // width, height
   round: false,
@@ -14,12 +14,22 @@ const DEFAULT_OPTIONS = {
   as: ['x', 'y'],
 };
 
-function transform(dataView: View, options) {
+export interface Options {
+  field: string;
+  size?: [number, number];
+  round?: boolean;
+  ratio?: number;
+  padding?: number;
+  sort?: boolean;
+  as?: [string, string];
+}
+
+function transform(dataView: View, options: Options): void {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
   const root = dataView.root;
-  options = assign({}, DEFAULT_OPTIONS, options);
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
 
   const as = options.as;
   if (!isArray(as) || as.length !== 2) {

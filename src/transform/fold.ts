@@ -3,18 +3,18 @@ import DataSet from '../data-set';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
 
-const DEFAULT_OPTIONS: Options = {
+const DEFAULT_OPTIONS: Partial<Options> = {
   fields: [],
   key: 'key',
   retains: [],
   value: 'value',
 };
 
-interface Options {
-  fields: string[];
-  key: string;
-  retains: string[];
-  value: string;
+export interface Options {
+  key?: string;
+  value?: string;
+  fields?: string[];
+  retains?: string[];
 }
 
 DataSet.registerTransform('fold', (dataView: View, options: Options) => {
@@ -28,7 +28,7 @@ DataSet.registerTransform('fold', (dataView: View, options: Options) => {
   const key = options.key;
   const value = options.value;
   let retains = options.retains;
-  if (retains.length === 0) {
+  if (!retains || retains.length === 0) {
     retains = difference(columns, fields);
   }
   const resultRows: any[] = [];

@@ -18,8 +18,8 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   // bandwidth: 0.5 // bandWidth to execute kernel function
 };
 
-interface Options {
-  as: [string, string?];
+export interface Options {
+  as?: [string, string?];
   fields: [string, string];
   method:
     | 'cosine'
@@ -38,7 +38,7 @@ interface Options {
 const KERNEL_METHODS = keys(kernel);
 
 // calculates weight for i-th obs
-function weight(kernel, bandwidth: number, x_0: number, x_i: number) {
+function weight(kernel, bandwidth: number, x_0: number, x_i: number): any {
   const arg = (x_i - x_0) / bandwidth;
   return kernel(arg);
 }
@@ -58,7 +58,7 @@ function vectorize(fun) {
   };
 }
 
-function transform(dv: View, options: Options) {
+function transform(dv: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || !(fields.length === 1 || fields.length === 2)) {

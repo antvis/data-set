@@ -16,8 +16,8 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   precision: 2, // the number of significant figures the output is rounded to
 };
 
-interface Options {
-  as: string[];
+export interface Options {
+  as?: string[];
   method: 'linear' | 'exponential' | 'logarithmic' | 'power' | 'polynomial';
   fields: string[];
   bandwidth?: number;
@@ -28,7 +28,7 @@ interface Options {
 
 const REGRESSION_METHODS = ['linear', 'exponential', 'logarithmic', 'power', 'polynomial'];
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length !== 2) {

@@ -4,16 +4,23 @@ const { registerTransform } = DataSet;
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Partial<Options> = {
   // field: 'name', // required
   // geoView: view, // required
   // geoDataView: view, // alias
   as: ['_centroid_x', '_centroid_y'],
 };
 
-function transform(view: View, options) {
-  options = assign({}, DEFAULT_OPTIONS, options);
+export interface Options {
+  field: string;
+  geoDataView: View | string;
+  as?: [string, string];
+}
+
+function transform(view: View, options: Options): void {
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
+  // @ts-ignore
   let geoView = options.geoView || options.geoDataView; // alias
   if (isString(geoView) && view.dataSet) {
     geoView = view.dataSet.getView(geoView);

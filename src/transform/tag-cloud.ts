@@ -27,7 +27,7 @@ interface Options {
   imageMask?: HTMLImageElement;
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
   ['font', 'fontSize', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {

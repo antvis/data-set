@@ -9,13 +9,13 @@ const DEFAULT_OPTIONS: Options = {
   orderBy: [],
 };
 
-interface Options {
+export interface Options {
   fillBy: 'group' | 'order';
   groupBy: string[];
   orderBy?: string[];
 }
 
-function arrayDifference(arr1: any[], arr2: any[]) {
+function arrayDifference(arr1: string[], arr2: string[]): string[] {
   // arrayDifference([1, 1, 1, 2], [1, 2]) => [1, 1]
   const shadow = arr1.map((item) => item); // shadow copy
   arr2.forEach((item) => {
@@ -27,7 +27,7 @@ function arrayDifference(arr1: any[], arr2: any[]) {
   return shadow;
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const rows = dataView.rows;
   const groupBy = options.groupBy;
@@ -41,7 +41,7 @@ function transform(dataView: View, options: Options) {
       referenceGroup = group;
     }
   });
-  const referenceOrderByKeys: any[] = [];
+  const referenceOrderByKeys: string[] = [];
   const referenceRowByOrderByKey: any = {};
   referenceGroup.forEach((row) => {
     const key = orderBy!.map((col) => row[col]).join('-');
@@ -50,7 +50,7 @@ function transform(dataView: View, options: Options) {
   });
   if (options.fillBy === 'order') {
     const first = referenceGroup[0];
-    const allOrderByKeys: any = [];
+    const allOrderByKeys: string[] = [];
     const rowByOrderByKey: any = {};
     rows.forEach((row) => {
       const key = orderBy!.map((col) => row[col]).join('-');
@@ -79,7 +79,7 @@ function transform(dataView: View, options: Options) {
     if (group !== referenceGroup && group.length < maxLength) {
       const first = group[0];
       // missing orderBy keys
-      const orderByKeys: any = [];
+      const orderByKeys: string[] = [];
       group.forEach((row) => {
         orderByKeys.push(orderBy!.map((col) => row[col]).join('-'));
       });

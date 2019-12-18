@@ -11,9 +11,9 @@ import { View } from '../view';
  * }
  */
 
-interface Options {
-  startRowIndex: number;
-  endRowIndex: number;
+export interface Options {
+  startRowIndex?: number;
+  endRowIndex?: number;
   fields?: string[];
 }
 

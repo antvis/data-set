@@ -6,21 +6,27 @@ const { registerTransform } = DataSet;
 import getGeoProjection from '../../util/get-geo-projection';
 import { View } from '../../view';
 
-const DEFAULT_OPTIONS = {
+const DEFAULT_OPTIONS: Partial<Options> = {
   // projection: '', // default to null
   as: ['_x', '_y', '_centroid_x', '_centroid_y'],
 };
 
-function transform(dataView: View, options) {
+export interface Options {
+  projection: string;
+  as?: string[];
+}
+
+function transform(dataView: View, options: Options): void {
   if (dataView.dataType !== 'geo' && dataView.dataType !== 'geo-graticule') {
     throw new TypeError('Invalid dataView: this transform is for Geo data only!');
   }
-  options = assign({}, DEFAULT_OPTIONS, options);
+  options = assign({} as Options, DEFAULT_OPTIONS, options);
   let projection = options.projection;
   if (!projection) {
     throw new TypeError('Invalid projection!');
   }
   projection = getGeoProjection(projection);
+  // @ts-ignore;
   const geoPathGenerator = geoPath(projection);
   const as = options.as;
   if (!isArray(as) || as.length !== 4) {

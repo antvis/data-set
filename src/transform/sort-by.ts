@@ -13,12 +13,12 @@ import { View } from '../view';
 
 const VALID_ORDERS = ['ASC', 'DESC'];
 
-interface Options {
-  fields: string[];
-  order: 'ASC' | 'DESC';
+export interface Options {
+  fields?: string[];
+  order?: 'ASC' | 'DESC';
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   const fields = getFields(options, [dataView.getColumnName(0)]);
   if (!isArray(fields)) {
     throw new TypeError('Invalid fields: must be an array with strings!');
@@ -31,5 +31,6 @@ function transform(dataView: View, options: Options) {
     dataView.rows.reverse();
   }
 }
+
 DataSet.registerTransform('sort-by', transform);
 DataSet.registerTransform('sortBy', transform);

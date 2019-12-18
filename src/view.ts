@@ -18,10 +18,9 @@ import { StatisticsApi } from './api/statistics';
 import { PartitionApi } from './api/partition';
 import { HierarchyApi } from './api/hierarchy';
 import { GeoApi } from './api/geo';
+import { TransformsParams } from './transform-params';
 
-export interface Params {}
-
-function cloneOptions(options: any) {
+function cloneOptions(options: any): any {
   const result: any = {};
   forIn(options as any, (value: any, key: string) => {
     if (isObject(value) && (value as any).isView) {
@@ -41,15 +40,15 @@ export interface ViewOptions {
   watchingStates: string[];
 }
 
-interface TransformOptions {
-  type: string;
-  [key: string]: any;
+export interface ConnectorParams {
+  csv: [string, {}];
+  tsv: [string, {}];
+  dsv: [string, { delimiter?: string }];
+  graph: [any, { nodes?(data: any): any[]; edges?(data: any): any[] }];
 }
 
-interface ConnectorOptions {
-  type: string;
-  [key: string]: any;
-}
+type TransformOptions<T extends keyof TransformsParams = any> = { type: T } & TransformsParams[T];
+type ConnectorOptions<T extends keyof ConnectorParams = any> = { type: T } & ConnectorParams[T][1];
 
 interface CustomSource {
   source: any;
@@ -118,9 +117,9 @@ export class View extends EventEmitter {
     }
   }
 
-  private _parseStateExpression(expr: string) {
+  private _parseStateExpression(expr: string): string | undefined {
     const dataSet = this.dataSet;
-    if (dataSet === null) return;
+    if (dataSet === null) return undefined;
     const matched = /^\$state\.(\w+)/.exec(expr);
     if (matched) {
       return dataSet.state[matched[1]];
@@ -128,7 +127,7 @@ export class View extends EventEmitter {
     return expr;
   }
 
-  private _preparseOptions(options: any) {
+  private _preparseOptions(options: any): any {
     const optionsCloned = cloneOptions(options);
     if (this.loose) {
       return optionsCloned;
@@ -142,11 +141,7 @@ export class View extends EventEmitter {
   }
 
   // connectors
-  private _prepareSource(source: View): View;
-  private _prepareSource(source: ConnectorOptions): View;
-  private _prepareSource(source: string, options: ConnectorOptions): View;
-  private _prepareSource(source: any[], options?: ConnectorOptions): View;
-  private _prepareSource(source: any, options?: ConnectorOptions): View {
+  private _prepareSource(source: any, options?: any): View {
     // warning me.origin is protected
     this._source = { source, options };
     if (!options) {
@@ -169,18 +164,18 @@ export class View extends EventEmitter {
     return this;
   }
 
+  source(source: string): View;
+  source(source: any[]): View;
   source(source: View): View;
-  source(options: ConnectorOptions): View;
-  source(source: string, options: ConnectorOptions): View;
-  source(source: any[], options?: ConnectorOptions): View;
-  source(source: any, options?: ConnectorOptions): View {
+  source<T extends keyof ConnectorParams>(source: ConnectorParams[T][0], options: ConnectorOptions<T>): View;
+  source(source: any, options?: any): View {
     this._prepareSource(source, options)._reExecuteTransforms();
     this.trigger('change', []);
     return this;
   }
 
   // transforms
-  transform(options: TransformOptions) {
+  transform<T extends keyof TransformsParams>(options: TransformOptions<T>): View {
     if (options && options.type) {
       this.transforms.push(options);
       this._executeTransform(options);
@@ -188,13 +183,13 @@ export class View extends EventEmitter {
     return this;
   }
 
-  private _executeTransform(options: TransformOptions) {
+  private _executeTransform(options: TransformOptions): void {
     options = this._preparseOptions(options);
     const transform = View.DataSet.getTransform(options.type);
     transform(this, options);
   }
 
-  private _reExecuteTransforms() {
+  private _reExecuteTransforms(): void {
     this.transforms.forEach((options) => {
       this._executeTransform(options);
     });
@@ -262,7 +257,7 @@ export class View extends EventEmitter {
     return JSON.stringify(this.rows);
   }
 
-  private _reExecute() {
+  private _reExecute(): void {
     const { source, options } = this._source;
     this._prepareSource(source, options);
     this._reExecuteTransforms();

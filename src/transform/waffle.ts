@@ -27,7 +27,7 @@ interface Options {
   as: string[];
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   const [nameField, valueField] = fields;

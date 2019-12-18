@@ -13,11 +13,24 @@ const DEFAULT_OPTIONS: Options = {
   operations: [],
 };
 
-interface Options {
+export interface Options {
   as: string[];
   fields: string[];
-  groupBy: string | string[] | ((item: any) => string);
-  operations: string[];
+  groupBy: string[];
+  operations?: Array<
+    | 'count'
+    | 'max'
+    | 'min'
+    | 'mean'
+    | 'average'
+    | 'median'
+    | 'mode'
+    | 'product'
+    | 'standardDeviation'
+    | 'sum'
+    | 'sumSimple'
+    | 'variance'
+  >;
 }
 const DEFAULT_OPERATION = 'count';
 
@@ -43,7 +56,7 @@ DataSet.CONSTANTS.STATISTICS_METHODS.forEach((method) => {
 });
 aggregates.average = aggregates.mean;
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields)) {

@@ -13,12 +13,12 @@ const DEFAULT_OPTIONS: Options = {
   },
 };
 
-interface Options {
-  nodes?(d: any): any[];
-  edges?(d: any): any[];
+export interface Options {
+  nodes?(data: any): any[];
+  edges?(data: any): any[];
 }
 
-function connector(data: any, options: Options, dataView: View) {
+function connector(data: any, options: Options, dataView: View): any {
   options = assign({}, DEFAULT_OPTIONS, options);
   dataView.dataType = DataSet.CONSTANTS.GRAPH;
   const { nodes, edges } = options;

@@ -13,22 +13,22 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   // binWidth: [ 30, 30 ], // Numeric vector giving bin width in both horizontal and vertical directions. Overrides bins if both set.
 };
 
-interface Options {
-  as: [string, string, string];
-  bins: [number, number];
-  offset: [number, number];
-  sizeByCount: boolean;
+export interface Options {
+  as?: [string, string, string];
+  bins?: [number, number];
+  offset?: [number, number];
+  sizeByCount?: boolean;
   fields: [string, string];
-  binWidth: [number, number];
+  binWidth?: [number, number];
 }
 
-function nearestBin(value: number, scale: number, offset: number) {
+function nearestBin(value: number, scale: number, offset: number): [number, number] {
   const temp = value - offset;
   const div = Math.floor(temp / scale);
   return [div * scale + offset, (div + 1) * scale + offset];
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const [fieldX, fieldY] = getFields(options);
   if (!fieldX || !fieldY) {

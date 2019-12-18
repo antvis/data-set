@@ -12,11 +12,11 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   groupBy: [],
 };
 
-function notUndefinedValues(values: any[]) {
+function notUndefinedValues(values: any[]): any[] {
   return values.filter((value) => !isUndefined(value));
 }
 
-interface Options {
+export interface Options {
   field: string;
   method: keyof Imputations | ((row: any, values: any[], value: any, group: any[]) => any);
   value?: any;
@@ -42,7 +42,7 @@ STATISTICS_METHODS.forEach((method) => {
 
 imputations.value = (_row, _values, value) => value;
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const method = options.method;

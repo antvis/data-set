@@ -11,14 +11,14 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   as: '_proportion',
 };
 
-interface Options {
+export interface Options {
   field: string;
   dimension: string;
   groupBy: string[];
-  as: string;
+  as?: string;
 }
 
-function transform(dataView: View, options: Options) {
+function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const dimension = options.dimension;

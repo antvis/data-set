@@ -2,13 +2,13 @@ import { isString, deepMix } from '@antv/util';
 import DataSet from '../data-set';
 import { View } from '../view';
 
-DataSet.registerConnector('default', (dataView: string | View, dataSet: DataSet) => {
+DataSet.registerConnector('default', (data: string | View, dataSet: DataSet) => {
   let view: View | undefined;
 
-  if (isString(dataView)) {
-    view = dataSet.getView(dataView);
+  if (isString(data)) {
+    view = dataSet.getView(data);
   } else {
-    view = dataView;
+    view = data;
   }
 
   if (!view) {
