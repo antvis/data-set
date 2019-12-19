@@ -1,6 +1,6 @@
 import * as d3Voronoi from 'd3-voronoi';
 import { assign, isArray } from '@antv/util';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 const { registerTransform } = DataSet;
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';

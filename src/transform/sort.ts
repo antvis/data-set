@@ -1,4 +1,4 @@
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 /*
@@ -9,7 +9,7 @@ import { View } from '../view';
  */
 
 export interface Options {
-  callback(a: any, b: any): number;
+  callback?(a: any, b: any): number;
 }
 
 DataSet.registerTransform('sort', (dataView: View, options: Options) => {

@@ -1,7 +1,7 @@
 import { assign, each, forIn, keys, map, pick } from '@antv/util';
 import { sum } from 'simple-statistics';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
 

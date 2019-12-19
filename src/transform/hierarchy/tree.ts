@@ -1,6 +1,6 @@
-import d3Hierarchy from 'd3-hierarchy';
+import * as d3Hierarchy from 'd3-hierarchy';
 import { assign, isArray } from '@antv/util';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { getField } from '../../util/option-parser';
 
 const DEFAULT_OPTIONS = {

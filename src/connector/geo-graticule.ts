@@ -1,8 +1,8 @@
 import { geoGraticule } from 'd3-geo';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
-export default function connector(_options: any, dataView: View) {
+export default function connector(_options: any, dataView: View): any {
   dataView.dataType = 'geo-graticule';
   const data: any[] = geoGraticule().lines();
 

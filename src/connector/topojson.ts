@@ -1,7 +1,7 @@
 import { isString } from '@antv/util';
 import { feature } from 'topojson-client';
 import GeoJSONConnector from './geojson';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 import { Topology } from 'topojson-specification';
 

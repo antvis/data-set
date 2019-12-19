@@ -1,5 +1,5 @@
 import { assign, isString } from '@antv/util';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import tagCloud from '../util/tag-cloud';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
@@ -15,15 +15,15 @@ const DEFAULT_OPTIONS: Options = {
   // imageMask: '', // instance of Image, must be loaded
 };
 
-interface Options {
-  fields: [string, string];
-  font(): string;
+export interface Options {
+  fields?: [string, string];
+  font?(): string;
   fontSize?: number;
   rotate?: number;
-  padding: number;
-  size: [number, number];
-  spiral: 'archimedean' | 'archimedean' | 'rectangular';
-  timeInterval: number;
+  padding?: number;
+  size?: [number, number];
+  spiral?: 'archimedean' | 'archimedean' | 'rectangular';
+  timeInterval?: number;
   imageMask?: HTMLImageElement;
 }
 

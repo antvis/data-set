@@ -4,7 +4,7 @@
 import { assign, isArray, isFunction, isNumber, isString, keys } from '@antv/util';
 import getSeriesValues from '../../util/get-series-values';
 import kernel from '../../util/kernel';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { getFields } from '../../util/option-parser';
 import { silverman } from '../../util/bandwidth';
 import { View } from '../../view';

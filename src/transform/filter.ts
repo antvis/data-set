@@ -1,4 +1,4 @@
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 function defaultCallback(row: any): boolean {

@@ -1,7 +1,7 @@
 import { assign, forIn, has, isFunction, isUndefined, isString } from '@antv/util';
-import simpleStatistics from 'simple-statistics';
+import * as simpleStatistics from 'simple-statistics';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getField } from '../util/option-parser';
 import { View } from '../view';
 
@@ -20,7 +20,7 @@ export interface Options {
   field: string;
   method: keyof Imputations | ((row: any, values: any[], value: any, group: any[]) => any);
   value?: any;
-  groupBy: string[];
+  groupBy?: string | string[] | ((item: any) => string);
 }
 
 const STATISTICS_METHODS = ['mean', 'median', 'max', 'min'];

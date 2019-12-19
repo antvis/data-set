@@ -3,7 +3,7 @@
  * graph data required (nodes, edges)
  */
 import { assign, forIn, isArray, values, isFunction } from '@antv/util';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {

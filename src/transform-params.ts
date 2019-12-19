@@ -27,6 +27,7 @@ import { Options as ArcOptions } from './transform/diagram/arc';
 import { Options as RegionOptions } from './transform/geo/region';
 import { Options as ProjectionOptions } from './transform/geo/projection';
 import { Options as CentroidOptions } from './transform/geo/centroid';
+import { Options as TagCloudOptions } from './transform/tag-cloud';
 
 export interface TransformsParams {
   filter: FilterOptions;
@@ -77,4 +78,6 @@ export interface TransformsParams {
   'geo.region': RegionOptions;
   'geo.projection': ProjectionOptions;
   'geo.centroid': CentroidOptions;
+  'tag-cloud': TagCloudOptions;
+  'word-cloud': TagCloudOptions;
 }

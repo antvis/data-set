@@ -1,6 +1,6 @@
 import { assign, forIn } from '@antv/util';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 const DEFAULT_OPTIONS: Options = {
@@ -10,8 +10,8 @@ const DEFAULT_OPTIONS: Options = {
 };
 
 export interface Options {
-  fillBy: 'group' | 'order';
-  groupBy: string[];
+  fillBy?: 'group' | 'order';
+  groupBy?: string[];
   orderBy?: string[];
 }
 

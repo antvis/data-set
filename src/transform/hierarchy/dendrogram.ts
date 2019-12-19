@@ -1,5 +1,5 @@
 import hierarchy from '@antv/hierarchy';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {};

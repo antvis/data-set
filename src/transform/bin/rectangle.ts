@@ -1,5 +1,5 @@
 import { assign, forIn } from '@antv/util';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 const { registerTransform } = DataSet;
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';

@@ -1,5 +1,5 @@
 import { isString, deepMix } from '@antv/util';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 DataSet.registerConnector('default', (data: string | View, dataSet: DataSet) => {

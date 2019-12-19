@@ -6,7 +6,7 @@ import getSeriesValues from '../util/get-series-values';
 import kernel from '../util/kernel';
 import * as bandwidth from '../util/bandwidth';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { kernelDensityEstimation } from 'simple-statistics';
 import { View } from '../view';

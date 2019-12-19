@@ -1,6 +1,6 @@
 import { deepMix, assign } from '@antv/util';
 import { getGridForHexJSON, renderHexJSON } from 'd3-hexjson';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 const DEFAULT_OPTIONS: Options = {

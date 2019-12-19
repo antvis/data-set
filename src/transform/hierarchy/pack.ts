@@ -1,6 +1,6 @@
 import { assign, isArray } from '@antv/util';
-import d3Hierarchy from 'd3-hierarchy';
-import DataSet from '../../data-set';
+import * as d3Hierarchy from 'd3-hierarchy';
+import { DataSet } from '../../data-set';
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 

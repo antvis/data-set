@@ -1,6 +1,6 @@
 import { assign, forIn, pick } from '@antv/util';
 import partition from '../../util/partition';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 

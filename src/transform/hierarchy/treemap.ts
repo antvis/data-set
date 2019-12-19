@@ -1,6 +1,6 @@
 import * as d3Hierarchy from 'd3-hierarchy';
 import { assign, isArray } from '@antv/util';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 
@@ -21,7 +21,10 @@ const DEFAULT_OPTIONS: Options = {
 };
 
 export interface Options {
-  field: string;
+  /**
+   * 字段名 默认为 value
+   */
+  field?: string;
   tile?:
     | 'treemapBinary'
     | 'treemapDice'

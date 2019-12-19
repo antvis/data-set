@@ -1,7 +1,7 @@
 import { assign, isArray } from '@antv/util';
 import { geoPath } from 'd3-geo';
 import getPointAtLength from 'point-at-length';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 const { registerTransform } = DataSet;
 import getGeoProjection from '../../util/get-geo-projection';
 import { View } from '../../view';

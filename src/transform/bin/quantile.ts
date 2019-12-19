@@ -2,7 +2,7 @@ import { assign, forIn, isArray, isString } from '@antv/util';
 import { quantile } from 'simple-statistics';
 import partition from '../../util/partition';
 import pByFraction from '../../util/p-by-fraction';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 const { registerTransform } = DataSet;
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';

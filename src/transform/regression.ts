@@ -1,7 +1,7 @@
 import regression from 'regression';
 import { assign, isArray, isNumber } from '@antv/util';
 import getSeriesValues from '../util/get-series-values';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { silverman } from '../util/bandwidth';
 import { View } from '../view';
@@ -18,7 +18,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
 
 export interface Options {
   as?: string[];
-  method: 'linear' | 'exponential' | 'logarithmic' | 'power' | 'polynomial';
+  method?: 'linear' | 'exponential' | 'logarithmic' | 'power' | 'polynomial';
   fields: string[];
   bandwidth?: number;
   extent?: [number, number];

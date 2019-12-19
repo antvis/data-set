@@ -1,7 +1,7 @@
 import getPointAtLength from 'point-at-length';
 import { deepMix } from '@antv/util';
 import { geoPath } from 'd3-geo';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 const geoPathGenerator = geoPath();

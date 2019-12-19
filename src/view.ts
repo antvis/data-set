@@ -13,12 +13,13 @@ import {
   keys,
   pick,
 } from '@antv/util';
-import DataSet from './data-set';
+import { DataSet } from './data-set';
 import { StatisticsApi } from './api/statistics';
 import { PartitionApi } from './api/partition';
 import { HierarchyApi } from './api/hierarchy';
 import { GeoApi } from './api/geo';
 import { TransformsParams } from './transform-params';
+import { ConnectorParams } from './connector-params';
 
 function cloneOptions(options: any): any {
   const result: any = {};
@@ -37,14 +38,7 @@ function cloneOptions(options: any): any {
 }
 
 export interface ViewOptions {
-  watchingStates: string[];
-}
-
-export interface ConnectorParams {
-  csv: [string, {}];
-  tsv: [string, {}];
-  dsv: [string, { delimiter?: string }];
-  graph: [any, { nodes?(data: any): any[]; edges?(data: any): any[] }];
+  watchingStates?: string[];
 }
 
 type TransformOptions<T extends keyof TransformsParams = any> = { type: T } & TransformsParams[T];
@@ -55,17 +49,47 @@ interface CustomSource {
   options: any;
 }
 
+/**
+ * 数据视图
+ * @public
+ */
 export class View extends EventEmitter {
   static DataSet: typeof DataSet;
-  // constructor
+  /**
+   * 关联的数据集
+   */
   dataSet: DataSet | null;
+  /**
+   * 是否关联了数据集
+   */
   loose: boolean;
+  /**
+   * 是否是View
+   */
   isView = true;
+  /**
+   * 是否是View
+   */
   isDataView = true; // alias
-  watchingStates: string[] | null = null;
+  /**
+   *
+   */
+  private watchingStates: string[] | null = null;
+  /**
+   * 数据视图类型
+   */
   dataType = 'table';
+  /**
+   * 已应用的 transform
+   */
   transforms: TransformOptions[] = [];
-  protected origin: any[] = [];
+  /**
+   * 原始数据
+   */
+  origin: any[] = [];
+  /**
+   * 存储处理后的数据
+   */
   rows: any[] = [];
   _source!: CustomSource;
 
@@ -164,6 +188,15 @@ export class View extends EventEmitter {
     return this;
   }
 
+  /**
+   * 载入数据
+   *
+   * @remarks
+   * data 是原始数据，可能是字符串，也可能是数组、对象，或者另一个数据视图实例。options 里指定了载入数据使用的 connector 和载入时使用的配置项。
+   *
+   * @param source - 数据
+   * @param options- 数据解析配置
+   */
   source(source: string): View;
   source(source: any[]): View;
   source(source: View): View;
@@ -174,8 +207,11 @@ export class View extends EventEmitter {
     return this;
   }
 
-  // transforms
-  transform<T extends keyof TransformsParams>(options: TransformOptions<T>): View {
+  /**
+   *  执行数据处理数据。执行完这个函数后，transform 会被存储
+   * @param options - 某种类型的transform
+   */
+  transform<T extends keyof TransformsParams>(options?: TransformOptions<T>): View {
     if (options && options.type) {
       this.transforms.push(options);
       this._executeTransform(options);

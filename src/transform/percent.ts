@@ -1,7 +1,7 @@
 import { assign, forIn, isArray, isString } from '@antv/util';
 import { sum } from 'simple-statistics';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getField } from '../util/option-parser';
 import { View } from '../view';
 
@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
 export interface Options {
   field: string;
   dimension: string;
-  groupBy: string[];
+  groupBy?: string[];
   as?: string;
 }
 

@@ -1,4 +1,4 @@
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
 

@@ -1,4 +1,4 @@
-import simpleStatistics from 'simple-statistics';
+import * as simpleStatistics from 'simple-statistics';
 import { assign, flattenDeep, isArray } from '@antv/util';
 import { View } from '../view';
 import pByFraction from '../util/p-by-fraction';

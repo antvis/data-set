@@ -1,6 +1,6 @@
 import { isFunction } from '@antv/util';
 import { hierarchy } from 'd3-hierarchy';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 import { View } from '../view';
 
 /*
@@ -12,7 +12,7 @@ import { View } from '../view';
  */
 
 export interface Options {
-  children(data: any): any[];
+  children?(data: any): any[];
   pureData?: boolean;
 }
 

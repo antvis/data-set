@@ -1,6 +1,6 @@
 import { isString } from '@antv/util';
 import { dsvFormat, csvParse, tsvParse } from 'd3-dsv';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 
 export interface Options {
   delimiter?: string;

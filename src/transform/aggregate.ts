@@ -1,7 +1,7 @@
 import { assign, flattenDeep, forIn, isArray, isString, keys, uniq } from '@antv/util';
 import * as simpleStatistics from 'simple-statistics';
 import partition from '../util/partition';
-import DataSet from '../data-set';
+import { DataSet } from '../data-set';
 const { registerTransform } = DataSet;
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
@@ -14,9 +14,9 @@ const DEFAULT_OPTIONS: Options = {
 };
 
 export interface Options {
-  as: string[];
-  fields: string[];
-  groupBy: string[];
+  as?: string[];
+  fields?: string[];
+  groupBy?: string | string[] | ((item: any) => string);
   operations?: Array<
     | 'count'
     | 'max'

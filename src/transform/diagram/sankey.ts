@@ -4,7 +4,7 @@
  */
 import { assign, isString, isFunction } from '@antv/util';
 import { sankey, sankeyLeft, sankeyRight, sankeyCenter, sankeyJustify } from 'd3-sankey';
-import DataSet from '../../data-set';
+import { DataSet } from '../../data-set';
 import { View } from '../../view';
 
 const ALIGN_METHOD = {

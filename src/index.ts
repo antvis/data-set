@@ -69,6 +69,6 @@ import './transform/waffle';
 import './transform/kernel-smooth/density';
 import './transform/kernel-smooth/regression';
 
-import DataSet from './data-set';
+import { DataSet } from './data-set';
 
 export = DataSet;
