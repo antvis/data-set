@@ -9,7 +9,6 @@
     "esModuleInterop": true,
     "importHelpers": true,
     "downlevelIteration": true,
-    "resolveJsonModule": true,
     "outDir": "./lib",
     "noUnusedLocals": true,
     "noUnusedParameters": true,
