@@ -6,7 +6,7 @@
 
 [![npm package](https://img.shields.io/npm/v/@antv/data-set.svg)](https://www.npmjs.com/package/@antv/data-set)
 [![NPM downloads](http://img.shields.io/npm/dm/@antv/data-set.svg)](https://npmjs.org/package/@antv/data-set)
-[![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/data-set.svg)](http://isitmaintained.com/project/antvis/data-set "Percentage of issues still open")
+[![Percentage of issues still open](http://isitmaintained.com/badge/open/antvis/data-set.svg)](http://isitmaintained.com/project/antvis/data-set 'Percentage of issues still open')
 
 Data set with state management.
 
@@ -18,12 +18,13 @@ Data set with state management.
 import DataSet from '@antv/data-set';
 
 const ds = new DataSet({
-  state: { // initialize state
-    foo: 'bar'
-  }
+  state: {
+    // initialize state
+    foo: 'bar',
+  },
 });
 ```
 
 ## API
 
-See details at [DataSet API](https://antv.alipay.com/zh-cn/g2/3.x/api/data-set.html).
+See details at [DataSet API](https://g2.antv.vision/zh/docs/api/data-set).
