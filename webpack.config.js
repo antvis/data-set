@@ -1,4 +1,3 @@
-//
 const resolve = require('path').resolve;
 const pkg = require('./package.json');
 
