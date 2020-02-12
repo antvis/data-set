@@ -1,7 +1,7 @@
 # data-set
 
 [![](https://img.shields.io/travis/antvis/data-set.svg)](https://travis-ci.org/antvis/data-set)
-![](https://img.shields.io/badge/language-javascript-red.svg)
+![](https://img.shields.io/badge/language-typescript-red.svg)
 ![](https://img.shields.io/badge/license-MIT-000000.svg)
 
 [![npm package](https://img.shields.io/npm/v/@antv/data-set.svg)](https://www.npmjs.com/package/@antv/data-set)
