@@ -20,7 +20,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
 
 export interface Options {
   as?: [string, string?];
-  fields: [string, string];
+  fields?: [string, string?];
   method:
     | 'cosine'
     | 'epanechnikov'
@@ -75,11 +75,6 @@ function transform(dv: View, options: Options): void {
       throw new TypeError(`invalid method: ${method}. Must be one of ${KERNEL_METHODS.join(', ')}`);
     }
     func = kernel[method];
-  }
-  if (!isFunction(method)) {
-    throw new TypeError('invalid method: kernel method must be a function!');
-  } else {
-    func = method;
   }
 
   const [xField, yField] = fields;
