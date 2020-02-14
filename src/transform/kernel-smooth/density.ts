@@ -54,12 +54,6 @@ function transform(dv: View, options: Options): void {
     method = kernel[options.method];
   }
 
-  if (!isFunction(options.method)) {
-    throw new TypeError('invalid method: kernel method must be a function!');
-  } else {
-    method = options.method;
-  }
-
   const [xField, yField] = fields;
   const { extent, bandwidth } = options;
   let extentX: [number, number];
