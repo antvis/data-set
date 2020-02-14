@@ -1,7 +1,7 @@
 /*
  * @reference: https://github.com/Planeshifter/kernel-smooth/blob/master/lib/index.js
  */
-import { assign, isArray, isFunction, isNumber, isString, keys } from '@antv/util';
+import { assign, isArray, isNumber, isString, keys } from '@antv/util';
 import getSeriesValues from '../../util/get-series-values';
 import kernel from '../../util/kernel';
 import { DataSet } from '../../data-set';
