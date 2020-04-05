@@ -33,9 +33,6 @@ export interface Options {
   source?(edge: any): any;
 
   target?(edge: any): any;
-
-  nodeSort(): ((a: any, b: any) => number) | undefined;
-
   // sankey.nodeSort(undefined) is the default and resorts by ascending breadth during each iteration.
   // sankey.nodeSort(null) specifies the input order of nodes and never sorts.
   // sankey.nodeSort(function) specifies the given order as a comparator function and sorts once on initialization.
