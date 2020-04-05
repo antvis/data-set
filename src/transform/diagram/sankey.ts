@@ -22,13 +22,25 @@ const DEFAULT_OPTIONS: Partial<Options> = {
   nodeAlign: 'sankeyJustify',
   nodeWidth: 0.02,
   nodePadding: 0.02,
+  sort: undefined,
 };
 
 export interface Options {
   nodeId?(node: any): any;
+
   value?(node: any): any;
+
   source?(edge: any): any;
+
   target?(edge: any): any;
+
+  nodeSort(): ((a: any, b: any) => number) | undefined;
+
+  // sankey.nodeSort(undefined) is the default and resorts by ascending breadth during each iteration.
+  // sankey.nodeSort(null) specifies the input order of nodes and never sorts.
+  // sankey.nodeSort(function) specifies the given order as a comparator function and sorts once on initialization.
+  sort: null | undefined | ((a: any, b: any) => number);
+
   nodeAlign?: keyof typeof ALIGN_METHOD;
   nodeWidth?: number;
   nodePadding?: number;
@@ -43,6 +55,7 @@ function transform(dv: View, options: Options): void {
     nodeAlign = options.nodeAlign;
   }
   const sankeyProcessor = sankey()
+    .nodeSort(options.sort)
     .links((d: any) => d.edges)
     .nodeWidth(options.nodeWidth!)
     .nodePadding(options.nodePadding!)
