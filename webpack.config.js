@@ -9,6 +9,7 @@ module.exports = {
   },
   resolve: {
     extensions: ['.js', '.ts', '.json'],
+    mainFields: ['browser', 'main', 'module'],
   },
   output: {
     filename: '[name].js',
@@ -19,8 +20,8 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.ts$/,
-        exclude: /(node_modules|bower_components)/,
+        test: /\.(t|j)s$/,
+        exclude: /node_modules/,
         loader: 'awesome-typescript-loader',
       },
       {
