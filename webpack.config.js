@@ -21,7 +21,12 @@ module.exports = {
     rules: [
       {
         test: /\.(t|j)s$/,
-        exclude: /node_modules/,
+        include: [
+          resolve(__dirname, 'src'),
+          function(path) {
+            return /d3-.*/.test(path);
+          },
+        ],
         loader: 'awesome-typescript-loader',
       },
       {
