@@ -36,7 +36,7 @@ export interface Options {
   // sankey.nodeSort(undefined) is the default and resorts by ascending breadth during each iteration.
   // sankey.nodeSort(null) specifies the input order of nodes and never sorts.
   // sankey.nodeSort(function) specifies the given order as a comparator function and sorts once on initialization.
-  sort: null | undefined | ((a: any, b: any) => number);
+  sort?: null | undefined | ((a: any, b: any) => number);
 
   nodeAlign?: keyof typeof ALIGN_METHOD;
   nodeWidth?: number;
