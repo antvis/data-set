@@ -14,7 +14,7 @@
     "d3-geo-projection": "~2.1.2",
     "d3-hexjson": "^1.0.1",
     "d3-hierarchy": "^1.1.5",
-    "d3-sankey": "^0.9.1",
+    "d3-sankey": "^0.12.3",
     "d3-voronoi": "^1.1.2",
     "dagre": "^0.8.2",
     "point-at-length": "^1.0.2",
