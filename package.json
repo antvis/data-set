@@ -89,7 +89,7 @@
     "chai": "~4.1.2",
     "cheerio": "~1.0.0-rc.2",
     "commander": "~2.12.2",
-    "connect": "~3.6.5",
+    "connect": "~3.7.0",
     "d3-queue": "~3.0.7",
     "debug": "~3.1.0",
     "eslint": "^6.1.0",
