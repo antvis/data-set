@@ -39,9 +39,6 @@ function transform(dataView: View, options: Options): void {
   const groups = partition(rows, groupBy);
   forIn(groups, (group) => {
     const totalSum = sum(group.map((row: any) => row[field]));
-    if (totalSum === 0) {
-      console.warn(`Invalid data: total sum of field ${field} is 0!`);
-    }
     const innerGroups = partition(group, [dimension]);
     forIn(innerGroups, (innerGroup) => {
       const innerSum = sum(innerGroup.map((row: any) => row[field]));
