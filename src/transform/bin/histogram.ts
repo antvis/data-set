@@ -6,7 +6,7 @@ import { View } from '../../view';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'count'],
-  bins: 30,
+  bins: undefined,
   offset: 0,
   groupBy: [],
   // field: '', // required
@@ -15,7 +15,7 @@ const DEFAULT_OPTIONS: Partial<Options> = {
 
 export interface Options {
   as?: [string, string];
-  bins?: number;
+  bins?: number | undefined;
   offset?: number;
   groupBy?: string[];
   field: string;
@@ -28,6 +28,11 @@ function nearestBin(value: number, scale: number, offset: number): [number, numb
   return [div * scale + offset, (div + 1) * scale + offset];
 }
 
+/** Sturges formula */
+function sturges(dataLength: number): number {
+  return Math.ceil(Math.log(dataLength) / Math.LN2) + 1;
+}
+
 function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
@@ -37,13 +42,19 @@ function transform(dataView: View, options: Options): void {
   const range = dataView.range(field);
   const width = range[1] - range[0];
   let binWidth = options.binWidth;
-  if (!binWidth) {
-    const bins = options.bins;
+  const bins = options.bins;
+
+  if (!binWidth && bins) {
     if (bins <= 0) {
       throw new TypeError('Invalid bins: it must be a positive number!');
     }
     binWidth = width / bins;
   }
+  if (!binWidth && !bins) {
+    const binNumber = sturges(dataView.rows.length);
+    binWidth = width / binNumber;
+  }
+
   const offset = options.offset % binWidth;
 
   // grouping

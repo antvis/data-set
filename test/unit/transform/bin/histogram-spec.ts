@@ -20,14 +20,16 @@ describe('View.transform(): bin.histogram', () => {
     expect(getTransform('bin.histogram')).to.be.a('function');
     expect(getTransform('bin.dot')).to.be.a('function');
   });
-
+  /** 改为Sturges formula 更符合数学的意义*/
   it('default', () => {
     dv.transform({
       type: 'bin.histogram',
       field: 'a',
     });
     const firstRow = dv.rows[0];
-    expect(firstRow.x[1] - firstRow.x[0]).to.equal(100 / 30);
+    const binNumber = Math.ceil(Math.log(data.length) / Math.LN2) + 1;
+    //  binWidth = width / binNumber;
+    expect(firstRow.x[1] - firstRow.x[0]).to.equal(100 / binNumber);
   });
 
   it('bins', () => {
