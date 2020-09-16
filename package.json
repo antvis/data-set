@@ -40,7 +40,7 @@
   "license": "MIT",
   "scripts": {
     "build": "rm -rf build && webpack",
-    "build-lib": "tsc",
+    "build-lib": "rm -rf lib && tsc",
     "bundler": "electron ./bundler/app.js",
     "ci": "npm run lint && npm run test && npm run test-bugs",
     "coverage": "npm run coverage-generator && npm run coverage-viewer",
