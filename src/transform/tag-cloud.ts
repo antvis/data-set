@@ -53,7 +53,10 @@ function transform(dataView: View, options: Options): void {
   }
   const result = layout.start();
   const tags: any[] = result._tags;
-  const bounds = result._bounds;
+  const bounds = result._bounds || [
+    { x: 0, y: 0 },
+    { x: options.size[0], y: options.size[1] },
+  ];
   tags.forEach((tag) => {
     tag.x += options.size[0] / 2;
     tag.y += options.size[1] / 2;
