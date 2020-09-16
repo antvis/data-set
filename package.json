@@ -1,6 +1,6 @@
 {
   "name": "@antv/data-set",
-  "version": "0.11.4",
+  "version": "0.11.6",
   "description": "data set with state management",
   "main": "lib/index.js",
   "browser": "build/data-set.js",
