@@ -15,14 +15,17 @@ const DEFAULT_OPTIONS: Options = {
   // imageMask: '', // instance of Image, must be loaded
 };
 
+type FontWeight = number | 'normal' | 'bold' | 'bolder' | 'lighter';
+
 export interface Options {
   fields?: [string, string];
-  font?(): string;
-  fontSize?: number;
-  rotate?: number;
-  padding?: number;
+  font?: string | ((...arg) => string);
+  fontSize?: number | ((...arg) => number);
+  fontWeight?: FontWeight | ((...arg) => FontWeight);
+  rotate?: number | ((...arg) => number);
+  padding?: number | ((...arg) => number);
   size?: [number, number];
-  spiral?: 'archimedean' | 'archimedean' | 'rectangular';
+  spiral?: 'archimedean' | 'rectangular' | ((size: [number, number]) => (t: number) => number[]);
   timeInterval?: number;
   imageMask?: HTMLImageElement;
 }
@@ -30,7 +33,7 @@ export interface Options {
 function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
-  ['font', 'fontSize', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {
+  ['font', 'fontSize', 'fontWeight', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {
     // @ts-ignore
     if (options[key]) {
       // @ts-ignore
