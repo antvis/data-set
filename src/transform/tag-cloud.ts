@@ -17,13 +17,20 @@ const DEFAULT_OPTIONS: Options = {
 
 type FontWeight = number | 'normal' | 'bold' | 'bolder' | 'lighter';
 
+export interface DataItem {
+  /** 文本内容 */
+  text: string;
+  /** 该文本所占权重 */
+  value: number;
+}
+
 export interface Options {
   fields?: [string, string];
-  font?: string | ((...arg) => string);
-  fontSize?: number | ((...arg) => number);
-  fontWeight?: FontWeight | ((...arg) => FontWeight);
-  rotate?: number | ((...arg) => number);
-  padding?: number | ((...arg) => number);
+  font?: string | ((row: DataItem) => string);
+  fontSize?: number | ((row: DataItem) => number);
+  fontWeight?: FontWeight | ((row: DataItem) => FontWeight);
+  rotate?: number | ((row: DataItem) => number);
+  padding?: number | ((row: DataItem) => number);
   size?: [number, number];
   spiral?: 'archimedean' | 'rectangular' | ((size: [number, number]) => (t: number) => number[]);
   timeInterval?: number;
