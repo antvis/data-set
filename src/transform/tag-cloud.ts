@@ -15,14 +15,24 @@ const DEFAULT_OPTIONS: Options = {
   // imageMask: '', // instance of Image, must be loaded
 };
 
+type FontWeight = number | 'normal' | 'bold' | 'bolder' | 'lighter';
+
+export interface DataItem {
+  /** 文本内容 */
+  text: string;
+  /** 该文本所占权重 */
+  value: number;
+}
+
 export interface Options {
   fields?: [string, string];
-  font?(): string;
-  fontSize?: number;
-  rotate?: number;
-  padding?: number;
+  font?: string | ((row: DataItem) => string);
+  fontSize?: number | ((row: DataItem) => number);
+  fontWeight?: FontWeight | ((row: DataItem) => FontWeight);
+  rotate?: number | ((row: DataItem) => number);
+  padding?: number | ((row: DataItem) => number);
   size?: [number, number];
-  spiral?: 'archimedean' | 'archimedean' | 'rectangular';
+  spiral?: 'archimedean' | 'rectangular' | ((size: [number, number]) => (t: number) => number[]);
   timeInterval?: number;
   imageMask?: HTMLImageElement;
 }
@@ -30,7 +40,7 @@ export interface Options {
 function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
-  ['font', 'fontSize', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {
+  ['font', 'fontSize', 'fontWeight', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {
     // @ts-ignore
     if (options[key]) {
       // @ts-ignore
