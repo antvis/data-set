@@ -377,7 +377,7 @@ export default function() {
     const [width, height] = size;
 
     // 当 width 或 height 为 0 时，调用 cxt.getImageData 会报错
-    if(!width || !height) {
+    if (!width || !height) {
       return;
     }
     const w32 = width >> 5;
