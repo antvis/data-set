@@ -16,7 +16,7 @@ export interface Options {
   pureData?: boolean;
 }
 
-function connector(data: any, options: Options, dataView: View): any {
+function hierarchyConnector(data: any, options: Options, dataView: View): any {
   dataView.dataType = DataSet.CONSTANTS.HIERARCHY;
   const children = options && options.children ? options.children : null;
 
@@ -33,5 +33,4 @@ function connector(data: any, options: Options, dataView: View): any {
   return data;
 }
 
-DataSet.registerConnector('hierarchy', connector);
-DataSet.registerConnector('tree', connector);
+export default hierarchyConnector;

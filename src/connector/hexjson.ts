@@ -13,12 +13,12 @@ export interface Options {
   height?: number;
 }
 
-function processRow(row) {
+function processRow(row: any): any {
   row.cx = row.x;
   row.cy = row.y;
   row.x = [];
   row.y = [];
-  row.vertices.forEach((v) => {
+  row.vertices.forEach((v: any) => {
     row.x.push(v.x + row.cx);
     row.y.push(v.y + row.cy);
   });
@@ -36,10 +36,5 @@ function HexJSONConnector(data: any[], options: Options, dataView: View): any {
   dataView._gridRows = renderHexJSON(grid, width, height).map(processRow);
   return rows;
 }
-
-DataSet.registerConnector('hex', HexJSONConnector);
-DataSet.registerConnector('hexjson', HexJSONConnector);
-DataSet.registerConnector('hex-json', HexJSONConnector);
-DataSet.registerConnector('HexJSON', HexJSONConnector);
 
 export default HexJSONConnector;

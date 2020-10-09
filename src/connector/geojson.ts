@@ -30,8 +30,4 @@ function GeoJSONConnector(data: any, _options: undefined, dataView: View): any {
   return features;
 }
 
-DataSet.registerConnector('geo', GeoJSONConnector);
-DataSet.registerConnector('geojson', GeoJSONConnector);
-DataSet.registerConnector('GeoJSON', GeoJSONConnector);
-
 export default GeoJSONConnector;

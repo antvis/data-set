@@ -18,7 +18,7 @@ export interface Options {
   edges?(data: any): any[];
 }
 
-function connector(data: any, options: Options, dataView: View): any {
+function graphConnector(data: any, options: Options, dataView: View): any {
   options = assign({}, DEFAULT_OPTIONS, options);
   dataView.dataType = DataSet.CONSTANTS.GRAPH;
   const { nodes, edges } = options;
@@ -37,5 +37,4 @@ function connector(data: any, options: Options, dataView: View): any {
   return dataView.rows;
 }
 
-DataSet.registerConnector('graph', connector);
-DataSet.registerConnector('diagram', connector);
+export default graphConnector;

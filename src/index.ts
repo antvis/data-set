@@ -4,15 +4,8 @@ import './api/hierarchy';
 import './api/partition';
 import './api/statistics';
 
-// connectors
-import './connector/default';
-import './connector/dsv';
-import './connector/geo-graticule';
-import './connector/geojson';
-import './connector/graph';
-import './connector/hexjson';
-import './connector/hierarchy';
-import './connector/topojson';
+// connectors 这里就只需要引一个文件
+import './connector';
 
 // transforms
 // static

@@ -2,7 +2,7 @@ import { isString, deepMix } from '@antv/util';
 import { DataSet } from '../data-set';
 import { View } from '../view';
 
-DataSet.registerConnector('default', (data: string | View, dataSet: DataSet) => {
+function defaultConnector(data: string | View, dataSet: DataSet): any {
   let view: View | undefined;
 
   if (isString(data)) {
@@ -15,4 +15,6 @@ DataSet.registerConnector('default', (data: string | View, dataSet: DataSet) => 
     throw new TypeError('Invalid dataView');
   }
   return deepMix([], view.rows);
-});
+}
+
+export default defaultConnector;
