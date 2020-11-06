@@ -27,4 +27,4 @@ const ds = new DataSet({
 
 ## API
 
-See details at [DataSet API](https://g2.antv.vision/zh/docs/api/data-set).
+See details at [DataSet API](https://g2.antv.vision/zh/docs/manual/dataset/overview).
