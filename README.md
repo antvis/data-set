@@ -25,6 +25,9 @@ const ds = new DataSet({
 });
 ```
 
-## API
+## Document
 
-See details at [DataSet API](https://g2.antv.vision/zh/docs/api/data-set).
+ - [快速入门](./docs/overview.md)
+ - [DataSet](./docs/dataset.md)
+ - [Connector 数据接入](./docs/connector.md)
+ - [Transform 数据转换](./docs/transform.md)
