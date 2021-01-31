@@ -80,7 +80,7 @@ describe('View.transform(): tag-cloud', () => {
       fontSize,
       rotate,
       padding,
-      spiral
+      spiral,
     });
     const firstRow = dv.rows[0];
     expect(firstRow.hasText).to.equal(true);
@@ -92,5 +92,14 @@ describe('View.transform(): tag-cloud', () => {
     expect(firstRow.size).to.equal(11);
     expect(firstRow.rotate).to.equal(22);
     expect(firstRow.padding).to.equal(33);
+  });
+
+  it('size', () => {
+    dv.transform({
+      type: 'tag-cloud',
+      size: [0, 0], // 当宽或者高为 0 时，容不下任何一个词语
+    });
+
+    expect(dv.rows.length).to.equal(0);
   });
 });
