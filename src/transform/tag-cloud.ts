@@ -40,6 +40,15 @@ export interface Options {
 function transform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
+
+  // 当宽或者高为 0 时，容不下任何一个词语,
+  // 所以最后的数据应该是一个空数组。
+  if (!options.size[0] || !options.size[1]) {
+    dataView.rows = [];
+    dataView._tagCloud = layout;
+    return;
+  }
+
   ['font', 'fontSize', 'fontWeight', 'padding', 'rotate', 'size', 'spiral', 'timeInterval'].forEach((key) => {
     // @ts-ignore
     if (options[key]) {
@@ -61,6 +70,8 @@ function transform(dataView: View, options: Options): void {
   if (options.imageMask) {
     layout.createMask(options.imageMask);
   }
+
+  // 这里的 result 和 layout 指向同一个对象
   const result = layout.start();
   const tags: any[] = result._tags;
   const bounds = result._bounds || [
