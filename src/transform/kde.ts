@@ -27,7 +27,8 @@ const BANDWIDTH_METHODS = keys(bandwidth);
 
 export interface Options {
   minSize?: number;
-  as?: string[];  fields: string[];
+  as?: string[];
+  fields: string[];
   /** extent to execute regression function, default: [ [ min(x), max(x) ], [ min(y), max(y) ] ] */
   extent?: [number, number];
   /**  kernel method: should be one of keys(kernel), like 'gaussian */
