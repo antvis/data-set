@@ -13,6 +13,7 @@ import { Options as AggregateOptions } from './transform/aggregate';
 import { Options as PercentOptions } from './transform/percent';
 import { Options as ProportionOptions } from './transform/proportion';
 import { Options as RegressionOptions } from './transform/regression';
+import { Options as KDEOptions } from './transform/kde';
 import { Options as DensityOptions } from './transform/kernel-smooth/density';
 import { Options as KernelRegressionOptions } from './transform/kernel-smooth/regression';
 import { Options as HistogramOptions } from './transform/bin/histogram';
@@ -53,6 +54,7 @@ export interface TransformsParams {
   percent: PercentOptions;
   proportion: ProportionOptions;
   regression: RegressionOptions;
+  kde: KDEOptions;
   'kernel.density': DensityOptions;
   'kernel-smooth.density': DensityOptions;
   'kernel.regression': KernelRegressionOptions;

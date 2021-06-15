@@ -25,7 +25,20 @@ const DEFAULT_OPTIONS = {
 const KERNEL_METHODS = keys(kernel);
 const BANDWIDTH_METHODS = keys(bandwidth);
 
-function transform(dv: View, options): void {
+export interface Options {
+  minSize?: number;
+  as?: string[];
+  fields: string[];
+  /** extent to execute regression function, default: [ [ min(x), max(x) ], [ min(y), max(y) ] ] */
+  extent?: [number, number];
+  /**  kernel method: should be one of keys(kernel), like 'gaussian */
+  method?: string;
+  bandwidth?: number;
+  step?: number;
+  groupBy?: string[];
+}
+
+function transform(dv: View, options: Options): void {
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length < 1) {
