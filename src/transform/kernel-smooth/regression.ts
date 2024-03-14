@@ -4,11 +4,11 @@
 import { assign, isArray, isNumber, isString, keys, isNil } from '@antv/util';
 import getSeriesValues from '../../util/get-series-values';
 import kernel from '../../util/kernel';
-import { DataSet } from '../../data-set';
 import { sum } from 'simple-statistics';
 import { getFields } from '../../util/option-parser';
 import { silverman } from '../../util/bandwidth';
 import { View } from '../../view';
+import { getColumn, range } from '../default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'y'],
@@ -48,17 +48,18 @@ function weight(kernel, bandwidth: number, x_0: number, x_i: number): any {
 //   return kernel(arg);
 // }
 function vectorize(fun) {
-  return function(x) {
+  return function (x) {
     if (!isArray(x)) {
       return fun(x);
     }
-    return x.map(function(x) {
+    return x.map(function (x) {
       return fun(x);
     });
   };
 }
 
-function transform(dv: View, options: Options): void {
+const kernelRegression = (dvRows: View['rows'], options: Options): any[] => {
+  const rows = [...(dvRows || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || !(fields.length === 1 || fields.length === 2)) {
@@ -78,11 +79,11 @@ function transform(dv: View, options: Options): void {
   }
 
   const [xField, yField] = fields;
-  const xs = dv.getColumn(xField);
+  const xs = getColumn(rows, xField);
 
   let extent = options.extent;
   if (extent || !isArray(extent)) {
-    extent = dv.range(xField);
+    extent = range(rows, xField);
   }
   let bandwidth = options.bandwidth;
   if (!bandwidth || !isNumber(bandwidth) || bandwidth <= 0) {
@@ -104,7 +105,7 @@ function transform(dv: View, options: Options): void {
     });
   } else {
     // kernel regression smoothing
-    const ys = dv.getColumn(yField);
+    const ys = getColumn(rows, yField);
     kernelSmoother = vectorize((x: number[]) => {
       const weights = xs.map((x_i) => weightFunc(x, x_i));
       const num = sum(weights.map((w, i) => w * ys[i]));
@@ -120,12 +121,12 @@ function transform(dv: View, options: Options): void {
     row[asY] = kernelSmoother(x);
     return row;
   });
-  dv.rows = result;
+
+  return result;
+};
+
+function kernelRegressionTransform(dv: View, options: Options): void {
+  dv.rows = kernelRegression(dv.rows, options);
 }
 
-DataSet.registerTransform('kernel-smooth.regression', transform);
-DataSet.registerTransform('kernel.regression', transform);
-
-export default {
-  KERNEL_METHODS,
-};
+export { kernelRegression, KERNEL_METHODS, kernelRegressionTransform };

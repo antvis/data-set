@@ -4,7 +4,7 @@ import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {};
 
-function transform(dataView: View, options) {
+function indentedTransform(dataView: View, options) {
   const root = dataView.root;
   options = Object.assign({}, DEFAULT_OPTIONS, options);
 
@@ -15,5 +15,4 @@ function transform(dataView: View, options) {
   dataView.root = hierarchy.indented(root, options);
 }
 
-DataSet.registerTransform('hierarchy.indented', transform);
-DataSet.registerTransform('indented-tree', transform);
+export { indentedTransform };

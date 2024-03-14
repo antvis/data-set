@@ -14,7 +14,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule":true
   },
   "include": ["./src"]
 }

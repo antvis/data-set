@@ -1,7 +1,5 @@
 import * as d3Voronoi from 'd3-voronoi';
 import { assign, isArray } from '@antv/util';
-import { DataSet } from '../../data-set';
-const { registerTransform } = DataSet;
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';
 
@@ -19,7 +17,8 @@ export interface Options {
   as?: [string, string];
 }
 
-function transform(dataView: View, options: Options): void {
+const voronoi = (dvRows: View['rows'], options: Options): any[] => {
+  const rows = [...(dvRows || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
 
   const as = options.as;
@@ -36,7 +35,6 @@ function transform(dataView: View, options: Options): void {
   const x = fields[0];
   const y = fields[1];
 
-  const rows = dataView.rows;
   const data: [number, number][] = rows.map((row) => [row[x], row[y]]);
   const voronoi = d3Voronoi.voronoi();
   if (options.extend) {
@@ -51,7 +49,12 @@ function transform(dataView: View, options: Options): void {
     row[xField] = polygon.map((point) => point[0]);
     row[yField] = polygon.map((point) => point[1]);
   });
+
+  return rows;
+};
+
+function voronoiTransform(dataView: View, options: Options): void {
+  dataView.rows = voronoi(dataView.rows, options);
 }
 
-registerTransform('diagram.voronoi', transform);
-registerTransform('voronoi', transform);
+export { voronoi, voronoiTransform };

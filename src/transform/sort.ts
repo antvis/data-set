@@ -1,5 +1,5 @@
-import { DataSet } from '../data-set';
 import { View } from '../view';
+import { getColumnName } from './default';
 
 /*
  * options: {
@@ -12,7 +12,15 @@ export interface Options {
   callback?(a: any, b: any): number;
 }
 
-DataSet.registerTransform('sort', (dataView: View, options: Options) => {
-  const columnName = dataView.getColumnName(0);
-  dataView.rows.sort(options.callback || ((a, b) => a[columnName] - b[columnName]));
-});
+const sort = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
+  const columnName = getColumnName(rows, 0);
+  rows.sort(options.callback || ((a, b) => a[columnName] - b[columnName]));
+  return rows;
+};
+
+const sortTransform = (dataView: View, options: Options): void => {
+  dataView.rows = sort(dataView.rows, options);
+};
+
+export { sort, sortTransform };

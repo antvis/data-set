@@ -1,5 +1,5 @@
 import { forIn, isPlainObject, isString } from '@antv/util';
-import { DataSet } from '../data-set';
+
 import { View } from '../view';
 
 /*
@@ -13,7 +13,8 @@ export interface Options {
   map?: Record<string, string>;
 }
 
-function transform(dataView: View, options: Options): void {
+const rename = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   const map = options.map || {};
   const cleanMap: Record<string, string> = {};
   if (isPlainObject(map)) {
@@ -23,14 +24,19 @@ function transform(dataView: View, options: Options): void {
       }
     });
   }
-  dataView.rows.forEach((row) => {
+  rows.forEach((row) => {
     forIn(cleanMap, (newKey, key) => {
       const temp = row[key];
       delete row[key];
       row[newKey] = temp;
     });
   });
+
+  return rows;
+};
+
+function renameTransform(dataView: View, options: Options): void {
+  dataView.rows = rename(dataView.rows, options);
 }
 
-DataSet.registerTransform('rename', transform);
-DataSet.registerTransform('rename-fields', transform);
+export { rename, renameTransform };

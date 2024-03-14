@@ -24,7 +24,7 @@ export interface Options {
   as?: [string, string];
 }
 
-function transform(dataView: View, options: Options): void {
+function adjacencyTransform(dataView: View, options: Options): void {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
@@ -47,10 +47,7 @@ function transform(dataView: View, options: Options): void {
   }
 
   const partitionLayout = d3Hierarchy.partition();
-  partitionLayout
-    .size(options.size)
-    .round(options.round)
-    .padding(options.padding);
+  partitionLayout.size(options.size).round(options.round).padding(options.padding);
   partitionLayout(root);
 
   /*
@@ -71,5 +68,4 @@ function transform(dataView: View, options: Options): void {
   });
 }
 
-DataSet.registerTransform('hierarchy.partition', transform);
-DataSet.registerTransform('adjacency', transform);
+export { adjacencyTransform };

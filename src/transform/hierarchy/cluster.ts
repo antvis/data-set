@@ -20,7 +20,7 @@ interface Options {
   as: [string, string];
 }
 
-function transform(dataView: View, options: Options) {
+function clusterTransform(dataView: View, options: Options) {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY || !dataView.root) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
@@ -61,5 +61,4 @@ function transform(dataView: View, options: Options) {
   });
 }
 
-DataSet.registerTransform('hierarchy.cluster', transform);
-DataSet.registerTransform('dendrogram', transform);
+export { clusterTransform };

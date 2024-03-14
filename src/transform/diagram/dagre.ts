@@ -3,8 +3,7 @@
  * graph data required (nodes, edges)
  */
 import { assign } from '@antv/util';
-import dagre from 'dagre';
-import { DataSet } from '../../data-set';
+import dagreFn from 'dagre';
 import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {
@@ -18,27 +17,27 @@ const DEFAULT_OPTIONS = {
   target: (edge) => edge.target,
 };
 
-function transform(dv: View, options) {
+const dagre = (dvNodes: any[], dvEdges: any[], options) => {
   options = assign({}, DEFAULT_OPTIONS, options);
-  const g = new dagre.graphlib.Graph();
+  const g = new dagreFn.graphlib.Graph();
   // Set an object for the graph label
   g.setGraph({});
   // Default to assigning a new object as a label for each new edge.
-  g.setDefaultEdgeLabel(function() {
+  g.setDefaultEdgeLabel(function () {
     return {};
   });
 
-  dv.nodes.forEach((node) => {
+  dvNodes.forEach((node) => {
     const nodeId = options.nodeId ? options.nodeId(node) : node.id;
     if (!node.height && !node.width) {
       node.height = node.width = options.edgesep;
     }
     g.setNode(nodeId, node);
   });
-  dv.edges.forEach((edge) => {
+  dvEdges.forEach((edge) => {
     g.setEdge(options.source(edge), options.target(edge));
   });
-  dagre.layout(g);
+  dagreFn.layout(g);
 
   const nodes = [];
   const edges = [];
@@ -66,9 +65,16 @@ function transform(dv: View, options) {
     edges.push(e);
   });
 
+  return {
+    nodes,
+    edges,
+  };
+};
+
+function dagreTransform(dv: View, options) {
+  const { nodes, edges } = dagre(dv.nodes, dv.edges, options);
   dv.nodes = nodes;
   dv.edges = edges;
 }
 
-DataSet.registerTransform('diagram.dagre', transform);
-DataSet.registerTransform('dagre', transform);
+export { dagre, dagreTransform };

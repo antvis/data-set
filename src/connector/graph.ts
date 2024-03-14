@@ -30,6 +30,7 @@ function connector(data: any, options: Options, dataView: View): any {
   }
   // @ts-ignore
   dataView.rows = dataView.graph = {
+    // @ts-ignore
     nodes: nodes!(data),
     edges: edges!(data),
   };

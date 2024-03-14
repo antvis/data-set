@@ -1,8 +1,9 @@
 import { assign, forIn, pick } from '@antv/util';
 import partition from '../../util/partition';
-import { DataSet } from '../../data-set';
+
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
+import { range } from '../default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'count'],
@@ -33,14 +34,15 @@ function sturges(dataLength: number): number {
   return Math.ceil(Math.log(dataLength) / Math.LN2) + 1;
 }
 
-function transform(dataView: View, options: Options): void {
+const histogram = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
-  if (dataView.rows.length === 0) {
-    return;
+  if (rows.length === 0) {
+    return [];
   }
-  const range = dataView.range(field);
-  const width = range[1] - range[0];
+  const ranged = range(rows, field);
+  const width = ranged[1] - ranged[0];
   let binWidth = options.binWidth;
   const bins = options.bins;
 
@@ -51,16 +53,16 @@ function transform(dataView: View, options: Options): void {
     binWidth = width / bins;
   }
   if (!binWidth && !bins) {
-    const binNumber = sturges(dataView.rows.length);
+    const binNumber = sturges(rows.length);
     binWidth = width / binNumber;
   }
 
   const offset = options.offset % binWidth;
 
   // grouping
-  const rows: any[] = [];
+  const result: any[] = [];
   const groupBy = options.groupBy;
-  const groups = partition(dataView.rows, groupBy);
+  const groups = partition(rows, groupBy);
   forIn(groups, (group: any[]) => {
     const bins: any = {};
     const column = group.map((row) => row[field]);
@@ -84,11 +86,15 @@ function transform(dataView: View, options: Options): void {
       const row = assign({}, meta);
       row[asX] = [bin.x0, bin.x1];
       row[asCount] = bin.count;
-      rows.push(row);
+      result.push(row);
     });
   });
-  dataView.rows = rows;
+
+  return result;
+};
+
+function histogramTransform(dataView: View, options: Options): void {
+  dataView.rows = histogram(dataView.rows, options);
 }
 
-DataSet.registerTransform('bin.histogram', transform);
-DataSet.registerTransform('bin.dot', transform);
+export { histogram, histogramTransform };

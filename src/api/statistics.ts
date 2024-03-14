@@ -17,7 +17,7 @@ function getColumnValues(view: View, column: string): any[] {
 // statistics
 STATISTICS_METHODS.forEach((method) => {
   // @ts-ignore;
-  View.prototype[method] = function(column: string) {
+  View.prototype[method] = function (column: string) {
     // @ts-ignore
     return simpleStatistics[method](getColumnValues(this, column));
   };

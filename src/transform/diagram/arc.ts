@@ -3,7 +3,6 @@
  * graph data required (nodes, edges)
  */
 import { assign, forIn, isArray, values, isFunction } from '@antv/util';
-import { DataSet } from '../../data-set';
 import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {
@@ -178,25 +177,33 @@ function _locatingEdges(nodeById, edges, options) {
   }
 }
 
-function transform(dv: View, options) {
+const arc = (nodes: any[], edges: any[], options) => {
+  let clonedNodes = [...(nodes || [])];
+  const clonedEdges = [...(edges || [])];
+
   options = assign({}, DEFAULT_OPTIONS, options);
   const nodeById = {};
-  let nodes = dv.nodes;
-  const edges = dv.edges;
-  if (!isArray(nodes) || nodes.length === 0) {
-    nodes = _nodesFromEdges(edges, options, nodeById);
+
+  if (!isArray(clonedNodes) || clonedNodes.length === 0) {
+    clonedNodes = _nodesFromEdges(clonedNodes, options, nodeById);
   }
-  nodes.forEach((node) => {
+  clonedNodes.forEach((node) => {
     const id = options.id(node);
     nodeById[id] = node;
   });
-  _processGraph(nodeById, edges, options);
-  _sortNodes(nodes, options);
-  _layoutNodes(nodes, options);
-  _locatingEdges(nodeById, edges, options);
+  _processGraph(nodeById, clonedEdges, options);
+  _sortNodes(clonedNodes, options);
+  _layoutNodes(clonedNodes, options);
+  _locatingEdges(nodeById, clonedEdges, options);
+  return {
+    nodes: clonedNodes,
+    edges: clonedEdges,
+  };
+};
+const arcTransform = (dv: View, options): void => {
+  const { nodes, edges } = arc(dv.nodes, dv.edges, options);
   dv.nodes = nodes;
   dv.edges = edges;
-}
+};
 
-DataSet.registerTransform('diagram.arc', transform);
-DataSet.registerTransform('arc', transform);
+export { arc, arcTransform };

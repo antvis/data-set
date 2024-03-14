@@ -3,8 +3,7 @@
  * graph data required (nodes, edges)
  */
 import { assign, isString, isFunction } from '@antv/util';
-import { sankey, sankeyLeft, sankeyRight, sankeyCenter, sankeyJustify } from 'd3-sankey';
-import { DataSet } from '../../data-set';
+import { sankey as _sankey, sankeyLeft, sankeyRight, sankeyCenter, sankeyJustify } from 'd3-sankey';
 import { View } from '../../view';
 
 const ALIGN_METHOD = {
@@ -43,7 +42,7 @@ export interface Options {
   nodePadding?: number;
 }
 
-function transform(dv: View, options: Options): void {
+const sankey = (dvNodes, dvEdges, options) => {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   let nodeAlign = null;
   if (isString(options.nodeAlign)) {
@@ -51,7 +50,7 @@ function transform(dv: View, options: Options): void {
   } else if (isFunction(options.nodeAlign)) {
     nodeAlign = options.nodeAlign;
   }
-  const sankeyProcessor = sankey()
+  const sankeyProcessor = _sankey()
     .nodeSort(options.sort)
     .links((d: any) => d.edges)
     .nodeWidth(options.nodeWidth!)
@@ -70,7 +69,7 @@ function transform(dv: View, options: Options): void {
   // @ts-ignore
   sankeyProcessor(dv);
   // post process (x, y), etc.
-  dv.nodes.forEach((node) => {
+  dvNodes.forEach((node) => {
     const { x0, x1, y0, y1 } = node;
     /* points
      * 3---2
@@ -80,7 +79,7 @@ function transform(dv: View, options: Options): void {
     node.x = [x0, x1, x1, x0];
     node.y = [y0, y0, y1, y1];
   });
-  dv.edges.forEach((edge) => {
+  dvEdges.forEach((edge) => {
     const { source, target } = edge;
     const sx = source.x1;
     const tx = target.x0;
@@ -88,7 +87,17 @@ function transform(dv: View, options: Options): void {
     const offset = edge.width / 2;
     edge.y = [edge.y0 + offset, edge.y0 - offset, edge.y1 + offset, edge.y1 - offset];
   });
+
+  return {
+    nodes: dvNodes,
+    edges: dvEdges,
+  };
+};
+
+function sankeyTransform(dv: View, options: Options): void {
+  const { nodes, edges } = sankey(dv.nodes, dv.edges, options);
+  dv.nodes = nodes;
+  dv.edges = edges;
 }
 
-DataSet.registerTransform('diagram.sankey', transform);
-DataSet.registerTransform('sankey', transform);
+export { sankey, sankeyTransform };

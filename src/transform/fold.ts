@@ -1,7 +1,7 @@
 import { assign, difference, pick } from '@antv/util';
-import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
+import { getColumnNames } from './default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   fields: [],
@@ -17,8 +17,9 @@ export interface Options {
   retains?: string[];
 }
 
-DataSet.registerTransform('fold', (dataView: View, options: Options) => {
-  const columns = dataView.getColumnNames();
+const fold = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
+  const columns = getColumnNames(rows);
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   let fields = getFields(options);
   if (fields.length === 0) {
@@ -32,7 +33,7 @@ DataSet.registerTransform('fold', (dataView: View, options: Options) => {
     retains = difference(columns, fields);
   }
   const resultRows: any[] = [];
-  dataView.rows.forEach((row) => {
+  rows.forEach((row) => {
     fields.forEach((field) => {
       const resultRow = pick(row, retains);
       resultRow[key] = field;
@@ -40,5 +41,11 @@ DataSet.registerTransform('fold', (dataView: View, options: Options) => {
       resultRows.push(resultRow);
     });
   });
-  dataView.rows = resultRows;
-});
+  return resultRows;
+};
+
+const foldTransform = (dataView: View, options: Options): void => {
+  dataView.rows = fold(dataView.rows, options);
+};
+
+export { fold, foldTransform };

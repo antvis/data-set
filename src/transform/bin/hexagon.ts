@@ -1,7 +1,7 @@
 import { assign, forIn, isArray } from '@antv/util';
-import { DataSet } from '../../data-set';
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';
+import { range } from '../default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'y', 'count'],
@@ -72,7 +72,8 @@ function generateBins(points: [number, number][], binWidth = [1, 1], offset = [0
   return bins;
 }
 
-function transform(dataView: View, options: Options): void {
+const hexagon = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   // step1: get binWidth, etc.
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
@@ -80,8 +81,8 @@ function transform(dataView: View, options: Options): void {
     throw new TypeError('Invalid fields: it must be an array with 2 strings!');
   }
   const [fieldX, fieldY] = fields;
-  const rangeFieldX = dataView.range(fieldX);
-  const rangeFieldY = dataView.range(fieldY);
+  const rangeFieldX = range(rows, fieldX);
+  const rangeFieldY = range(rows, fieldY);
   const widthX = rangeFieldX[1] - rangeFieldX[0];
   const widthY = rangeFieldY[1] - rangeFieldY[0];
   let binWidth = options.binWidth || [];
@@ -108,7 +109,7 @@ function transform(dataView: View, options: Options): void {
   const [offsetX, offsetY] = options.offset;
   const yScale = (3 * binWidth[0]) / (SQRT3 * binWidth[1]);
   // const yScale = binWidth[0] / (SQRT3 * binWidth[1]);
-  const points: [number, number][] = dataView.rows.map((row) => [row[fieldX], yScale * row[fieldY]]);
+  const points: [number, number][] = rows.map((row) => [row[fieldX], yScale * row[fieldY]]);
   // step3: binning
   const bins = generateBins(points, [binWidth[0], yScale * binWidth[1]], [offsetX, yScale * offsetY]);
   // step4: restore scale (for Y)
@@ -140,10 +141,11 @@ function transform(dataView: View, options: Options): void {
     }
     result.push(row);
   });
+  return result;
+};
 
-  dataView.rows = result;
+function hexagonTransform(dataView: View, options: Options): void {
+  dataView.rows = hexagon(dataView.rows, options);
 }
 
-DataSet.registerTransform('bin.hexagon', transform);
-DataSet.registerTransform('bin.hex', transform);
-DataSet.registerTransform('hexbin', transform);
+export { hexagon, hexagonTransform };

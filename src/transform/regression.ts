@@ -1,10 +1,10 @@
-import regression from 'regression';
+import regressionFn from 'regression';
 import { assign, isArray, isNumber } from '@antv/util';
 import getSeriesValues from '../util/get-series-values';
-import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { silverman } from '../util/bandwidth';
 import { View } from '../view';
+import { getColumn, range } from './default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'y'],
@@ -28,7 +28,8 @@ export interface Options {
 
 const REGRESSION_METHODS = ['linear', 'exponential', 'logarithmic', 'power', 'polynomial'];
 
-function transform(dataView: View, options: Options): void {
+const regression = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length !== 2) {
@@ -39,15 +40,15 @@ function transform(dataView: View, options: Options): void {
   if (REGRESSION_METHODS.indexOf(method) === -1) {
     throw new TypeError(`invalid method: ${method}. Must be one of ${REGRESSION_METHODS.join(', ')}`);
   }
-  const points: any[] = dataView.rows.map((row) => [row[xField], row[yField]]);
-  const regressionResult = regression[method](points, options);
+  const points: any[] = rows.map((row) => [row[xField], row[yField]]);
+  const regressionResult = regressionFn[method](points, options);
   let extent = options.extent;
   if (!isArray(extent) || extent.length !== 2) {
-    extent = dataView.range(xField);
+    extent = range(rows, xField);
   }
   let bandwidth = options.bandwidth;
   if (!isNumber(bandwidth) || bandwidth <= 0) {
-    bandwidth = silverman(dataView.getColumn(xField));
+    bandwidth = silverman(getColumn(rows, xField));
   }
   const valuesToPredict = getSeriesValues(extent, bandwidth);
   const result: any[] = [];
@@ -61,11 +62,11 @@ function transform(dataView: View, options: Options): void {
       result.push(row);
     }
   });
-  dataView.rows = result;
+  return result;
+};
+
+function regressionTransform(dataView: View, options: Options): void {
+  dataView.rows = regression(dataView.rows, options);
 }
 
-DataSet.registerTransform('regression', transform);
-
-export default {
-  REGRESSION_METHODS,
-};
+export { REGRESSION_METHODS, regression, regressionTransform };

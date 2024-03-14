@@ -35,28 +35,29 @@ app.use('/', serveStatic(process.cwd()));
 
 const DELAY = 10000;
 
-getPort().then(port => {
+getPort().then((port) => {
   http.createServer(app).listen(port);
   const url = 'http://127.0.0.1:' + port;
   debug('server is ready on port ' + port + '! url: ' + url);
 
   const q = queue(MAX_POOL_SIZE > 2 ? MAX_POOL_SIZE - 1 : MAX_POOL_SIZE);
-  const files = ls(src).filter(filename => (extname(filename) === '.html'));
-  files.forEach(filename => {
+  const files = ls(src).filter((filename) => extname(filename) === '.html');
+  files.forEach((filename) => {
     const name = basename(filename, '.html');
     if (_.isString(commander.name) && filename.indexOf(commander.name) === -1) {
       debug(`>>>>>>>>> skipping because filename not matched: ${name}`);
       return;
     }
-    q.defer(callback => {
+    q.defer((callback) => {
       const t0 = Date.now();
       const nightmare = Nightmare({
         gotoTimeout: 600000,
-        show: false
+        show: false,
       });
       const url = `http://127.0.0.1:${port}/demos/${name}.html`;
       const target = join(dest, `./${name}.png`);
-      nightmare.viewport(800, 450) // 16 x 9
+      nightmare
+        .viewport(800, 450) // 16 x 9
         .goto(url)
         .wait(DELAY)
         .screenshot(target, () => {
@@ -64,14 +65,14 @@ getPort().then(port => {
           callback(null);
         })
         .end()
-        .catch(e => {
+        .catch((e) => {
           debug(url);
           debug(target);
           debug(name + ' failed to take a screenshot: ' + e);
         });
     });
   });
-  q.awaitAll(error => {
+  q.awaitAll((error) => {
     if (error) {
       debug(error);
       process.exit(1);

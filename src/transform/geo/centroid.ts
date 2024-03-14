@@ -1,6 +1,4 @@
 import { assign, isString, isArray } from '@antv/util';
-import { DataSet } from '../../data-set';
-const { registerTransform } = DataSet;
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 
@@ -17,7 +15,7 @@ export interface Options {
   as?: [string, string];
 }
 
-function transform(view: View, options: Options): void {
+function centroidTransform(view: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   // @ts-ignore
@@ -49,4 +47,4 @@ function transform(view: View, options: Options): void {
   });
 }
 
-registerTransform('geo.centroid', transform);
+export { centroidTransform };

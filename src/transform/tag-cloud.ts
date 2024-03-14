@@ -1,5 +1,4 @@
 import { assign, isString } from '@antv/util';
-import { DataSet } from '../data-set';
 import tagCloud from '../util/tag-cloud';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
@@ -37,7 +36,7 @@ export interface Options {
   imageMask?: HTMLImageElement;
 }
 
-function transform(dataView: View, options: Options): void {
+function tagCloudTransform(dataView: View, options: Options): void {
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const layout = tagCloud();
 
@@ -102,5 +101,4 @@ function transform(dataView: View, options: Options): void {
   dataView._tagCloud = result;
 }
 
-DataSet.registerTransform('tag-cloud', transform);
-DataSet.registerTransform('word-cloud', transform);
+export { tagCloudTransform };

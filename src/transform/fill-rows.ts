@@ -1,6 +1,5 @@
 import { assign, forIn } from '@antv/util';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { View } from '../view';
 
 const DEFAULT_OPTIONS: Options = {
@@ -27,9 +26,10 @@ function arrayDifference(arr1: string[], arr2: string[]): string[] {
   return shadow;
 }
 
-function transform(dataView: View, options: Options): void {
+const fillRows = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
-  const rows = dataView.rows;
+
   const groupBy = options.groupBy;
   const orderBy = options.orderBy;
   const groups = partition(rows, groupBy, orderBy);
@@ -102,7 +102,12 @@ function transform(dataView: View, options: Options): void {
       });
     }
   });
+
+  return rows;
+};
+
+function fillRowsTransform(dataView: View, options: Options): void {
+  dataView.rows = fillRows(dataView.rows, options);
 }
 
-DataSet.registerTransform('fill-rows', transform);
-DataSet.registerTransform('fillRows', transform);
+export { fillRows, fillRowsTransform };

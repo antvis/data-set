@@ -1,7 +1,7 @@
-import { pick } from '@antv/util';
-import { DataSet } from '../data-set';
+import { pick as pickUtil } from '@antv/util';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
+import { getColumnNames } from './default';
 
 /*
  * options: {
@@ -14,7 +14,15 @@ export interface Options {
   fields?: string[];
 }
 
-DataSet.registerTransform('pick', (dataView: View, options: Options) => {
-  const columns = getFields(options, dataView.getColumnNames());
-  dataView.rows = dataView.rows.map((row) => pick(row, columns));
-});
+const pick = (rows: View['rows'], options: Options): any[] => {
+  const cloned = [...(rows || [])];
+  const columns = getFields(options, getColumnNames(rows));
+
+  return cloned.map((row) => pickUtil(row, columns));
+};
+
+const pickTransform = (dataView: View, options: Options): void => {
+  dataView.rows = pick(dataView.rows, options);
+};
+
+export { pick, pickTransform };

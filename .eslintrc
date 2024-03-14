@@ -12,6 +12,14 @@
     "sourceType": "module",
     "impliedStrict": true
   },
+  "overrides": [
+    {
+      "files": ["test/**/*"],
+      "env": {
+        "jest": true
+      }
+    }
+  ],
   "rules": {
     "no-sparse-arrays": 0,
     "no-inner-declarations": 0,
@@ -27,6 +35,10 @@
     "@typescript-eslint/ban-ts-ignore": 0,
     "@typescript-eslint/no-empty-interface": 1,
     "@typescript-eslint/camelcase": 0,
-    "@typescript-eslint/no-explicit-any": 0
+    "@typescript-eslint/no-explicit-any": 0,
+    "@typescript-eslint/no-unsafe-declaration-merging":"off",
+    "@typescript-eslint/prefer-ts-expect-error":"off",
+    "@typescript-eslint/ban-ts-comment":"off",
+    "@typescript-eslint/ban-types":"off"
   }
 }

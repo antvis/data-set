@@ -1,6 +1,11 @@
-import { DataSet } from '../data-set';
 import { View } from '../view';
 
-DataSet.registerTransform('reverse', (dataView: View) => {
-  dataView.rows.reverse();
-});
+const reverse = (items: View['rows']): any[] => {
+  const rows = [...(items || [])];
+  return rows.reverse();
+};
+const reverseTransform = (dataView: View): void => {
+  dataView.rows = reverse(dataView.rows);
+};
+
+export { reverse, reverseTransform };

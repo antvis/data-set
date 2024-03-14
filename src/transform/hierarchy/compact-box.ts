@@ -4,7 +4,7 @@ import { View } from '../../view';
 
 const DEFAULT_OPTIONS = {};
 
-function transform(dataView: View, options) {
+function compactBoxTransform(dataView: View, options) {
   const root = dataView.root;
   options = Object.assign({}, DEFAULT_OPTIONS, options);
 
@@ -15,7 +15,4 @@ function transform(dataView: View, options) {
   dataView.root = hierarchy.compactBox(root, options);
 }
 
-DataSet.registerTransform('hierarchy.compact-box', transform);
-DataSet.registerTransform('compact-box-tree', transform);
-DataSet.registerTransform('non-layered-tidy-tree', transform);
-DataSet.registerTransform('mindmap-logical', transform);
+export { compactBoxTransform };

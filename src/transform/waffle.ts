@@ -1,7 +1,6 @@
 import { assign, each, forIn, keys, map, pick } from '@antv/util';
 import { sum } from 'simple-statistics';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
 
@@ -27,19 +26,20 @@ interface Options {
   as: string[];
 }
 
-function transform(dataView: View, options: Options): void {
+const waffle = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   const [nameField, valueField] = fields;
   const [asX, asY] = options.as;
   const groupBy = options.groupBy;
-  const groups = partition(dataView.rows, groupBy);
+  const groups = partition(rows, groupBy);
   const groupKeys = keys(groups);
   const [width, height] = options.size;
   const maxCount = options.maxCount;
   const groupCount = groupKeys.length;
   const partHeight = height / groupCount;
-  const rows = options.rows;
+  const optionsRows = options.rows;
   const gapRatio = options.gapRatio;
   const result: any[] = [];
   let scale = options.scale;
@@ -49,10 +49,10 @@ function transform(dataView: View, options: Options): void {
   // getting suitable scale and width step
   forIn(groups, (group) => {
     const totalValue = sum(map(group, (row: any) => row[valueField]));
-    let cols = Math.ceil((totalValue * scale) / rows);
+    let cols = Math.ceil((totalValue * scale) / optionsRows);
     if (totalValue * scale > maxCount) {
       scale = maxCount / totalValue;
-      cols = Math.ceil((totalValue * scale) / rows);
+      cols = Math.ceil((totalValue * scale) / optionsRows);
     }
     wStep = width / cols;
   });
@@ -61,14 +61,14 @@ function transform(dataView: View, options: Options): void {
   forIn(groups, (group) => {
     const heightRange = [currentGroupIndex * partHeight, (currentGroupIndex + 1) * partHeight];
     const h = heightRange[1] - heightRange[0];
-    const hStep = (h * (1 - gapRatio)) / rows;
+    const hStep = (h * (1 - gapRatio)) / optionsRows;
     let currentCol = 0;
     let currentRow = 0;
     each(group, (row) => {
       const value = row[valueField];
       const count = Math.round(value * scale);
       for (let i = 0; i < count; i++) {
-        if (currentRow === rows) {
+        if (currentRow === optionsRows) {
           currentRow = 0;
           currentCol++;
         }
@@ -84,7 +84,11 @@ function transform(dataView: View, options: Options): void {
     currentGroupIndex += 1;
   });
 
-  dataView.rows = result;
+  return result;
+};
+
+function waffleTransform(dataView: View, options: Options): void {
+  dataView.rows = waffle(dataView.rows, options);
 }
 
-DataSet.registerTransform('waffle', transform);
+export { waffle, waffleTransform };
