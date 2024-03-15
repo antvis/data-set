@@ -149,4 +149,4 @@ DataSet.registerTransform('kernel.regression', kernelRegressionTransform);
 DataSet.registerTransform('tag-cloud', tagCloudTransform);
 DataSet.registerTransform('word-cloud', tagCloudTransform);
 
-export = DataSet;
+export default DataSet;

@@ -18,7 +18,8 @@ export default defineConfig({
   ),
   format: ['esm', 'cjs'],
   outDir: 'build',
-  splitting: false,
   clean: true,
   dts: true,
+  external: ['lodash'],
+  noExternal: ['dagre', 'wolfy87-eventemitter', 'd3-sankey', 'simple-statistics', 'd3-voronoi'],
 });

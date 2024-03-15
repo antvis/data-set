@@ -1,7 +1,7 @@
 import { keys, pick } from '@antv/util';
 import { View } from '../view';
 import { flattenDeep, isArray } from '@antv/util';
-import * as simpleStatistcs from 'simple-statistics';
+import { min as _min, max as _max } from 'simple-statistics';
 
 const getColumn = (rows: any[], columnName: string): any[] => {
   return (rows || []).map((row) => row[columnName]);
@@ -29,12 +29,12 @@ const getColumnValues = (rows: View['rows'], column: string): any[] => {
 
 const min = (rows: any[], column: string): number => {
   const values = getColumnValues(rows, column);
-  return simpleStatistcs.min(values);
+  return _min(values);
 };
 
 const max = (rows: any[], column: string): number => {
   const values = getColumnValues(rows, column);
-  return simpleStatistcs.max(values);
+  return _max(values);
 };
 
 const range = (rows: any[], column: string): [number, number] => {
