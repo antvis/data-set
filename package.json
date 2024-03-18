@@ -2,25 +2,27 @@
   "name": "@antv/data-set",
   "version": "0.11.9",
   "description": "data set with state management",
-  "main": "lib/index.js",
-  "browser": "build/data-set.js",
-  "module": "lib/index.js",
+  "main": "build/index.mjs",
+  "browser": "build/index.mjs",
+  "module": "build/index.mjs",
   "exports": {
     ".": {
-      "default": "./lib/index.js",
-      "types": "./lib/index.d.ts"
+      "types": "./build/index.d.ts",
+      "import": "./build/index.mjs",
+      "require": "./build/index.js"
     },
     "./transform": {
+      "types": "./build/transform/index.d.ts",
       "import": "./build/transform/index.mjs",
-      "require": "./build/transform/index.js",
-      "types": "./lib/src/transform/index.d.ts"
+      "require": "./build/transform/index.js"
     },
     "./*": {
+      "types": "./build/*.d.ts",
       "import": "./build/*.mjs",
-      "require": "./build/*.js",
-      "types": "./build/*.d.ts"
+      "require": "./build/*.js"
     }
   },
+
   "dependencies": {
     "@antv/hierarchy": "^0.6.0",
     "@antv/util": "^2.0.0",
@@ -57,7 +59,7 @@
   "author": "https://github.com/orgs/antvis/people",
   "license": "MIT",
   "scripts": {
-    "build": "rm -rf build  && tsup  && webpack",
+    "build": "rm -rf build  && tsup && webpack",
     "build-lib": "rm -rf lib && tsc",
     "bundler": "electron ./bundler/app.js",
     "ci": "npm run lint && npm run test && npm run test-bugs",
