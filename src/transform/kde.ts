@@ -6,10 +6,10 @@ import getSeriesValues from '../util/get-series-values';
 import kernel from '../util/kernel';
 import * as bandwidth from '../util/bandwidth';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { getFields } from '../util/option-parser';
 import { kernelDensityEstimation } from 'simple-statistics';
 import { View } from '../view';
+import { getColumn, range } from './default';
 
 const DEFAULT_OPTIONS = {
   minSize: 0.01,
@@ -38,7 +38,9 @@ export interface Options {
   groupBy?: string[];
 }
 
-function transform(dv: View, options: Options): void {
+const kde = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
+  // @ts-ignore
   options = assign({}, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length < 1) {
@@ -60,33 +62,35 @@ function transform(dv: View, options: Options): void {
   }
 
   let extent = options.extent;
+  // @ts-ignore
   if (!isArray(extent) || extent.length === 0) {
     let rangeArr = [];
     each(fields, (field) => {
-      const range = dv.range(field);
-      rangeArr = rangeArr.concat(range);
+      const ranged = range(rows, field);
+      rangeArr = rangeArr.concat(ranged);
     });
     extent = [Math.min(...rangeArr), Math.max(...rangeArr)];
   }
   let bw = options.bandwidth;
   if (isString(bw) && bandwidth[bw]) {
-    bw = bandwidth[bw](dv.getColumn(fields[0]));
+    bw = bandwidth[bw as string](getColumn(rows, fields[0]));
   } else if (isFunction(bw)) {
-    bw = bw(dv.getColumn(fields[0]));
+    bw = bw(getColumn(rows, fields[0]));
   } else if (!isNumber(bw) || bw <= 0) {
-    bw = bandwidth.nrd(dv.getColumn(fields[0]));
+    bw = bandwidth.nrd(getColumn(rows, fields[0]));
   }
   const seriesValues = getSeriesValues(extent, options.step ? options.step : bw);
   const result: any = [];
 
   const groupBy = options.groupBy;
-  const groups = partition(dv.rows, groupBy);
+  const groups = partition(rows, groupBy);
   forIn(groups, (group) => {
     const probalityDensityFunctionByField = {};
     each(fields, (field) => {
       const row: any = pick(group[0], groupBy);
       probalityDensityFunctionByField[field] = kernelDensityEstimation(
         group.map((item) => item[field]),
+        // @ts-ignore
         method,
         bw
       );
@@ -105,14 +109,11 @@ function transform(dv: View, options: Options): void {
     });
   });
 
-  dv.rows = result;
+  return result;
+};
+
+function kdeTransform(dataView: View, options: Options): void {
+  dataView.rows = kde(dataView.rows, options);
 }
 
-DataSet.registerTransform('kernel-density-estimation', transform);
-DataSet.registerTransform('kde', transform);
-DataSet.registerTransform('KDE', transform);
-
-export default {
-  KERNEL_METHODS,
-  BANDWIDTH_METHODS,
-};
+export { KERNEL_METHODS, BANDWIDTH_METHODS, kdeTransform, kde };

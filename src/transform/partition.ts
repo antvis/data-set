@@ -1,6 +1,5 @@
-import { values, assign } from '@antv/util';
-import partition from '../util/partition';
-import { DataSet } from '../data-set';
+import { assign } from '@antv/util';
+import partitionFn from '../util/partition';
 import { View } from '../view';
 
 const DEFAULT_OPTIONS: Options = {
@@ -13,17 +12,16 @@ export interface Options {
   orderBy?: string[];
 }
 
-DataSet.registerTransform('partition', (dataView: View, options: Options) => {
+const partition = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   // TODO: rows 是否都只能是数组
   // @ts-ignore;
-  dataView.rows = partition(dataView.rows, options.groupBy, options.orderBy);
-});
+  return partitionFn(rows, options.groupBy, options.orderBy);
+};
 
-function group(dataView: View, options: Options): void {
-  options = assign({} as Options, DEFAULT_OPTIONS, options);
-  dataView.rows = values(partition(dataView.rows, options.groupBy, options.orderBy));
-}
+const partitionTransform = (dataView: View, options: Options): void => {
+  dataView.rows = partition(dataView.rows, options);
+};
 
-DataSet.registerTransform('group', group);
-DataSet.registerTransform('groups', group);
+export { partition, partitionTransform };

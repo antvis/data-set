@@ -45,7 +45,7 @@ export interface Options {
   as: [string, string];
 }
 
-function transform(dataView: View, options: Options): void {
+function treemapTransform(dataView: View, options: Options): void {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
@@ -99,5 +99,4 @@ function transform(dataView: View, options: Options): void {
   });
 }
 
-DataSet.registerTransform('hierarchy.treemap', transform);
-DataSet.registerTransform('treemap', transform);
+export { treemapTransform };

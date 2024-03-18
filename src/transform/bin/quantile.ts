@@ -1,9 +1,7 @@
 import { assign, forIn, isArray, isString } from '@antv/util';
-import { quantile } from 'simple-statistics';
+import { quantile as _quantile } from 'simple-statistics';
 import partition from '../../util/partition';
 import pByFraction from '../../util/p-by-fraction';
-import { DataSet } from '../../data-set';
-const { registerTransform } = DataSet;
 import { getField } from '../../util/option-parser';
 import { View } from '../../view';
 
@@ -22,7 +20,8 @@ export interface Options {
   field: string;
 }
 
-function transform(dataView: View, options: Options): void {
+const quantile = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const as = options.as;
@@ -34,7 +33,6 @@ function transform(dataView: View, options: Options): void {
   if (!isArray(pArray) || pArray.length === 0) {
     pArray = pByFraction(fraction);
   }
-  const rows = dataView.rows;
   const groupBy = options.groupBy;
   const groups: Record<string, any[]> = partition(rows, groupBy);
   const result: any[] = [];
@@ -42,11 +40,15 @@ function transform(dataView: View, options: Options): void {
     // const resultRow = pick(group[0], groupBy);
     const resultRow = group[0];
     const binningColumn = group.map((row) => row[field]);
-    const quantiles = pArray.map((p) => quantile(binningColumn, p));
+    const quantiles = pArray.map((p) => _quantile(binningColumn, p));
     resultRow[as] = quantiles;
     result.push(resultRow);
   });
-  dataView.rows = result;
+  return result;
+};
+
+function quantileTransform(dataView: View, options: Options): void {
+  dataView.rows = quantile(dataView.rows, options);
 }
 
-registerTransform('bin.quantile', transform);
+export { quantile, quantileTransform };

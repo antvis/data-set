@@ -1,6 +1,5 @@
 import { assign, isArray, forIn, isString } from '@antv/util';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { getField } from '../util/option-parser';
 import { View } from '../view';
 
@@ -18,7 +17,8 @@ export interface Options {
   as?: string;
 }
 
-function transform(dataView: View, options: Options): void {
+const proportion = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const dimension = options.dimension;
@@ -34,7 +34,7 @@ function transform(dataView: View, options: Options): void {
   if (!isString(as)) {
     throw new TypeError('Invalid as: must be a string!');
   }
-  const rows = dataView.rows;
+
   const result: any = [];
   const groups = partition(rows, groupBy);
   forIn(groups, (group) => {
@@ -52,7 +52,11 @@ function transform(dataView: View, options: Options): void {
       result.push(resultRow);
     });
   });
-  dataView.rows = result;
+  return result;
+};
+
+function proportionTransform(dataView: View, options: Options): void {
+  dataView.rows = proportion(dataView.rows, options);
 }
 
-DataSet.registerTransform('proportion', transform);
+export { proportion, proportionTransform };

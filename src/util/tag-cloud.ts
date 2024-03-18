@@ -167,7 +167,7 @@ function collideRects(a, b) {
 
 function archimedeanSpiral(size) {
   const e = size[0] / size[1];
-  return function(t) {
+  return function (t) {
     return [e * (t *= 0.1) * Math.cos(t), t * Math.sin(t)];
   };
 }
@@ -177,7 +177,7 @@ function rectangularSpiral(size) {
     dx = (dy * size[0]) / size[1];
   let x = 0,
     y = 0;
-  return function(t) {
+  return function (t) {
     const sign = t < 0 ? -1 : 1;
     // See triangular numbers: T_n = n * (n + 1) / 2.
     switch ((Math.sqrt(1 + 4 * sign * t) - sign) & 3) {
@@ -213,7 +213,7 @@ function cloudCanvas() {
 function functor(d) {
   return typeof d === 'function'
     ? d
-    : function() {
+    : function () {
         return d;
       };
 }
@@ -223,7 +223,7 @@ const spirals = {
   rectangular: rectangularSpiral,
 };
 
-export default function() {
+export default function () {
   let size = [256, 256],
     text = cloudText,
     font = cloudFont,
@@ -239,18 +239,18 @@ export default function() {
     canvas = cloudCanvas;
   const cloud: any = {};
 
-  cloud.canvas = function(_) {
+  cloud.canvas = function (_) {
     return arguments.length ? ((canvas = functor(_)), cloud) : canvas;
   };
 
-  cloud.start = function() {
+  cloud.start = function () {
     const [width, height] = size;
     const contextAndRatio = getContext(canvas()),
       board = cloud.board ? cloud.board : zeroArray((size[0] >> 5) * size[1]),
       n = words.length,
       tags = [],
       data = words
-        .map(function(d, i) {
+        .map(function (d, i) {
           d.text = text.call(this, d, i);
           d.font = font.call(this, d, i);
           d.style = fontStyle.call(this, d, i);
@@ -260,7 +260,7 @@ export default function() {
           d.padding = padding.call(this, d, i);
           return d;
         })
-        .sort(function(a, b) {
+        .sort(function (a, b) {
           return b.size - a.size;
         });
     let i = -1,
@@ -400,51 +400,51 @@ export default function() {
     cloud.hasImage = true;
   };
 
-  cloud.timeInterval = function(_) {
+  cloud.timeInterval = function (_) {
     return arguments.length ? ((timeInterval = _ == null ? Infinity : _), cloud) : timeInterval;
   };
 
-  cloud.words = function(_) {
+  cloud.words = function (_) {
     return arguments.length ? ((words = _), cloud) : words;
   };
 
-  cloud.size = function(_) {
+  cloud.size = function (_) {
     return arguments.length ? ((size = [+_[0], +_[1]]), cloud) : size;
   };
 
-  cloud.font = function(_) {
+  cloud.font = function (_) {
     return arguments.length ? ((font = functor(_)), cloud) : font;
   };
 
-  cloud.fontStyle = function(_) {
+  cloud.fontStyle = function (_) {
     return arguments.length ? ((fontStyle = functor(_)), cloud) : fontStyle;
   };
 
-  cloud.fontWeight = function(_) {
+  cloud.fontWeight = function (_) {
     return arguments.length ? ((fontWeight = functor(_)), cloud) : fontWeight;
   };
 
-  cloud.rotate = function(_) {
+  cloud.rotate = function (_) {
     return arguments.length ? ((rotate = functor(_)), cloud) : rotate;
   };
 
-  cloud.text = function(_) {
+  cloud.text = function (_) {
     return arguments.length ? ((text = functor(_)), cloud) : text;
   };
 
-  cloud.spiral = function(_) {
+  cloud.spiral = function (_) {
     return arguments.length ? ((spiral = spirals[_] || _), cloud) : spiral;
   };
 
-  cloud.fontSize = function(_) {
+  cloud.fontSize = function (_) {
     return arguments.length ? ((fontSize = functor(_)), cloud) : fontSize;
   };
 
-  cloud.padding = function(_) {
+  cloud.padding = function (_) {
     return arguments.length ? ((padding = functor(_)), cloud) : padding;
   };
 
-  cloud.random = function(_) {
+  cloud.random = function (_) {
     return arguments.length ? ((random = _), cloud) : random;
   };
 

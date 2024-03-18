@@ -1,5 +1,6 @@
 const resolve = require('path').resolve;
 const pkg = require('./package.json');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
 module.exports = {
   devtool: 'cheap-source-map',
@@ -11,6 +12,7 @@ module.exports = {
     extensions: ['.js', '.ts', '.json'],
     mainFields: ['browser', 'main', 'module'],
   },
+  // plugins: [new BundleAnalyzerPlugin()],
   output: {
     filename: '[name].js',
     library: 'DataSet',
@@ -27,7 +29,7 @@ module.exports = {
             return /d3-.*/.test(path);
           },
         ],
-        loader: 'awesome-typescript-loader',
+        loader: 'ts-loader',
       },
       {
         test: /data\-set\.js$/,

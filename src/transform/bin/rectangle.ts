@@ -1,8 +1,7 @@
 import { assign, forIn } from '@antv/util';
-import { DataSet } from '../../data-set';
-const { registerTransform } = DataSet;
 import { getFields } from '../../util/option-parser';
 import { View } from '../../view';
+import { range } from '../default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'y', 'count'],
@@ -28,14 +27,15 @@ function nearestBin(value: number, scale: number, offset: number): [number, numb
   return [div * scale + offset, (div + 1) * scale + offset];
 }
 
-function transform(dataView: View, options: Options): void {
+const rectangle = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const [fieldX, fieldY] = getFields(options);
   if (!fieldX || !fieldY) {
     throw new TypeError('Invalid fields: must be an array with 2 strings!');
   }
-  const rangeFieldX = dataView.range(fieldX);
-  const rangeFieldY = dataView.range(fieldY);
+  const rangeFieldX = range(rows, fieldX);
+  const rangeFieldY = range(rows, fieldY);
   const widthX = rangeFieldX[1] - rangeFieldX[0];
   const widthY = rangeFieldY[1] - rangeFieldY[0];
   let binWidth = options.binWidth || [];
@@ -46,7 +46,7 @@ function transform(dataView: View, options: Options): void {
     }
     binWidth = [widthX / binsX, widthY / binsY];
   }
-  const points = dataView.rows.map((row) => [row[fieldX], row[fieldY]]);
+  const points = rows.map((row) => [row[fieldX], row[fieldY]]);
   const bins: any = {};
   const [offsetX, offsetY] = options.offset;
   points.forEach((point) => {
@@ -62,7 +62,7 @@ function transform(dataView: View, options: Options): void {
     };
     bins[binKey].count++;
   });
-  const rows: any = [];
+  const result: any = [];
   const [asX, asY, asCount] = options.as;
   if (!asX || !asY || !asCount) {
     throw new TypeError('Invalid as: it must be an array with 3 strings (e.g. [ "x", "y", "count" ])!');
@@ -78,7 +78,7 @@ function transform(dataView: View, options: Options): void {
       row[asX] = [bin.x0, bin.x1, bin.x1, bin.x0];
       row[asY] = [bin.y0, bin.y0, bin.y1, bin.y1];
       row[asCount] = bin.count;
-      rows.push(row);
+      result.push(row);
     });
   } else {
     let maxCount = 0;
@@ -101,11 +101,15 @@ function transform(dataView: View, options: Options): void {
       row[asX] = [x01, x11, x11, x01];
       row[asY] = [y01, y01, y11, y11];
       row[asCount] = count;
-      rows.push(row);
+      result.push(row);
     });
   }
-  dataView.rows = rows;
+
+  return result;
+};
+
+function rectangleTransform(dataView: View, options: Options): void {
+  dataView.rows = rectangle(dataView.rows, options);
 }
 
-registerTransform('bin.rectangle', transform);
-registerTransform('bin.rect', transform);
+export { rectangle, rectangleTransform };

@@ -1,8 +1,7 @@
-import { assign, flattenDeep, forIn, isArray, isString, keys, uniq } from '@antv/util';
+import { assign, flattenDeep, forIn, isArray, isString, uniq } from '@antv/util';
 import * as simpleStatistics from 'simple-statistics';
 import partition from '../util/partition';
 import { DataSet } from '../data-set';
-const { registerTransform } = DataSet;
 import { getFields } from '../util/option-parser';
 import { View } from '../view';
 
@@ -56,7 +55,8 @@ DataSet.CONSTANTS.STATISTICS_METHODS.forEach((method) => {
 });
 aggregates.average = aggregates.mean;
 
-function transform(dataView: View, options: Options): void {
+function aggregate(items: View['rows'], options: Options): any[] {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields)) {
@@ -84,7 +84,7 @@ function transform(dataView: View, options: Options): void {
       throw new TypeError("Invalid as: it's length must be the same as fields!");
     }
   }
-  const groups = partition(dataView.rows, options.groupBy);
+  const groups = partition(rows, options.groupBy);
   const results: any[] = [];
   forIn(groups, (group) => {
     const result = group[0];
@@ -95,12 +95,11 @@ function transform(dataView: View, options: Options): void {
     });
     results.push(result);
   });
-  dataView.rows = results;
+  return results;
 }
 
-registerTransform('aggregate', transform);
-registerTransform('summary', transform);
-
-export default {
-  VALID_AGGREGATES: keys(aggregates),
+const aggregateTransform = (dataView: View, options: Options): void => {
+  dataView.rows = aggregate(dataView.rows, options);
 };
+
+export { aggregates, aggregate, aggregateTransform };

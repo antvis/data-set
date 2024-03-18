@@ -1,7 +1,6 @@
 import { assign, forIn, isArray, isString } from '@antv/util';
 import { sum } from 'simple-statistics';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { getField } from '../util/option-parser';
 import { View } from '../view';
 
@@ -19,7 +18,8 @@ export interface Options {
   as?: string;
 }
 
-function transform(dataView: View, options: Options): void {
+const percent = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const { dimension, groupBy } = options;
@@ -34,7 +34,6 @@ function transform(dataView: View, options: Options): void {
   if (!isString(as)) {
     throw new TypeError('Invalid as: must be a string!');
   }
-  const rows = dataView.rows;
   const result: any[] = [];
   const groups = partition(rows, groupBy);
   forIn(groups, (group) => {
@@ -56,7 +55,11 @@ function transform(dataView: View, options: Options): void {
       result.push(resultRow);
     });
   });
-  dataView.rows = result;
+  return result;
+};
+
+function percentTransform(dataView: View, options: Options): void {
+  dataView.rows = percent(dataView.rows, options);
 }
 
-DataSet.registerTransform('percent', transform);
+export { percent, percentTransform };

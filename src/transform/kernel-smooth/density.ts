@@ -4,10 +4,10 @@
 import { assign, isArray, isNumber, isString, keys } from '@antv/util';
 import getSeriesValues from '../../util/get-series-values';
 import kernel from '../../util/kernel';
-import { DataSet } from '../../data-set';
 import { getFields } from '../../util/option-parser';
 import { silverman } from '../../util/bandwidth';
 import { View } from '../../view';
+import { getColumn, range } from '../default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   as: ['x', 'y', 'z'],
@@ -36,7 +36,8 @@ export interface Options {
 
 const KERNEL_METHODS = keys(kernel);
 
-function transform(dv: View, options: Options): void {
+const kernelSmoothDensity = (dvRows: View['rows'], options: Options): any[] => {
+  const rows = [...(dvRows || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const fields = getFields(options);
   if (!isArray(fields) || fields.length !== 2) {
@@ -61,8 +62,8 @@ function transform(dv: View, options: Options): void {
   if (extent && Array.isArray(extent) && Array.isArray(extent[0]) && Array.isArray(extent[1])) {
     [extentX, extentY] = extent;
   } else {
-    extentX = dv.range(xField);
-    extentY = dv.range(yField);
+    extentX = range(rows, xField);
+    extentY = range(rows, yField);
   }
 
   let bwX: number, bwY: number;
@@ -75,12 +76,12 @@ function transform(dv: View, options: Options): void {
   ) {
     [bwX, bwY] = bandwidth;
   } else {
-    bwX = silverman(dv.getColumn(xField));
-    bwY = silverman(dv.getColumn(yField));
+    bwX = silverman(getColumn(rows, xField));
+    bwY = silverman(getColumn(rows, yField));
   }
   const seriesValuesX = getSeriesValues(extentX, bwX);
   const seriesValuesY = getSeriesValues(extentY, bwY);
-  const count = dv.rows.length;
+  const count = rows.length;
   const result: any[] = [];
 
   for (let i = 0; i < seriesValuesX.length; i++) {
@@ -89,7 +90,7 @@ function transform(dv: View, options: Options): void {
       const x = seriesValuesX[i];
       const y = seriesValuesY[j];
       for (let k = 0; k < count; k++) {
-        sum += method!((x - dv.rows[k][xField]) / bwX) * method!((y - dv.rows[k][yField]) / bwY);
+        sum += method!((x - rows[k][xField]) / bwX) * method!((y - rows[k][yField]) / bwY);
       }
       const z = (1 / (count * bwX * bwY)) * sum;
       const row: any = {};
@@ -100,12 +101,11 @@ function transform(dv: View, options: Options): void {
     }
   }
 
-  dv.rows = result;
+  return result;
+};
+
+function kernelSmoothDensityTransform(dv: View, options: Options): void {
+  dv.rows = kernelSmoothDensity(dv.rows, options);
 }
 
-DataSet.registerTransform('kernel-smooth.density', transform);
-DataSet.registerTransform('kernel.density', transform);
-
-export default {
-  KERNEL_METHODS,
-};
+export { kernelSmoothDensity, kernelSmoothDensityTransform, KERNEL_METHODS };

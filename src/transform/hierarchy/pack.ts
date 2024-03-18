@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
   as: ['x', 'y', 'r'],
 };
 
-function transform(dataView: View, options) {
+function packTransform(dataView: View, options) {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
@@ -51,6 +51,4 @@ function transform(dataView: View, options) {
   });
 }
 
-DataSet.registerTransform('hierarchy.pack', transform);
-DataSet.registerTransform('hierarchy.circle-packing', transform);
-DataSet.registerTransform('circle-packing', transform);
+export { packTransform };

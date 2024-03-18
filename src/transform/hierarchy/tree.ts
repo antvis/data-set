@@ -11,7 +11,7 @@ const DEFAULT_OPTIONS = {
   as: ['x', 'y'],
 };
 
-function transform(dataView, options) {
+function treeTransform(dataView, options) {
   if (dataView.dataType !== DataSet.CONSTANTS.HIERARCHY) {
     throw new TypeError('Invalid DataView: This transform is for Hierarchy data only!');
   }
@@ -51,5 +51,4 @@ function transform(dataView, options) {
   });
 }
 
-DataSet.registerTransform('hierarchy.tree', transform);
-DataSet.registerTransform('tree', transform);
+export { treeTransform };

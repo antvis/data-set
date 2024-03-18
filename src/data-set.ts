@@ -1,3 +1,7 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import { assign, isNil, isObject, uniqueId } from '@antv/util';
 import EventEmitter from 'wolfy87-eventemitter';
 import { View, ViewOptions } from './view';

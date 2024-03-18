@@ -1,9 +1,9 @@
 import { assign, forIn, has, isFunction, isUndefined, isString } from '@antv/util';
 import * as simpleStatistics from 'simple-statistics';
 import partition from '../util/partition';
-import { DataSet } from '../data-set';
 import { getField } from '../util/option-parser';
 import { View } from '../view';
+import { getColumn } from './default';
 
 const DEFAULT_OPTIONS: Partial<Options> = {
   // field: '', // required
@@ -42,7 +42,8 @@ STATISTICS_METHODS.forEach((method) => {
 
 imputations.value = (_row, _values, value) => value;
 
-function transform(dataView: View, options: Options): void {
+const impute = (items: View['rows'], options: Options): any[] => {
+  const rows = [...(items || [])];
   options = assign({} as Options, DEFAULT_OPTIONS, options);
   const field = getField(options);
   const method = options.method;
@@ -52,8 +53,8 @@ function transform(dataView: View, options: Options): void {
   if (method === 'value' && !has(options, 'value')) {
     throw new TypeError('Invalid value: it is nil.');
   }
-  const column = notUndefinedValues(dataView.getColumn(field));
-  const groups = partition(dataView.rows, options.groupBy);
+  const column = notUndefinedValues(getColumn(rows, field));
+  const groups = partition(rows, options.groupBy);
   forIn(groups, (group: any[]) => {
     let fieldValues = notUndefinedValues(group.map((row) => row[field]));
     if (fieldValues.length === 0) {
@@ -71,6 +72,10 @@ function transform(dataView: View, options: Options): void {
       }
     });
   });
+  return rows;
+};
+function imputeTransform(dataView: View, options: Options): void {
+  dataView.rows = impute(dataView.rows, options);
 }
 
-DataSet.registerTransform('impute', transform);
+export { imputeTransform, impute };

@@ -1,8 +1,6 @@
 import { assign, isArray } from '@antv/util';
 import { geoPath } from 'd3-geo';
 import getPointAtLength from 'point-at-length';
-import { DataSet } from '../../data-set';
-const { registerTransform } = DataSet;
 import getGeoProjection from '../../util/get-geo-projection';
 import { View } from '../../view';
 
@@ -16,7 +14,7 @@ export interface Options {
   as?: string[];
 }
 
-function transform(dataView: View, options: Options): void {
+function projectionTransform(dataView: View, options: Options): void {
   if (dataView.dataType !== 'geo' && dataView.dataType !== 'geo-graticule') {
     throw new TypeError('Invalid dataView: this transform is for Geo data only!');
   }
@@ -53,4 +51,4 @@ function transform(dataView: View, options: Options): void {
   dataView.rows = dataView.rows.filter((row) => row[lonField].length !== 0);
 }
 
-registerTransform('geo.projection', transform);
+export { projectionTransform };

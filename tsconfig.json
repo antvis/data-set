@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
-    "module": "commonjs",
+    "module": "CommonJS",
     "lib": ["dom", "es2017"],
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -14,7 +14,8 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true,
     "noImplicitReturns": true,
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule":true
   },
   "include": ["./src"]
 }
