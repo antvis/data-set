@@ -461,7 +461,7 @@ dv.transform({
 
 > 以上 fields/operations/as 这三个数组元素一一对应。“对某个字段 field 进行某种统计操作 operation 结果存储在某个字段上 as。”
 
-支持的 operations: [详见 simple-statistics](https://simplestatistics.org/)。
+支持的 operations: 
 
 - count
 - max
